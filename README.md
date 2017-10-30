@@ -77,6 +77,11 @@ Objective C :
 
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SDKMain" bundle:[CommonUtility getFrameworkBundle]];
             ChatViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"ChatViewController"];
+            controller.businessId =@"#businessID";
+            controller.headerTitle = @"Chatty";
+            controller.headerDescription = @"(ANA Intelligence Agent)";
+            controller.baseThemeColor = [UIColor colorWithRed:0.549 green:0.784 blue:0.235 alpha:1.0];
+            controller.headerLogoImageName = @"chatty";
             [self.navigationController pushViewController:controller animated:YES];
         
 
@@ -92,12 +97,7 @@ If you wish to install ANAChat directly into your application from source, then 
 
 follow the above steps from 4 to 7  to complete the installation
 
-
-## Author
-
-RakeshTatekonda609, rakesh.tatekonda@nowfloats.com
-
 ## License
 
-ANAChat is available under the GNU-GPL V3 license. See the LICENSE file for more info.
+ANAChat is available under the [GNU GPLv3 license](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
