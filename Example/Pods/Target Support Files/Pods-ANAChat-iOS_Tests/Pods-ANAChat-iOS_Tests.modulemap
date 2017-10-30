@@ -1,6 +1,0 @@
-framework module Pods_ANAChat_iOS_Tests {
-  umbrella header "Pods-ANAChat-iOS_Tests-umbrella.h"
-
-  export *
-  module * { export * }
-}

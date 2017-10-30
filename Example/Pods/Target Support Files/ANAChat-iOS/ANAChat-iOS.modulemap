@@ -1,6 +1,0 @@
-framework module ANAChat_iOS {
-  umbrella header "ANAChat-iOS-umbrella.h"
-
-  export *
-  module * { export * }
-}
