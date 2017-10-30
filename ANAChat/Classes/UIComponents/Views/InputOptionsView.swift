@@ -1,9 +1,5 @@
 //
 //  ButtonsView.swift
-//  RiaChatSDK
-//
-//  Created by Madhu on 27/07/17.
-//  Copyright © 2017 Mine. All rights reserved.
 //
 
 import UIKit

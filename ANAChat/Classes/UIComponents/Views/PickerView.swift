@@ -1,9 +1,5 @@
 //
 //  PickerView.swift
-//  RiaChatSDK
-//
-//  Created by Rakesh Tatekonda on 18/08/17.
-//  Copyright © 2017 Mine. All rights reserved.
 //
 
 import UIKit

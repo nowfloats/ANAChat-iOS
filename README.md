@@ -1,6 +1,6 @@
-## ANAChat iOS Sdk!
+## ANAChat iOS
 
-The Powerful **ANAChat**  iOS SDK allows you to integrate ANA to your app. Customise the UI according to your App Theme and you are all set. It is that simple!
+The Powerful **ANAChat** allows you to integrate ANA chat bot to your app. Customise the UI according to your App Theme and you are all set. It is that simple!
 
 
 ## Getting started
@@ -22,27 +22,24 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
 
             pod 'ANAChat'
 
-3. Previous step downloads FCM files to the app and those should be configured with FCM. Please follow all the steps mentioned in below help document  except "Add the SDK" section.
+3. Previous step downloads FCM files to the app and those should be configured with FCM. Please follow all the steps mentioned in below help document  except "Add the SDK" section. [FCM Documentation](https://firebase.google.com/docs/cloud-messaging/ios/client)
 
-[here](https://firebase.google.com/docs/cloud-messaging/ios/client)
-
-4. After FCM configuration modify below classes in `AppDelegate`:
+4. After FCM configuration modify below methods in `AppDelegate`:
 
             func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-            AppLauncherManager.didReceiveFcmToken(fcmToken)
+                AppLauncherManager.didReceiveFcmToken(fcmToken)
             }
 
             func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-            Messaging.messaging().apnsToken = deviceToken as Data
+                Messaging.messaging().apnsToken = deviceToken as Data
             }
 
             func application(_ application: UIApplication,didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
-            Messaging.messaging().appDidReceiveMessage(userInfo)
-            AppLauncherManager.didReceiveRemoteNotification(userInfo)completionHandler(.newData)
+            Messaging.messaging().appDidReceiveMessage(userInfo)AppLauncherManager.didReceiveRemoteNotification(userInfo)completionHandler(.newData)
             }
 
             public func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage){
-            AppLauncherManager.didReceiveRemoteNotification(remoteMessage.appData)
+                AppLauncherManager.didReceiveRemoteNotification(remoteMessage.appData)
             }
 
 
@@ -63,7 +60,7 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
             <string>This app would like to use photo</string>
 
 
-6.  you can use SDK from anywhere using the below code
+6.  You can use ANA Chat SDK from anywhere using the below code
 
 Swift:
 

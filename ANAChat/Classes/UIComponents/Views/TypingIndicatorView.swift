@@ -1,9 +1,5 @@
 //
 //  TypingIndicatorView.swift
-//  SwiftCoding
-//
-//  Created by NFPradeep on 26/07/17.
-//  Copyright © 2017 Pradeep Reddy. All rights reserved.
 //
 
 

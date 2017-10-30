@@ -1,9 +1,5 @@
 //
 //  ChatReceiveTextCell.swift
-//  RiaChatSDK
-//
-//  Created by Madhu on 24/07/17.
-//  Copyright © 2017 Mine. All rights reserved.
 //
 
 import UIKit

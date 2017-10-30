@@ -1,9 +1,5 @@
 //
 //  InputTextFieldView.swift
-//  RiaChatSDK
-//
-//  Created by Madhu on 26/07/17.
-//  Copyright © 2017 Mine. All rights reserved.
 //
 
 import UIKit
