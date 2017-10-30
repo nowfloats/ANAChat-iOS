@@ -181,13 +181,13 @@ class ChatSenderMediaCell: UITableViewCell {
                 self.descriptionLabel.text = "Map"
                 if let locationInfo = inputInfo["location"] as? NSDictionary{
                     if let latitude = locationInfo[Constants.kLatitudeKey], let longitude = locationInfo[Constants.kLongitudeKey]{
-                        let staticMapUrl = String.init(format: "http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&%@&sensor=true", (latitude as AnyObject).doubleValue, (longitude as AnyObject).doubleValue,"zoom=14&size=270x270")
-                        let urlStr : NSString = staticMapUrl.addingPercentEscapes(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))! as NSString
-                        ImageCache.sharedInstance.getImageFromURL(urlStr as String, successBlock: { (data) in
-                            self.cellImage.image = UIImage(data: (data as NSData) as Data)
-                        })
-                        { (error) in
-                        }
+//                        let staticMapUrl = String.init(format: "http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&%@&sensor=true", (latitude as AnyObject).doubleValue, (longitude as AnyObject).doubleValue,"zoom=14&size=270x270")
+//                        let urlStr : NSString = staticMapUrl.addingPercentEscapes(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))! as NSString
+//                        ImageCache.sharedInstance.getImageFromURL(urlStr as String, successBlock: { (data) in
+//                            self.cellImage.image = UIImage(data: (data as NSData) as Data)
+//                        })
+//                        { (error) in
+//                        }
                     }
                 }
             }

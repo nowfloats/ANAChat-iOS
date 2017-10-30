@@ -36,6 +36,8 @@
 		2868CB104A36ED2DA150C765DE27797E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CEFA7E4A3779D66E5FE40EC1935FFEA /* Pods-ANAChat_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ANAChat_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2D7013B9F58789E5E38C2B4E0E6D6CB5 /* Pods-ANAChat_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ANAChat_Example-resources.sh"; sourceTree = "<group>"; };
+		3059CC091FA76C5E007C4C47 /* FCMMessagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMMessagesManager.swift; sourceTree = "<group>"; };
+		3059CC0A1FA76CD5007C4C47 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		30B126941FA75CC60012652B /* SDKMain.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SDKMain.storyboard; sourceTree = "<group>"; };
 		30BE4ABA1FA7593100F64363 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		30BE4ABD1FA7594500F64363 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -60,7 +62,6 @@
 		30BE4AD21FA7594500F64363 /* TypingIndicatorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingIndicatorCell.swift; sourceTree = "<group>"; };
 		30BE4AD31FA7594500F64363 /* TypingIndicatorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TypingIndicatorCell.xib; sourceTree = "<group>"; };
 		30BE4AD51FA7594500F64363 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		30BE4AD61FA7594500F64363 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		30BE4AD71FA7594500F64363 /* ChatViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerHelper.swift; sourceTree = "<group>"; };
 		30BE4AD91FA7594500F64363 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		30BE4ADA1FA7594500F64363 /* AddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressView.xib; sourceTree = "<group>"; };
@@ -89,7 +90,6 @@
 		30BE4AF21FA7594500F64363 /* DeviceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUtils.swift; sourceTree = "<group>"; };
 		30BE4AF31FA7594500F64363 /* ExtensionUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUtility.swift; sourceTree = "<group>"; };
 		30BE4AF41FA7594500F64363 /* ExternalMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMessageModel.swift; sourceTree = "<group>"; };
-		30BE4AF51FA7594500F64363 /* FCMMessagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMMessagesManager.swift; sourceTree = "<group>"; };
 		30BE4AF61FA7594500F64363 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		30BE4AF71FA7594500F64363 /* InputDateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDateModel.swift; sourceTree = "<group>"; };
 		30BE4AF81FA7594500F64363 /* InputLocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputLocationModel.swift; sourceTree = "<group>"; };
@@ -306,8 +306,8 @@
 		30BE4AD41FA7594500F64363 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				3059CC0A1FA76CD5007C4C47 /* ChatViewController.swift */,
 				30BE4AD51FA7594500F64363 /* BaseViewController.swift */,
-				30BE4AD61FA7594500F64363 /* ChatViewController.swift */,
 				30BE4AD71FA7594500F64363 /* ChatViewControllerHelper.swift */,
 			);
 			path = ViewControllers;
@@ -340,6 +340,7 @@
 		30BE4AEA1FA7594500F64363 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				3059CC091FA76C5E007C4C47 /* FCMMessagesManager.swift */,
 				30BE4AEB1FA7594500F64363 /* AppLauncherManager.swift */,
 				30BE4AEC1FA7594500F64363 /* CarouselItemModel.swift */,
 				30BE4AED1FA7594500F64363 /* CarouselModel.swift */,
@@ -350,7 +351,6 @@
 				30BE4AF21FA7594500F64363 /* DeviceUtils.swift */,
 				30BE4AF31FA7594500F64363 /* ExtensionUtility.swift */,
 				30BE4AF41FA7594500F64363 /* ExternalMessageModel.swift */,
-				30BE4AF51FA7594500F64363 /* FCMMessagesManager.swift */,
 				30BE4AF61FA7594500F64363 /* ImageCache.swift */,
 				30BE4AF71FA7594500F64363 /* InputDateModel.swift */,
 				30BE4AF81FA7594500F64363 /* InputLocationModel.swift */,
@@ -590,6 +590,11 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0700;
+				TargetAttributes = {
+					798155A62E4282C7808211A34F74F6BF = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -685,6 +690,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7A3314B1EA3D750F57AB59ACBB809C83 /* ANAChat.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -776,6 +782,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7A3314B1EA3D750F57AB59ACBB809C83 /* ANAChat.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";

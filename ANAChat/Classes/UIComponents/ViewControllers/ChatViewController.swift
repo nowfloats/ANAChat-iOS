@@ -29,13 +29,15 @@ import MobileCoreServices
     var inputTypeButton : InputTypeButton?
     var inputDatePickerView : DatePickerView?
     
-    var baseThemeColor : UIColor?
-    var senderThemeColor : UIColor?
+    var businessId : String = ""
+    var headerTitle : String = "Chatty"
+    var headerDescription : String = "(ANA Intelligence agent)"
+    var headerLogoImageName : String = "chatty"
+    var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+    var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
+    
     var contentFont : UIFont?
-    public var businessId : String!
-    @objc var headerTitle : String?
-    var headerDescription : String?
-    var headerLogoImageName : String?
+    
     var isTableViewScrolling = Bool()
     var visibleSectionIndex = Int()
 
@@ -74,9 +76,8 @@ import MobileCoreServices
     
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let baseThemeColor = self.baseThemeColor{
-            PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
-        }
+        PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillShow(withNotification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillHide(withNotification:)), name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
@@ -103,33 +104,16 @@ import MobileCoreServices
     }
 
     func configureUI() {
-        if let baseThemeColor = self.baseThemeColor{
-            PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
-        }
-    
-        if let senderThemeColor = self.senderThemeColor{
-            PreferencesManager.sharedInstance.configureSenderTheme(withColor: senderThemeColor)
-        }
-        
         if let contentFont = self.contentFont{
             PreferencesManager.sharedInstance.configureContentText(withFont: contentFont)
         }
-        
-        if let businessId = self.businessId{
-            PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
-        }
-        
-        if let headerTitle = self.headerTitle{
-            headerTitleLabel.text = headerTitle
-        }
-        
-        if let headerDescription = self.headerDescription{
-            headerDescriptionLabel.text = headerDescription
-        }
-        
-        if let headerLogoName = self.headerLogoImageName{
-            headerLogo.image = UIImage.init(named: headerLogoName)
-        }
+        PreferencesManager.sharedInstance.configureSenderTheme(withColor: senderThemeColor)
+        PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
+        PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
+        headerTitleLabel.text = headerTitle
+        headerDescriptionLabel.text = headerDescription
+        headerLogo.image = UIImage.init(named: self.headerLogoImageName)
+
         self.isTableViewScrolling = true
         self.visibleSectionIndex = NSIntegerMax
         self.view.backgroundColor = UIConfigurationUtility.Colors.BackgroundColor
