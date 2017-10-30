@@ -24,7 +24,7 @@ struct MessagesDataSource{
     
     func peek() -> NSDictionary? {
         if list.count > 0 {
-            return list.object(at: 0) as! NSDictionary
+            return list.object(at: 0) as? NSDictionary
             
         }else{
             return nil

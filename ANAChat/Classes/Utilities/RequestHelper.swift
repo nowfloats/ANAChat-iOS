@@ -26,12 +26,10 @@ class RequestHelper: NSObject {
             metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
         }
 
-        if let receiver =  messageObject.sender {
-            var recipientInfo = [String: Any]()
-            recipientInfo[Constants.kIdKey] = PreferencesManager.sharedInstance.getBusinessId()
-            metaInfo[Constants.kRecipientKey] = recipientInfo
-        }
-        
+        var recipientInfo = [String: Any]()
+        recipientInfo[Constants.kIdKey] = PreferencesManager.sharedInstance.getBusinessId()
+        metaInfo[Constants.kRecipientKey] = recipientInfo
+      
         metaInfo[Constants.kSenderTypeKey] = NSNumber(value:0)
 
         if let sessionId = messageObject.sessionId{

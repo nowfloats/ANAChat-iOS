@@ -102,5 +102,5 @@ RakeshTatekonda609, rakesh.tatekonda@nowfloats.com
 
 ## License
 
-chatBot is available under the MIT license. See the LICENSE file for more info.
+ANAChat is available under the GNU-GPL V3 license. See the LICENSE file for more info.
 

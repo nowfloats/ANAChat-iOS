@@ -18,8 +18,8 @@ class ConstraintsHelper: NSObject {
     
     class func updateConstraint(_ superView: UIView , subView: UIView , constraintType : NSLayoutAttribute , constraintValue: CGFloat){
         for (_, element) in (subView.constraints.enumerated()) {
-            if let _ = element as? NSLayoutConstraint{
-//                if element.firstAttribute == constraintType{
+//            if let _ = element as? NSLayoutConstraint{
+                if element.firstAttribute == constraintType{
                     if let _ = element.firstItem as? UIView{
                         if element.firstItem === subView{
                             element.constant = constraintValue
@@ -27,8 +27,8 @@ class ConstraintsHelper: NSObject {
                         }
                     }
 
-//                }
-            }
+                }
+//            }
         }
     }
 }

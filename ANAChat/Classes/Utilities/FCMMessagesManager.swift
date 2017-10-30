@@ -22,14 +22,7 @@ public class FCMMessagesManager: NSObject {
          let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
          // here "decoded" is of type `Any`, decoded from JSON data
          print(decoded)
-            let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
-            
-            print(jsonString)
-            
-         // you can now cast it with the right type
-         if let dictFromJSON = decoded as? [String:String] {
-         // use dictFromJSON
-         }
+            let _ = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
          } catch {
          print(error.localizedDescription)
          }
@@ -42,7 +35,7 @@ public class FCMMessagesManager: NSObject {
             let data = messageString.data(using: String.Encoding.utf8.rawValue)
             do {
                 let messageDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! [String: AnyObject]
-                let jsonString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
+                let _ = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)! as String
                 FCMMessagesManager.fcmChatMessageReceivedInsertIntoDataBase(withResponseMessageDictionary: messageDictionary as NSDictionary, playSound: playSound)
             } catch let error as NSError {
                 print("Failed to load: \(error.localizedDescription)")

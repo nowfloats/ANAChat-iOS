@@ -95,8 +95,6 @@ import MobileCoreServices
     }
     
     override public func viewDidLoad() {
-        let staticMapUrl = NSString.init(format: "http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&%@&sensor=true", 17.434390, 78.386753,"zoom=10&size=270x70")
-//        NSString *staticMapUrl = [NSString stringWithFormat:@"http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&%@&sensor=true","17.434390", "78.386753","zoom=10&size=270x70"];
         super.viewDidLoad()
         self.configureUI()
         self.loadHistory()
@@ -818,7 +816,7 @@ import MobileCoreServices
     }
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
-        
+        /*
         if let videoURL = info[UIImagePickerControllerMediaURL] as? NSURL {
             
             //Create AVAsset from url
@@ -828,7 +826,7 @@ import MobileCoreServices
                 print("Success")
             }
         }
-        
+        */
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
         if mediaType.hasSuffix(".movie"){
             if let videoPathUrl = info[UIImagePickerControllerMediaURL] as? NSURL {
@@ -906,7 +904,7 @@ import MobileCoreServices
 
     func reloadLastPreviousCell(){
         if (self.messagesFetchController?.fetchedObjects?.count)! > 1{
-            let previousIndexPath = NSIndexPath(row: (self.messagesFetchController?.sections?.last?.numberOfObjects)! - 2, section: (self.messagesFetchController?.sections?.count)! - 1)
+            let _ = NSIndexPath(row: (self.messagesFetchController?.sections?.last?.numberOfObjects)! - 2, section: (self.messagesFetchController?.sections?.count)! - 1)
             self.tableView.reloadData()
 //            self.tableView.reloadRows(at: [previousIndexPath as IndexPath], with: .none)
         }
