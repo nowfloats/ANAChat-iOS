@@ -91,7 +91,7 @@ Objective C :
 
 If you wish to install ANAChat directly into your application from source, then clone the repository and add code and resources to your application:
 
-1. Clone the respository and navigate to ANAChat-ios/ANAChat/  and Drag and drop Classes folder from the an your project, instructing Xcode to copy items into your destination group's folder.
+1. Clone the respository and navigate to ANAChat-iOS-master/ANAChat/  and Drag and drop Classes folder from the an your project, instructing Xcode to copy items into your destination group's folder.
 
 2. FCM configuration is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/ios/client) to install and configure.
 
