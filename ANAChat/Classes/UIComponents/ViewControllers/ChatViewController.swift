@@ -29,12 +29,12 @@ import MobileCoreServices
     var inputTypeButton : InputTypeButton?
     var inputDatePickerView : DatePickerView?
     
-    var businessId : String = ""
-    var headerTitle : String = "Chatty"
-    var headerDescription : String = "(ANA Intelligence agent)"
-    var headerLogoImageName : String = "chatty"
-    var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
-    var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
+    public var businessId : String = ""
+    public var headerTitle : String = "Chatty"
+    public var headerDescription : String = "(ANA Intelligence agent)"
+    public var headerLogoImageName : String = "chatty"
+    public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+    public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
     
     var contentFont : UIFont?
     
