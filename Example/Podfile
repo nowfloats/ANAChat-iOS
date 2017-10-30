@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'ANAChat_Example' do
+  pod 'ANAChat', :path => '../'
+
+  target 'ANAChat_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
