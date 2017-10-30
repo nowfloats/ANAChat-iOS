@@ -15,16 +15,12 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
 
 1.  Now create a `Podfile` in the root of your project directory and add the following:
 
-        ```sh
             $ cd your-project directory
             $ pod init
-        ```
 
 2. Add the pods that you want to install. You can include a Pod in your Podfile like this:
 
-        ```ruby
             pod 'ANAChat'
-        ```
 
 3. Previous step downloads FCM files to the app and those should be configured with FCM. Please follow all the steps mentioned in below help document  except "Add the SDK" section.
 
@@ -32,7 +28,6 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
 
 4. After FCM configuration modify below classes in `AppDelegate`:
 
-        ``` Swift
             func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
             AppLauncherManager.didReceiveFcmToken(fcmToken)
             }
@@ -50,11 +45,9 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
             AppLauncherManager.didReceiveRemoteNotification(remoteMessage.appData)
             }
 
-        ```
 
 5. Add the below permissions to Target `info.plist` file by opening it as `Source Code`
 
-        ```Swift
 
             <key>NSMicrophoneUsageDescription</key>
             <string>This app would like to use microphone</string>
@@ -69,11 +62,11 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
             <key>NSPhotoLibraryUsageDescription</key>
             <string>This app would like to use photo</string>
 
-        ```
 
 6.  you can use SDK from anywhere using the below code
 
-        ```Swift
+Swift:
+
             let storyboard = UIStoryboard(name: "SDKMain", bundle: CommonUtility.getFrameworkBundle())
             let controller = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
             controller.businessId = "#businessID"
@@ -82,12 +75,12 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
             controller.baseThemeColor = UIColor.init(hexString: "#8cc8wc")
             controller.headerLogoImageName = "chatty"
             self.navigationController?.pushViewController(controller, animated: true)
-        ```
-        ```Objective C
+            
+Objective C :
+
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SDKMain" bundle:[CommonUtility getFrameworkBundle]];
             ChatViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"ChatViewController"];
             [self.navigationController pushViewController:controller animated:YES];
-        ```
         
 
 
