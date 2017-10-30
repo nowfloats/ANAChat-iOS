@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputTextFieldView" customModule="NowFloats_iOSSDK" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="502" height="57"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yq8-Kx-SSb">
+                    <rect key="frame" x="457" y="11" width="45" height="45"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="45" id="ICA-uL-QOb"/>
+                        <constraint firstAttribute="height" constant="45" id="X3l-iK-4WD"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                    <state key="normal" image="msg_send"/>
+                    <connections>
+                        <action selector="sendButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="B5b-dW-Flg"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8PF-UW-Z2d">
+                    <rect key="frame" x="456" y="0.0" width="1" height="57"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="Nty-4P-WfT"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j11-cb-OY5">
+                    <rect key="frame" x="0.0" y="56" width="502" height="1"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="Tvd-Bg-62y"/>
+                    </constraints>
+                </imageView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fKa-Ru-j9j">
+                    <rect key="frame" x="18" y="5" width="423" height="47"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="j11-cb-OY5" firstAttribute="top" secondItem="fKa-Ru-j9j" secondAttribute="bottom" constant="4" id="1i5-01-Owc"/>
+                <constraint firstItem="Yq8-Kx-SSb" firstAttribute="leading" secondItem="8PF-UW-Z2d" secondAttribute="trailing" id="9Iw-1I-UQ1"/>
+                <constraint firstItem="j11-cb-OY5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BKL-AM-dLv"/>
+                <constraint firstItem="fKa-Ru-j9j" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="18" id="UQr-eZ-bIn"/>
+                <constraint firstAttribute="bottom" secondItem="j11-cb-OY5" secondAttribute="bottom" id="c23-eQ-k0M"/>
+                <constraint firstAttribute="trailing" secondItem="Yq8-Kx-SSb" secondAttribute="trailing" id="cpp-Yh-hBq"/>
+                <constraint firstItem="8PF-UW-Z2d" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="e0s-5O-ADl"/>
+                <constraint firstAttribute="bottom" secondItem="8PF-UW-Z2d" secondAttribute="bottom" id="g5q-wv-diJ"/>
+                <constraint firstItem="8PF-UW-Z2d" firstAttribute="leading" secondItem="fKa-Ru-j9j" secondAttribute="trailing" constant="15" id="hRT-xO-Vlq"/>
+                <constraint firstItem="j11-cb-OY5" firstAttribute="top" secondItem="Yq8-Kx-SSb" secondAttribute="bottom" id="lfR-rw-5IB"/>
+                <constraint firstItem="fKa-Ru-j9j" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="muP-TW-nxO"/>
+                <constraint firstAttribute="trailing" secondItem="j11-cb-OY5" secondAttribute="trailing" id="yVa-Tp-A00"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="inputBtn" destination="Yq8-Kx-SSb" id="FLT-JE-b1R"/>
+                <outlet property="textView" destination="fKa-Ru-j9j" id="jQb-Rj-4cp"/>
+            </connections>
+            <point key="canvasLocation" x="366" y="-628.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="msg_send" width="106" height="103"/>
+    </resources>
+</document>

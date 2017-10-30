@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Carousel" representedClassName=".Carousel" parentEntity="Message" syncable="YES">
+        <attribute name="inputInfo" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="mandatory" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CarouselItem" inverseName="carousel" inverseEntity="CarouselItem" syncable="YES"/>
+    </entity>
+    <entity name="CarouselItem" representedClassName=".CarouselItem" syncable="YES">
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mediaType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="carousel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Carousel" inverseName="items" inverseEntity="Carousel" syncable="YES"/>
+        <relationship name="options" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Options" inverseName="carouselItem" inverseEntity="Options" syncable="YES"/>
+    </entity>
+    <entity name="DateRange" representedClassName=".DateRange" syncable="YES">
+        <attribute name="interval" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="maxDay" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="maxMonth" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="maxYear" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="minDay" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="minMonth" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="minYear" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="inputDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InputDate" inverseName="dateRange" inverseEntity="InputDate" syncable="YES"/>
+    </entity>
+    <entity name="External" representedClassName=".External" parentEntity="Message" syncable="YES">
+        <attribute name="contentJson" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="Input" representedClassName=".Input" parentEntity="Message" syncable="YES">
+        <attribute name="inputInfo" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="inputType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mandatory" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="InputAddress" representedClassName=".InputAddress" parentEntity="Input" syncable="YES">
+        <attribute name="requiredFields" optional="YES" attributeType="Transformable" syncable="YES"/>
+    </entity>
+    <entity name="InputDate" representedClassName=".InputDate" parentEntity="Input" syncable="YES">
+        <relationship name="dateRange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DateRange" inverseName="inputDate" inverseEntity="DateRange" syncable="YES"/>
+    </entity>
+    <entity name="InputLocation" representedClassName=".InputLocation" parentEntity="Input" syncable="YES">
+        <attribute name="latitude" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="InputTime" representedClassName=".InputTime" parentEntity="Input" syncable="YES">
+        <relationship name="timeRange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TimeRange" inverseName="inputTime" inverseEntity="TimeRange" syncable="YES"/>
+    </entity>
+    <entity name="InputTypeMedia" representedClassName=".InputTypeMedia" parentEntity="Input" syncable="YES">
+        <attribute name="mediaType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="InputTypeOptions" representedClassName=".InputTypeOptions" parentEntity="Input" syncable="YES">
+        <attribute name="multiple" optional="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="options" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Options" inverseName="inputTypeOptions" inverseEntity="Options" syncable="YES"/>
+    </entity>
+    <entity name="InputTypeText" representedClassName=".InputTypeText" parentEntity="Input" syncable="YES">
+        <attribute name="defaultText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="inputJson" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="maxLength" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="minLength" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="multiLine" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="placeHolder" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Message" representedClassName=".Message" syncable="YES">
+        <attribute name="dateStamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="responseTo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="sessionId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sessionStatus" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="syncedWithServer" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="recipient" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Participant" inverseName="recipientMessage" inverseEntity="Participant" syncable="YES"/>
+        <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Participant" inverseName="senderMessage" inverseEntity="Participant" syncable="YES"/>
+    </entity>
+    <entity name="Options" representedClassName=".Options" syncable="YES">
+        <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="carouselItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CarouselItem" inverseName="options" inverseEntity="CarouselItem" syncable="YES"/>
+        <relationship name="inputTypeOptions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InputTypeOptions" inverseName="options" inverseEntity="InputTypeOptions" syncable="YES"/>
+    </entity>
+    <entity name="Participant" representedClassName=".Participant" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="medium" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="recipientMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="recipient" inverseEntity="Message" syncable="YES"/>
+        <relationship name="senderMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
+    </entity>
+    <entity name="Simple" representedClassName=".Simple" parentEntity="Message" syncable="YES">
+        <attribute name="mediaType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="mediaUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="TimeRange" representedClassName=".TimeRange" syncable="YES">
+        <attribute name="interval" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="maxHour" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="maxMinute" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="maxSecond" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="minHour" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="minMinute" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="minSecond" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="inputTime" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="InputTime" inverseName="timeRange" inverseEntity="InputTime" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Carousel" positionX="-351" positionY="-769" width="128" height="90"/>
+        <element name="CarouselItem" positionX="-182" positionY="-898" width="128" height="178"/>
+        <element name="DateRange" positionX="162" positionY="-675" width="128" height="163"/>
+        <element name="External" positionX="-288" positionY="-697" width="128" height="58"/>
+        <element name="Input" positionX="-243" positionY="-594" width="128" height="88"/>
+        <element name="InputAddress" positionX="-20" positionY="-447" width="128" height="60"/>
+        <element name="InputDate" positionX="-20" positionY="-526" width="128" height="58"/>
+        <element name="InputLocation" positionX="-9" positionY="-703" width="128" height="73"/>
+        <element name="InputTime" positionX="-20" positionY="-616" width="128" height="58"/>
+        <element name="InputTypeMedia" positionX="-369" positionY="-801" width="128" height="60"/>
+        <element name="InputTypeOptions" positionX="-11" positionY="-796" width="128" height="75"/>
+        <element name="InputTypeText" positionX="-189" positionY="-468" width="128" height="150"/>
+        <element name="Message" positionX="-578" positionY="-751" width="128" height="210"/>
+        <element name="Options" positionX="-2" positionY="-954" width="128" height="135"/>
+        <element name="Participant" positionX="-560" positionY="-522" width="128" height="103"/>
+        <element name="Simple" positionX="-389" positionY="-522" width="128" height="103"/>
+        <element name="TimeRange" positionX="162" positionY="-910" width="128" height="163"/>
+    </elements>
+</model>

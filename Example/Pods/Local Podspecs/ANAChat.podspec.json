@@ -1,0 +1,22 @@
+{
+  "name": "ANAChat",
+  "version": "0.1.0",
+  "summary": "A short description of ANAChat.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/RakeshTatekonda609/ANAChat",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "RakeshTatekonda609": "rakesh.tatekonda@nowfloats.com"
+  },
+  "source": {
+    "git": "https://github.com/RakeshTatekonda609/ANAChat.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "ANAChat/Classes/**/*"
+}

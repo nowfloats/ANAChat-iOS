@@ -1,0 +1,12 @@
+{
+    "chats":[
+             {"meta":{"id":"638d440e-b3f9-47ea-9d8a-3c3a5dcbb37c", "sender": {
+             "id": "business",
+             "medium": 1
+             },
+             "recipient": {
+             "id": "f0308b0c-1b37-4297-8f7d-6634d8371145",
+             "medium": 1
+             },"senderType":0,"responseTo":"5e28cb43-029e-443f-8dbd-db191f3c3f8f"},"data":{"type":2,"content":{"inputType":200,"mandatory":1,}}}
+             ]
+}
