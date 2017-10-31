@@ -29,7 +29,7 @@ class ChatReceiverMediaCell: UITableViewCell {
         self.addTapGestureRecognizer()
     }
     
-    cfunc addTapGestureRecognizer() {
+    func addTapGestureRecognizer() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(sender:)))
         tap.delegate = self
         self.addGestureRecognizer(tap)
