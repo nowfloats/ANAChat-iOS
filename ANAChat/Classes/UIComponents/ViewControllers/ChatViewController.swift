@@ -31,6 +31,7 @@ import MobileCoreServices
     public var headerLogoImageName : String = "chatty"
     public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
     public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
+    public var baseAPIUrl : String!
     
     var contentFont : UIFont?
     
@@ -79,6 +80,11 @@ import MobileCoreServices
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
         self.navigationController?.navigationBar.isHidden = true
         self.headerView.backgroundColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+        if let baseUrl = self.baseAPIUrl , self.baseAPIUrl.characters.count > 0{
+            APIManager.sharedInstance.configureAPIBaseUrl(withString: baseUrl)
+        }else{
+            self.didTappedBackButton()
+        }
 //        self.scrollToTableBottom()
     }
     
@@ -218,7 +224,15 @@ import MobileCoreServices
     }
     
     @IBAction func backButtonTapped(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        self.didTappedBackButton()
+    }
+    
+    func didTappedBackButton(){
+        if self.navigationController != nil{
+            self.navigationController?.popViewController(animated: true)
+        }else{
+            self.dismiss(animated: true, completion: {})
+        }
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool{

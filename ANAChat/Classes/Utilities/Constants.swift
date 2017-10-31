@@ -1,11 +1,6 @@
 //
 //  Constants.swift
-//  NowFloats-iOSSDK
 //
-//  Created by Rakesh Tatekonda on 12/08/17.
-//  Copyright © 2017 NowFloats. All rights reserved.
-//
-
 
 import Foundation
 
@@ -63,7 +58,7 @@ struct Constants {
     static let kDateKey                 = "date"
     static let kTimeKey                 = "time"
     static let kMultipleKey             = "multiple"
-    static let kStaticBusinessId        = "NowFloats"
+    static let kStaticBusinessId        = "ChatBot"
 }
 
 struct AlertTexts {

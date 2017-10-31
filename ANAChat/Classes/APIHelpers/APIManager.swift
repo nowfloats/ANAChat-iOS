@@ -9,8 +9,19 @@ import MobileCoreServices
 
 class APIManager: NSObject {
     static let sharedInstance = APIManager()
-    static let baseUrl  = "http://chat-alpha.withfloats.com/"
+    var baseUrl : String?
+
+    func configureAPIBaseUrl(withString baseUrl : String){
+        self.baseUrl = baseUrl
+    }
     
+    func getAPIBaseUrl() -> String{
+        if let baseUrl = self.baseUrl{
+            return baseUrl
+        }
+        return ""
+    }
+
     func getDataFromAPI(_ urlStr: String, input paramDict: [AnyHashable: Any], methodType: String, successBlock successCompletion: @escaping (_ data: [String: Any]) -> Void, failBlock failCompleation: @escaping (_ error: Error?) -> Void)
     {
         switch methodType.uppercased() {
@@ -50,9 +61,9 @@ class APIManager: NSObject {
         var finalApiPathString = String()
         
         if let apiPath = apiPath{
-            finalApiPathString =  String(format:"%@%@", APIManager.baseUrl, apiPath)
+            finalApiPathString =  String(format:"%@%@", APIManager.sharedInstance.getAPIBaseUrl(), apiPath)
         }else{
-            finalApiPathString =  String(format:"%@", APIManager.baseUrl)
+            finalApiPathString =  String(format:"%@", APIManager.sharedInstance.getAPIBaseUrl())
         }
         
         var finalParams = [String: Any]()
@@ -111,9 +122,9 @@ class APIManager: NSObject {
         var finalApiPathString = String()
         
         if let apiPath = apiPath{
-           finalApiPathString =  String(format:"%@%@", APIManager.baseUrl, apiPath)
+           finalApiPathString =  String(format:"%@%@", APIManager.sharedInstance.getAPIBaseUrl(), apiPath)
         }else{
-            finalApiPathString =  String(format:"%@", APIManager.baseUrl)
+            finalApiPathString =  String(format:"%@", APIManager.sharedInstance.getAPIBaseUrl())
         }
 
         var finalUrl = NSURL()
@@ -165,7 +176,7 @@ class APIManager: NSObject {
     
     // upload event
     func uploadMedia(withMedia videoPath: URL,completionHandler:@escaping ([String: Any]) -> ()){
-        let url = NSURL(string: String(format:"%@files/", APIManager.baseUrl))
+        let url = NSURL(string: String(format:"%@files/", APIManager.sharedInstance.getAPIBaseUrl()))
         let request = NSMutableURLRequest(url: url! as URL)
         let boundary = "------------------------chatBotSDK"
         
@@ -245,7 +256,7 @@ class APIManager: NSObject {
     
     func uploadImage(withMedia image: UIImage,completionHandler:@escaping ([String: Any]) -> ()){
 
-        let url = NSURL(string: String(format:"%@files/", APIManager.baseUrl))
+        let url = NSURL(string: String(format:"%@files/", APIManager.sharedInstance.getAPIBaseUrl()))
         let request = NSMutableURLRequest(url: url! as URL)
         let boundary = "------------------------chatBotSDK"
     

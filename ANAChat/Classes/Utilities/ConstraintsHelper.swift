@@ -1,9 +1,5 @@
 //
 //  ConstraintsHelper.swift
-//  NowFloats-iOSSDK
-//
-//  Created by Rakesh Tatekonda on 15/09/17.
-//  Copyright © 2017 NowFloats. All rights reserved.
 //
 
 import UIKit
