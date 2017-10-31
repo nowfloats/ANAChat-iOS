@@ -21,7 +21,7 @@ public class CoreDataManager: NSObject {
 //        let podBundle = Bundle(for: NFCoreDataManager.self)
 //        let bundleURL = podBundle.url(forResource: "NowFloats_iOSSDK", withExtension: "bundle")
 //        let bundle = Bundle(url : bundleURL!)
-        let modelURL = CommonUtility.getFrameworkBundle().url(forResource: "NowFloats_iOSSDK", withExtension: "momd")!
+        let modelURL = CommonUtility.getFrameworkBundle().url(forResource: "Chat_iOSSDK", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
@@ -30,7 +30,7 @@ public class CoreDataManager: NSObject {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         objc_sync_enter(self)
 
-        let url = self.applicationDocumentsDirectory.appendingPathComponent("NowFloats_iOSSDK.sqlite")
+        let url = self.applicationDocumentsDirectory.appendingPathComponent("Chat_iOSSDK.sqlite")
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
             // Configure automatic migration.

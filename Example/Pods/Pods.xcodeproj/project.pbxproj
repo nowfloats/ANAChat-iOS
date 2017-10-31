@@ -36,13 +36,14 @@
 		2868CB104A36ED2DA150C765DE27797E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CEFA7E4A3779D66E5FE40EC1935FFEA /* Pods-ANAChat_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ANAChat_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2D7013B9F58789E5E38C2B4E0E6D6CB5 /* Pods-ANAChat_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ANAChat_Example-resources.sh"; sourceTree = "<group>"; };
+		3027C5881FA85BE8002DE921 /* Chat_iOSSDK.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chat_iOSSDK.xcdatamodel; sourceTree = "<group>"; };
+		3027C5891FA85C44002DE921 /* SDKAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SDKAssets.xcassets; sourceTree = "<group>"; };
 		3059CC091FA76C5E007C4C47 /* FCMMessagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMMessagesManager.swift; sourceTree = "<group>"; };
 		3059CC0A1FA76CD5007C4C47 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		30B126941FA75CC60012652B /* SDKMain.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SDKMain.storyboard; sourceTree = "<group>"; };
 		30BE4ABA1FA7593100F64363 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		30BE4ABD1FA7594500F64363 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		30BE4ABE1FA7594500F64363 /* SDKReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKReachability.swift; sourceTree = "<group>"; };
-		30BE4ABF1FA7594500F64363 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		30BE4AC21FA7594500F64363 /* ChatCarouselCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCarouselCollectionCell.swift; sourceTree = "<group>"; };
 		30BE4AC31FA7594500F64363 /* ChatCarouselCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatCarouselCollectionCell.xib; sourceTree = "<group>"; };
 		30BE4AC41FA7594500F64363 /* ChatListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListTableViewCell.swift; sourceTree = "<group>"; };
@@ -135,7 +136,6 @@
 		30BE4B221FA7594500F64363 /* InputTypeText+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InputTypeText+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		30BE4B231FA7594500F64363 /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataClass.swift"; sourceTree = "<group>"; };
 		30BE4B241FA7594500F64363 /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		30BE4B261FA7594500F64363 /* NowFloats_iOSSDK.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NowFloats_iOSSDK.xcdatamodel; sourceTree = "<group>"; };
 		30BE4B271FA7594500F64363 /* Options+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Options+CoreDataClass.swift"; sourceTree = "<group>"; };
 		30BE4B281FA7594500F64363 /* Options+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Options+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		30BE4B291FA7594500F64363 /* Participant+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Participant+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -246,8 +246,8 @@
 		30BE4AB91FA7593100F64363 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3027C5891FA85C44002DE921 /* SDKAssets.xcassets */,
 				30BE4ABC1FA7594500F64363 /* APIHelpers */,
-				30BE4ABF1FA7594500F64363 /* Assets.xcassets */,
 				30BE4B081FA7594500F64363 /* DBHelpers */,
 				30BE4B061FA7594500F64363 /* MockJson */,
 				30BE4AC01FA7594500F64363 /* UIComponents */,
@@ -382,6 +382,7 @@
 		30BE4B081FA7594500F64363 /* DBHelpers */ = {
 			isa = PBXGroup;
 			children = (
+				3027C5871FA85BE8002DE921 /* Chat_iOSSDK.xcdatamodeld */,
 				30BE4B091FA7594500F64363 /* Carousel+CoreDataClass.swift */,
 				30BE4B0A1FA7594500F64363 /* Carousel+CoreDataProperties.swift */,
 				30BE4B0B1FA7594500F64363 /* CarouselItem+CoreDataClass.swift */,
@@ -410,7 +411,6 @@
 				30BE4B221FA7594500F64363 /* InputTypeText+CoreDataProperties.swift */,
 				30BE4B231FA7594500F64363 /* Message+CoreDataClass.swift */,
 				30BE4B241FA7594500F64363 /* Message+CoreDataProperties.swift */,
-				30BE4B251FA7594500F64363 /* NowFloats_iOSSDK.xcdatamodeld */,
 				30BE4B271FA7594500F64363 /* Options+CoreDataClass.swift */,
 				30BE4B281FA7594500F64363 /* Options+CoreDataProperties.swift */,
 				30BE4B291FA7594500F64363 /* Participant+CoreDataClass.swift */,
@@ -1007,13 +1007,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		30BE4B251FA7594500F64363 /* NowFloats_iOSSDK.xcdatamodeld */ = {
+		3027C5871FA85BE8002DE921 /* Chat_iOSSDK.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				30BE4B261FA7594500F64363 /* NowFloats_iOSSDK.xcdatamodel */,
+				3027C5881FA85BE8002DE921 /* Chat_iOSSDK.xcdatamodel */,
 			);
-			currentVersion = 30BE4B261FA7594500F64363 /* NowFloats_iOSSDK.xcdatamodel */;
-			path = NowFloats_iOSSDK.xcdatamodeld;
+			currentVersion = 3027C5881FA85BE8002DE921 /* Chat_iOSSDK.xcdatamodel */;
+			path = Chat_iOSSDK.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
