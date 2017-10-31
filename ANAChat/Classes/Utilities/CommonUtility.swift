@@ -86,8 +86,13 @@ import UIKit
     }
     
     public class func heightOfCell(with text: String) -> CGFloat{
-        let rect: CGRect = text.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 155, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont() ], context: nil)
-        return rect.size.height + 63
+        #if swift(>=4.0)
+            let rect: CGRect = text.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 155, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: PreferencesManager.sharedInstance.getContentFont() ], context: nil)
+            return rect.size.height + 63
+        #else
+            let rect: CGRect = text.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 155, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont() ], context: nil)
+            return rect.size.height + 63
+        #endif
     }
     
     public class func compareTwoMessageObjects(_ firstMessageObject: Message , secondMessageObject : Message?) -> Bool{

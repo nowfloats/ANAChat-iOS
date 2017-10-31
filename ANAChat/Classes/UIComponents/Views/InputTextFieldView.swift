@@ -215,10 +215,16 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
         let parastyle:NSMutableParagraphStyle =  NSMutableParagraphStyle()
         parastyle.lineBreakMode = .byWordWrapping
         
-        let rect: CGRect = totalText.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 90, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont(),NSParagraphStyleAttributeName:parastyle], context: nil)
-        print(rect.size.height + 23)
+        #if swift(>=4.0)
+            let rect: CGRect = totalText.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 90, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: PreferencesManager.sharedInstance.getContentFont(),NSAttributedStringKey.paragraphStyle:parastyle], context: nil)
+            
+            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 23 , 113),CGFloat(CellHeights.textInputViewHeight)))
+        #else
+            let rect: CGRect = totalText.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 90, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont(),NSParagraphStyleAttributeName:parastyle], context: nil)
+            
+            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 23 , 113),CGFloat(CellHeights.textInputViewHeight)))
+        #endif
         
-        self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 23 , 113),CGFloat(CellHeights.textInputViewHeight)))
         return true
     }
     
