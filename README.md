@@ -20,7 +20,8 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
 
 2. Add the pods that you want to install. You can include a Pod in your Podfile like this:
 
-            pod 'ANAChat'
+           use_frameworks!
+           pod 'ANAChat'
 
 3. Previous step downloads FCM files to the app and those should be configured with FCM. Please follow all the steps mentioned in below help document  except "Add the SDK" section. [FCM Documentation](https://firebase.google.com/docs/cloud-messaging/ios/client)
 
@@ -67,6 +68,7 @@ Swift:
             let storyboard = UIStoryboard(name: "SDKMain", bundle: CommonUtility.getFrameworkBundle())
             let controller = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
             controller.businessId = "#businessID"
+            controller.baseAPIUrl = "#baseUrl"
             controller.headerTitle = "Chatty"
             controller.headerDescription = "(ANA Intelligence Agent)"
             controller.baseThemeColor = UIColor.init(hexString: "#8cc8wc")
@@ -78,6 +80,7 @@ Objective C :
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SDKMain" bundle:[CommonUtility getFrameworkBundle]];
             ChatViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"ChatViewController"];
             controller.businessId =@"#businessID";
+            controller.baseAPIUrl = "#baseUrl";
             controller.headerTitle = @"Chatty";
             controller.headerDescription = @"(ANA Intelligence Agent)";
             controller.baseThemeColor = [UIColor colorWithRed:0.549 green:0.784 blue:0.235 alpha:1.0];
@@ -85,6 +88,7 @@ Objective C :
             [self.navigationController pushViewController:controller animated:YES];
         
 
+Note: Use the above code with valid businessID and baseAPIUrl 
 
 #### Source Code Installation
 
