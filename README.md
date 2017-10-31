@@ -27,8 +27,22 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
 
 4. After FCM configuration modify below methods in `AppDelegate`:
 
+Swift :
+Import ANAChat modile in your  `AppDelegate`:
+
+            import ANAChat
+            
+modify the method implementation of below methods:
+                        
+            func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+                ......
+                Messaging.messaging().delegate = self
+                Messaging.messaging().shouldEstablishDirectChannel = true
+                return true
+            }
+            
             func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-                AppLauncherManager.didReceiveFcmToken(fcmToken, baseAPIUrl: "#baseUrl")
+                AppLauncherManager.didReceiveFcmToken(fcmToken: fcmToken, baseAPIUrl: "#baseUrl", businessId: "businessID")
             }
 
             func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -36,11 +50,44 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
             }
 
             func application(_ application: UIApplication,didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void){
-            Messaging.messaging().appDidReceiveMessage(userInfo)AppLauncherManager.didReceiveRemoteNotification(userInfo)completionHandler(.newData)
+                Messaging.messaging().appDidReceiveMessage(userInfo)
+                AppLauncherManager.didReceiveRemoteNotification(userInfo)
+                completionHandler(.newData)
             }
 
             public func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage){
                 AppLauncherManager.didReceiveRemoteNotification(remoteMessage.appData)
+            }
+
+Objective C:
+
+Import ANAChat modile in your  `AppDelegate`:
+
+            @import ANAChat;
+            
+modify the method implementation of below methods:
+
+            - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+                ......
+                [FIRMessaging messaging].delegate = self;
+                [FIRMessaging messaging].shouldEstablishDirectChannel = YES;
+            }
+            
+            - (void)messaging:(nonnull FIRMessaging *)messaging didRefreshRegistrationToken:(nonnull NSString *)fcmToken {
+                [AppLauncherManager didReceiveFcmToken:fcmToken baseAPIUrl:@"#baseUrl" businessId:@"#businessID"];
+            }
+            
+            - (void)messaging:(nonnull FIRMessaging *)messaging didReceiveMessage:(nonnull FIRMessagingRemoteMessage *)remoteMessage{
+                [AppLauncherManager didReceiveRemoteNotification:remoteMessage.appData];
+            }
+            
+            - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler{
+                [AppLauncherManager didReceiveRemoteNotification:userInfo];
+                [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
+            }
+            
+            - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+                [FIRMessaging messaging].APNSToken = deviceToken;
             }
 
 
@@ -59,6 +106,26 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
             <string>Do you allow this app to know your current location?</string>
             <key>NSPhotoLibraryUsageDescription</key>
             <string>This app would like to use photo</string>
+
+
+If you haven't added NSAppTransportSecurity till now, add the below permissions
+
+            <key>NSAppTransportSecurity</key>
+            <dict>
+            <key>NSAllowsArbitraryLoads</key>
+            <true/>
+            <key>NSExceptionDomains</key>
+            <dict>
+            <key>example.com</key>
+            <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+            </dict>
+            </dict>
+            </dict>
+                
 
 
 6.  You can use ANA Chat SDK from anywhere using the below code
@@ -88,8 +155,9 @@ Objective C :
             [self.navigationController pushViewController:controller animated:YES];
         
 
-Note: Use the above code with valid businessID and baseAPIUrl
-
+Note:   1. Use the above codes with valid businessID and baseAPIUrl
+            2. Above code is for pushViewController, you can use ChatViewController as per your requirement.
+            
 #### Source Code Installation
 
 

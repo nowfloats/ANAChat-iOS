@@ -122,7 +122,7 @@ class ChatSenderMediaCell: UITableViewCell {
         let myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = (self.cellImage.center)
         myActivityIndicator.startAnimating()
-        self.cellImage.image = UIImage(named : "placeholder")
+        self.cellImage.image = CommonUtility.getImageFromBundle(name: "placeholder")
 //        self.cellImage.addSubview(myActivityIndicator)
         if let inputTypeMedia = messageObject as? InputTypeMedia{
             if let inputInfo = inputTypeMedia.inputInfo as? NSDictionary{
@@ -133,7 +133,7 @@ class ChatSenderMediaCell: UITableViewCell {
                             switch type{
                             case MessageSimpleType.MessageSimpleTypeImage.rawValue:
                                 self.cellImage.contentMode = .scaleAspectFill
-                                self.mediaTypeImageView.image = UIImage(named : "photoImage")
+                                self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "photoImage")
                                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                                 self.descriptionLabel.text = "Photo"
                                 self.playButton.isHidden = true
@@ -146,7 +146,7 @@ class ChatSenderMediaCell: UITableViewCell {
                                 }
                             case MessageSimpleType.MessageSimpleTypeVideo.rawValue:
                                 self.cellImage.contentMode = .scaleAspectFill
-                                self.mediaTypeImageView.image = UIImage(named : "videoImage")
+                                self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "videoImage")
                                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                                 self.descriptionLabel.text = "Video"
                                 self.playButton.isHidden = false
@@ -159,10 +159,10 @@ class ChatSenderMediaCell: UITableViewCell {
                                 }
                             case MessageSimpleType.MessageSimpleTypeFILE.rawValue:
                                 self.descriptionLabel.text = "File"
-                                self.mediaTypeImageView.image = UIImage(named : "attachmentIcon")
+                                self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "attachmentIcon")
                                 self.cellImage.backgroundColor = UIColor.white
                                 self.cellImage.contentMode = .scaleAspectFit
-                                self.cellImage.image = UIImage(named : "attachmentIcon")
+                                self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "attachmentIcon")
                             default:
                                 break
                             }

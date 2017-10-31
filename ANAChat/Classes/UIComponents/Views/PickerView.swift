@@ -21,7 +21,7 @@ class PickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
         picker.delegate = self
         picker.dataSource = self
         
-        pickerBtn.setImage(UIImage(named: "msg_send.png")!, for: UIControlState.normal)
+        pickerBtn.setImage(CommonUtility.getImageFromBundle(name: "msg_send"), for: UIControlState.normal)
         pickerBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
         pickerBtn.addTarget(self, action: #selector(didSelectItemFromList(sender:)), for: .touchUpInside)
         

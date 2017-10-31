@@ -97,7 +97,7 @@ class ChatReceiverMediaCell: UITableViewCell {
             switch simpleMessage.mediaType {
             case Int16(MessageSimpleType.MessageSimpleTypeImage.rawValue):
                 self.descriptionLabel.text = "Photo"
-                self.mediaTypeImageView.image = UIImage(named : "photoImage")
+                self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "photoImage")
                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                 self.playButton.isHidden = true
                 if let url = simpleMessage.mediaUrl{
@@ -113,7 +113,7 @@ class ChatReceiverMediaCell: UITableViewCell {
                     }
             case Int16(MessageSimpleType.MessageSimpleTypeVideo.rawValue):
                 self.descriptionLabel.text = "Video"
-                self.mediaTypeImageView.image = UIImage(named : "videoImage")
+                self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "videoImage")
                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                 self.playButton.isHidden = false
                 if let url = simpleMessage.previewUrl{

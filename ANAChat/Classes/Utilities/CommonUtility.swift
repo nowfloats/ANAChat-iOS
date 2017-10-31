@@ -25,6 +25,10 @@ import UIKit
         }
     }
     
+    public class func getImageFromBundle(name: String) -> UIImage {
+        return UIImage(named: name, in: CommonUtility.getFrameworkBundle(), compatibleWith: nil)!
+    }
+    
    public class func loadJson(forFilename fileName: String) -> NSDictionary? {
         if let url = getFrameworkBundle().url(forResource: fileName, withExtension: "json") {
             if let data = NSData(contentsOf: url) {

@@ -112,8 +112,11 @@ import MobileCoreServices
         PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
         headerTitleLabel.text = headerTitle
         headerDescriptionLabel.text = headerDescription
-        headerLogo.image = UIImage.init(named: self.headerLogoImageName)
-
+        if self.headerLogoImageName == "chatty"{
+            headerLogo.image =  CommonUtility.getImageFromBundle(name: "chatty")
+        }else{
+            headerLogo.image = UIImage.init(named: self.headerLogoImageName)
+        }
         self.isTableViewScrolling = true
         self.visibleSectionIndex = NSIntegerMax
         self.view.backgroundColor = UIConfigurationUtility.Colors.BackgroundColor
@@ -1245,7 +1248,7 @@ import MobileCoreServices
         let cancelButton = UIButton(type: .custom)
         cancelButton.frame = CGRect(x: zoomView.frame.maxX - 50, y: 25, width: 45, height: 45)
         cancelButton.addTarget(self, action: #selector(self.dismissImage), for: .touchDown)
-        cancelButton.setImage(UIImage(named: "closeButton"), for: .normal)
+        cancelButton.setImage(CommonUtility.getImageFromBundle(name: "closeButton"), for: .normal)
         cancelButton.backgroundColor = UIColor.clear
         zoomView.addSubview(cancelButton)
         

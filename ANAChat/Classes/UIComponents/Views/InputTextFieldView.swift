@@ -19,8 +19,8 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
     
     public override func awakeFromNib() {
         super.awakeFromNib()
-        let origImage = UIImage(named: "msg_send")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        let origImage = CommonUtility.getImageFromBundle(name: "msg_send")
+        let tintedImage = origImage.withRenderingMode(.alwaysTemplate)
         inputBtn.setImage(tintedImage, for: .normal)
         inputBtn.imageEdgeInsets = UIEdgeInsetsMake(12, 10, 12, 14)
         textView.tintColor = PreferencesManager.sharedInstance.getBaseThemeColor()

@@ -6,7 +6,7 @@ import UIKit
 
 @objc public class AppLauncherManager: NSObject {
     
-    public class func didReceiveFcmToken(_ fcmToken: String , baseAPIUrl : String) {
+    public class func didReceiveFcmToken(fcmToken fcmToken: String , baseAPIUrl : String, businessId : String) {
         if baseAPIUrl.characters.count > 0{
             APIManager.sharedInstance.configureAPIBaseUrl(withString: baseAPIUrl)
             print("Firebase registration token: \(fcmToken)")
@@ -15,6 +15,10 @@ import UIKit
             inputDict["fcmNotificationId"] = fcmToken
             inputDict["devicePlatform"] = "IOS"
             
+            if businessId.characters.count > 0{
+                inputDict["businessId"] = businessId
+            }
+
             APIManager.sharedInstance.post(params: inputDict, apiPath: "fcm/devices/", completionHandler: { (response) in
                 print(response)
                 if let userId = response["userId"] as? String{

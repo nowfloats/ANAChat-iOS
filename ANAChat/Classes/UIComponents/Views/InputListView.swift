@@ -80,9 +80,9 @@ extension InputListView : UITableViewDelegate , UITableViewDataSource{
         if let optionsObject = self.options?[indexPath.row] as? Options{
             cell?.configureView(self.options?[indexPath.row] as! Options)
             if self.selectedItemsArray.contains(optionsObject){
-                cell?.selectionImageView.image = UIImage(named: "selectedImage")
+                cell?.selectionImageView.image = CommonUtility.getImageFromBundle(name: "selectedImage")
             }else{
-                cell?.selectionImageView.image = UIImage(named: "unselectedImage")
+                cell?.selectionImageView.image = CommonUtility.getImageFromBundle(name: "unselectedImage")
             }
         }
         
