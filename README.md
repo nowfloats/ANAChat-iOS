@@ -42,7 +42,7 @@ modify the method implementation of below methods:
             }
             
             func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-                AppLauncherManager.didReceiveFcmToken(fcmToken: fcmToken, baseAPIUrl: "#baseUrl", businessId: "businessID")
+                AppLauncherManager.didReceiveFcmToken(withToken: fcmToken, baseAPIUrl: "#baseUrl", businessId: "businessID")
             }
 
             func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -74,7 +74,7 @@ modify the method implementation of below methods:
             }
             
             - (void)messaging:(nonnull FIRMessaging *)messaging didRefreshRegistrationToken:(nonnull NSString *)fcmToken {
-                [AppLauncherManager didReceiveFcmToken:fcmToken baseAPIUrl:@"#baseUrl" businessId:@"#businessID"];
+                [AppLauncherManager didReceiveFcmTokenWithToken:fcmToken baseAPIUrl:@"#baseUrl" businessId:@"#businessID"];
             }
             
             - (void)messaging:(nonnull FIRMessaging *)messaging didReceiveMessage:(nonnull FIRMessagingRemoteMessage *)remoteMessage{

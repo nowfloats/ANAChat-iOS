@@ -6,7 +6,7 @@ import UIKit
 
 @objc public class AppLauncherManager: NSObject {
     
-    public class func didReceiveFcmToken(fcmToken fcmToken: String , baseAPIUrl : String, businessId : String) {
+    public class func didReceiveFcmToken(withToken fcmToken: String , baseAPIUrl : String, businessId : String) {
         if baseAPIUrl.characters.count > 0{
             APIManager.sharedInstance.configureAPIBaseUrl(withString: baseAPIUrl)
             print("Firebase registration token: \(fcmToken)")
