@@ -219,7 +219,7 @@ import MobileCoreServices
     // MARK: -
     // MARK: UITapGestureRecognizer Helper Methods
     
-    func tableViewTapped(_ sender: UITapGestureRecognizer) {
+    @objc func tableViewTapped(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
@@ -753,7 +753,7 @@ import MobileCoreServices
     // MARK: -
     // MARK: KeyBoard Notification Methods
     
-    func keyBoardWillShow(withNotification notification : NSNotification)->Void{
+    @objc func keyBoardWillShow(withNotification notification : NSNotification)->Void{
         let dic = notification.userInfo
         let duration = dic?["UIKeyboardAnimationDurationUserInfoKey"] as? Double
         let keyPadFrame = dic?["UIKeyboardFrameEndUserInfoKey"] as? CGRect
@@ -769,7 +769,7 @@ import MobileCoreServices
         }
     }
     
-    func keyBoardWillHide(withNotification notification : NSNotification)->Void{
+    @objc func keyBoardWillHide(withNotification notification : NSNotification)->Void{
         let dic = notification.userInfo
         let duration = dic?["UIKeyboardAnimationDurationUserInfoKey"] as? Double
         self.inputTextViewBottomConstraint.constant = 0
@@ -1274,7 +1274,7 @@ import MobileCoreServices
         centerScrollViewContents(zoomScrollView)
     }
     
-    func dismissImage(sender: UIButton){
+    @objc func dismissImage(sender: UIButton){
         let contentView = sender.superview
         contentView?.removeFromSuperview()
     }
@@ -1299,14 +1299,14 @@ import MobileCoreServices
         let boundsSize: CGSize = scroller.bounds.size
         let imgVi = scroller.viewWithTag(25) as? UIImageView
         var contentsFrame: CGRect? = imgVi?.frame
-        if (contentsFrame?.size.width)! < boundsSize.width {
-            contentsFrame?.origin.x = (boundsSize.width - (contentsFrame?.size.width)!) / 2.0
+        if (imgVi?.frame.size.width)! < boundsSize.width {
+            contentsFrame?.origin.x = (boundsSize.width - (imgVi?.frame.size.width)!) / 2.0
         }
         else {
             contentsFrame?.origin.x = 0.0
         }
-        if (contentsFrame?.size.height)! < boundsSize.height {
-            contentsFrame?.origin.y = (boundsSize.height - (contentsFrame?.size.height)!) / 2.0
+        if (imgVi?.frame.size.height)! < boundsSize.height {
+            contentsFrame?.origin.y = (boundsSize.height - (imgVi?.frame.size.height)!) / 2.0
         }
         else {
             contentsFrame?.origin.y = 0.0

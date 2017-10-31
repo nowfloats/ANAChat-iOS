@@ -40,7 +40,7 @@ import UIKit
     
 
     //MARK:- Network Check 
-    func reachabilityChanged(notification:Notification) {
+    @objc func reachabilityChanged(notification:Notification) {
         let reachability = notification.object as! Reachability
         if reachability.isReachable {
             self.networkIsReachable()

@@ -23,7 +23,7 @@ class InputTypeButton: UIView ,UIGestureRecognizerDelegate{
         self.addGestureRecognizer(tap)
     }
     
-    func handleTap(sender: UITapGestureRecognizer? = nil) {
+    @objc func handleTap(sender: UITapGestureRecognizer? = nil) {
         self.sendCallBack()
     }
     

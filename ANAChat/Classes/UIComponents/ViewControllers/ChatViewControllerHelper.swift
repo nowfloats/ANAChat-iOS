@@ -261,7 +261,7 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
         return cell!
     }
     
-    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    @objc public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
         print("enetedred")
         let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath

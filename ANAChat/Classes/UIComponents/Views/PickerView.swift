@@ -66,7 +66,7 @@ class PickerView: UIView, UIPickerViewDelegate, UIPickerViewDataSource{
         print(pickerStr)
     }
 
-    func didSelectItemFromList(sender: UIButton)
+    @objc func didSelectItemFromList(sender: UIButton)
     {
         let selectedIndex = picker!.selectedRow(inComponent: 0)
         if  let optionsObject = self.itemsDataArr[selectedIndex] as? Options{

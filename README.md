@@ -28,7 +28,7 @@ We recommend using CocoaPods to install the libraries. You can install Cocoapods
 4. After FCM configuration modify below methods in `AppDelegate`:
 
             func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
-                AppLauncherManager.didReceiveFcmToken(fcmToken)
+                AppLauncherManager.didReceiveFcmToken(fcmToken, baseAPIUrl: "#baseUrl")
             }
 
             func application(_ application: UIApplication,didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -79,8 +79,8 @@ Objective C :
 
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SDKMain" bundle:[CommonUtility getFrameworkBundle]];
             ChatViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"ChatViewController"];
-            controller.businessId =@"#businessID";
-            controller.baseAPIUrl = "#baseUrl";
+            controller.businessId = @"#businessID";
+            controller.baseAPIUrl = @"#baseUrl";
             controller.headerTitle = @"Chatty";
             controller.headerDescription = @"(ANA Intelligence Agent)";
             controller.baseThemeColor = [UIColor colorWithRed:0.549 green:0.784 blue:0.235 alpha:1.0];
@@ -88,7 +88,7 @@ Objective C :
             [self.navigationController pushViewController:controller animated:YES];
         
 
-Note: Use the above code with valid businessID and baseAPIUrl 
+Note: Use the above code with valid businessID and baseAPIUrl
 
 #### Source Code Installation
 

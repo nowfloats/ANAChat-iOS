@@ -63,7 +63,7 @@ class InputOptionsView: UIView{
         }
     }
     
-    func didTappedOnOption(sender: UIButton){
+    @objc func didTappedOnOption(sender: UIButton){
         
         if  let optionsObject = self.buttonArr[sender.tag - 1] as? Options{
             if optionsObject.type == 0 {

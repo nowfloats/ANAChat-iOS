@@ -4,21 +4,24 @@
 
 import UIKit
 
-class AppLauncherManager: NSObject {
+@objc public class AppLauncherManager: NSObject {
     
-    public class func didReceiveFcmToken(_ fcmToken: String) {
-        print("Firebase registration token: \(fcmToken)")
-        var inputDict = [String: Any]()
-        inputDict["deviceId"] = UIDevice.current.identifierForVendor!.uuidString
-        inputDict["fcmNotificationId"] = fcmToken
-        inputDict["devicePlatform"] = "IOS"
-        
-        APIManager.sharedInstance.post(params: inputDict, apiPath: "fcm/devices/", completionHandler: { (response) in
-            print(response)
-            if let userId = response["userId"] as? String{
-                PreferencesManager.setUserId(userId)
-            }
-        })
+    public class func didReceiveFcmToken(_ fcmToken: String , baseAPIUrl : String) {
+        if baseAPIUrl.characters.count > 0{
+            APIManager.sharedInstance.configureAPIBaseUrl(withString: baseAPIUrl)
+            print("Firebase registration token: \(fcmToken)")
+            var inputDict = [String: Any]()
+            inputDict["deviceId"] = UIDevice.current.identifierForVendor!.uuidString
+            inputDict["fcmNotificationId"] = fcmToken
+            inputDict["devicePlatform"] = "IOS"
+            
+            APIManager.sharedInstance.post(params: inputDict, apiPath: "fcm/devices/", completionHandler: { (response) in
+                print(response)
+                if let userId = response["userId"] as? String{
+                    PreferencesManager.setUserId(userId)
+                }
+            })
+        }
     }
     
     public class func didReceiveRemoteNotification(_ userInfo: [AnyHashable : Any]){

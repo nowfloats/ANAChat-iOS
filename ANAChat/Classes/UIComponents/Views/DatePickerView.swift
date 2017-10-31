@@ -166,7 +166,7 @@ class DatePickerView: UIView {
         return result
     }
     
-    func datePickerChanged(datePicker:UIDatePicker){
+    @objc func datePickerChanged(datePicker:UIDatePicker){
 //        self.pickerLbl.text = self.getDateStringFromDate(datePicker.date)
     }
 

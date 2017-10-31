@@ -144,7 +144,7 @@ class ImageCache: NSObject {
     }
     
     
-    func clearImageCache()
+    @objc func clearImageCache()
     {
         let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         
