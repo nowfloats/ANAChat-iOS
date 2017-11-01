@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ANAChat'
-  s.version          = '0.1.9'
+  s.version          = '0.2.0'
   s.summary          = 'ANAChat iOS'
 
 # This description is used to generate tags and improve search results.
@@ -23,7 +23,7 @@ DESC
 
   s.homepage         = 'https://github.com/Kitsune-tools/ANAChat-iOS'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'GNU GPLv3', :file => 'LICENSE' }
+  s.license          = { :type => 'GNU LESSER GENERAL PUBLIC LICENSE', :file => 'LICENSE' }
   s.author           = { 'RakeshTatekonda' => 'rakesh.tatekonda@nowfloats.com' }
   s.source           = { :git => 'https://github.com/Kitsune-tools/ANAChat-iOS.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
