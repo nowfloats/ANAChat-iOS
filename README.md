@@ -138,7 +138,7 @@ Swift:
             controller.baseAPIUrl = "#baseUrl"
             controller.headerTitle = "Chatty"
             controller.headerDescription = "(ANA Intelligence Agent)"
-            controller.baseThemeColor = UIColor.init(hexString: "#8cc8wc")
+            controller.baseThemeColor = UIColor.init(red: 0.549, green: 0.784, blue: 0.235, alpha: 1.0)
             controller.headerLogoImageName = "chatty"
             self.navigationController?.pushViewController(controller, animated: true)
             

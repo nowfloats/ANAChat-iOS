@@ -11,8 +11,7 @@ class InputTextModel: NSObject {
     var defaultText : String!
     var placeHolder : String!
     
-    override init ()
-    {
+    override init (){
         super.init()
     }
     
