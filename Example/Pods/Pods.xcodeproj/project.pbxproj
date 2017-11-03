@@ -75,7 +75,6 @@
 		30BE4AE11FA7594500F64363 /* InputOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputOptionsView.swift; sourceTree = "<group>"; };
 		30BE4AE21FA7594500F64363 /* InputOptionsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputOptionsView.xib; sourceTree = "<group>"; };
 		30BE4AE31FA7594500F64363 /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
-		30BE4AE41FA7594500F64363 /* InputTextFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputTextFieldView.xib; sourceTree = "<group>"; };
 		30BE4AE51FA7594500F64363 /* InputTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTypeButton.swift; sourceTree = "<group>"; };
 		30BE4AE61FA7594500F64363 /* InputTypeButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputTypeButton.xib; sourceTree = "<group>"; };
 		30BE4AE71FA7594500F64363 /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
@@ -144,6 +143,7 @@
 		30BE4B2C1FA7594500F64363 /* Simple+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Simple+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		30BE4B2D1FA7594500F64363 /* TimeRange+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeRange+CoreDataClass.swift"; sourceTree = "<group>"; };
 		30BE4B2E1FA7594500F64363 /* TimeRange+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeRange+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		30F60ED81FACB0120010C26F /* InputTextFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputTextFieldView.xib; sourceTree = "<group>"; };
 		3AA8E5965D48453B1D3AD48D2FC928BD /* ANAChat-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ANAChat-umbrella.h"; sourceTree = "<group>"; };
 		3B0AFD2491288033548D6D938C0DCED9 /* Pods-ANAChat_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ANAChat_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		407A1607E52CA14B02A588AC5B3844AF /* Pods-ANAChat_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-ANAChat_Example.modulemap"; sourceTree = "<group>"; };
@@ -327,7 +327,7 @@
 				30BE4AE11FA7594500F64363 /* InputOptionsView.swift */,
 				30BE4AE21FA7594500F64363 /* InputOptionsView.xib */,
 				30BE4AE31FA7594500F64363 /* InputTextFieldView.swift */,
-				30BE4AE41FA7594500F64363 /* InputTextFieldView.xib */,
+				30F60ED81FACB0120010C26F /* InputTextFieldView.xib */,
 				30BE4AE51FA7594500F64363 /* InputTypeButton.swift */,
 				30BE4AE61FA7594500F64363 /* InputTypeButton.xib */,
 				30BE4AE71FA7594500F64363 /* PickerView.swift */,

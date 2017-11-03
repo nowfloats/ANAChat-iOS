@@ -34,9 +34,11 @@ class ChatReceiveCarouselCell: UITableViewCell ,ChatCarouselCollectionCellDelega
             self.sortedItems = carousel.items?.sortedArray(using: [sortDescriptor])
             self.collectionview.reloadData()
             self.collectionview.scrollRectToVisible(CGRect.zero, animated: false)
+            /*
             if (self.sortedItems?.count)! > 0{
                 self.collectionview.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
             }
+             */
         }
     }
     

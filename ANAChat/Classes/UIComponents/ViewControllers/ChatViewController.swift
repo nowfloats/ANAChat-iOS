@@ -364,9 +364,9 @@ import MobileCoreServices
             self.textContainerView.addSubview(self.inputTextView!)
             self.inputTextView.translatesAutoresizingMaskIntoConstraints = false
             
-            ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: 40, superView: self.textContainerView, subView: self.inputTextView)
+            ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: CGFloat(CellHeights.textInputViewHeight), superView: self.textContainerView, subView: self.inputTextView)
             
-            self.textContainerViewHeightConstraint.constant = 40
+            self.textContainerViewHeightConstraint.constant = CGFloat(CellHeights.textInputViewHeight)
         }
         
         self.inputOptionsView = CommonUtility.getFrameworkBundle().loadNibNamed("InputOptionsView", owner: self, options: nil)?[0] as? InputOptionsView
@@ -410,9 +410,9 @@ import MobileCoreServices
             self.textContainerView.addSubview(self.inputTextView!)
             self.inputTextView.translatesAutoresizingMaskIntoConstraints = false
             
-            ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: 40, superView: self.textContainerView, subView: self.inputTextView)
+            ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: CGFloat(CellHeights.textInputViewHeight), superView: self.textContainerView, subView: self.inputTextView)
             
-            self.textContainerViewHeightConstraint.constant = 40
+            self.textContainerViewHeightConstraint.constant = CGFloat(CellHeights.textInputViewHeight)
         }
         
         self.inputTypeButton = CommonUtility.getFrameworkBundle().loadNibNamed("InputTypeButton", owner: self, options: nil)?[0] as? InputTypeButton
@@ -454,9 +454,9 @@ import MobileCoreServices
             self.textContainerView.addSubview(self.inputTextView!)
             self.inputTextView.translatesAutoresizingMaskIntoConstraints = false
             
-            ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: 40, superView: self.textContainerView, subView: self.inputTextView)
+            ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: CGFloat(CellHeights.textInputViewHeight), superView: self.textContainerView, subView: self.inputTextView)
             
-            self.textContainerViewHeightConstraint.constant = 40
+            self.textContainerViewHeightConstraint.constant = CGFloat(CellHeights.textInputViewHeight)
         }
         
         self.inputTypeButton = CommonUtility.getFrameworkBundle().loadNibNamed("InputTypeButton", owner: self, options: nil)?[0] as? InputTypeButton

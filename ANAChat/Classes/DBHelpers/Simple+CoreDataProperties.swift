@@ -16,5 +16,6 @@ extension Simple {
     @NSManaged public var mediaUrl: String?
     @NSManaged public var previewUrl: String?
     @NSManaged public var text: String?
+    @NSManaged public var mediaData: NSObject?
 
 }

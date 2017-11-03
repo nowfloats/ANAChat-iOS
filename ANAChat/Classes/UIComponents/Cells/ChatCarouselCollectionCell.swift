@@ -41,6 +41,11 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         imageView.layer.masksToBounds = true
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
+    }
+
     func configureCell(_ item:CarouselItem, showOptions : Bool){
         self.playButton.isHidden = true
         self.showOptions = showOptions
@@ -52,21 +57,42 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         if item.mediaType == 0{
             self.playButton.isHidden = true
             if let url = item.mediaUrl{
-                ImageCache.sharedInstance.getImageFromURL(url as String, successBlock: { (data) in
-                    self.imageView.image = UIImage(data: (data as NSData) as Data)
-                })
-                { (error) in
+                if item.mediaData is UIImage{
+                    self.imageView.image = item.mediaData as? UIImage
+                }else{
+                    ImageCache.sharedInstance.getImageFromURL(url as String, successBlock: { (data) in
+                        if url.hasSuffix("gif"){
+                            self.imageView.image = ImageCache.sharedInstance.gifImageWithData(data)
+                            item.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                        }else{
+                            self.imageView.image = UIImage(data: (data as NSData) as Data)
+                            item.mediaData = UIImage(data: (data as NSData) as Data)
+                        }
+                        
+                    })
+                    { (error) in
+                    }
                 }
             }
         }else if item.mediaType == 2{
             self.playButton.isHidden = false
             if let previewUrl = item.previewUrl{
-                ImageCache.sharedInstance.getImageFromURL(previewUrl as String, successBlock: { (data) in
-                    self.imageView.image = UIImage(data: (data as NSData) as Data)
-                })
-                { (error) in
+                if item.mediaData is UIImage{
+                    self.imageView.image = item.mediaData as? UIImage
+                }else{
+                    ImageCache.sharedInstance.getImageFromURL(previewUrl as String, successBlock: { (data) in
+                        if previewUrl.hasSuffix("gif"){
+                            self.imageView.image = ImageCache.sharedInstance.gifImageWithData(data)
+                            item.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                        }else{
+                            self.imageView.image = UIImage(data: (data as NSData) as Data)
+                            item.mediaData = UIImage(data: (data as NSData) as Data)
+                        }
+                        
+                    })
+                    { (error) in
+                    }
                 }
-                
             }
         }
         

@@ -19,6 +19,7 @@ extension CarouselItem {
     @NSManaged public var previewUrl: String?
     @NSManaged public var title: String?
     @NSManaged public var url: String?
+    @NSManaged public var mediaData: NSObject?
     @NSManaged public var carousel: Carousel?
     @NSManaged public var options: NSSet?
 

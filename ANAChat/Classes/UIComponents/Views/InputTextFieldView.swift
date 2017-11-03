@@ -24,6 +24,7 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
         inputBtn.setImage(tintedImage, for: .normal)
         inputBtn.imageEdgeInsets = UIEdgeInsetsMake(12, 10, 12, 14)
         textView.tintColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+        textView.textContainerInset = UIEdgeInsetsMake(0, 0, 0, 15)
     }
     
     public func configure(messageObject :Message?){
@@ -218,11 +219,11 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
         #if swift(>=4.0)
             let rect: CGRect = totalText.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 90, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: PreferencesManager.sharedInstance.getContentFont(),NSAttributedStringKey.paragraphStyle:parastyle], context: nil)
             
-            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 23 , 113),CGFloat(CellHeights.textInputViewHeight)))
+            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 30 , 125),CGFloat(CellHeights.textInputViewHeight)))
         #else
             let rect: CGRect = totalText.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 90, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont(),NSParagraphStyleAttributeName:parastyle], context: nil)
             
-            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 23 , 113),CGFloat(CellHeights.textInputViewHeight)))
+            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 30 , 125),CGFloat(CellHeights.textInputViewHeight)))
         #endif
         
         return true

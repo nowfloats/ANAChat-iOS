@@ -72,7 +72,7 @@ struct AlertTexts {
 struct CellHeights {
     static let optionsViewCellHeight = 65
     static let carouselOptionsViewHeight = 45
-    static let textInputViewHeight = 45
+    static let textInputViewHeight = 50
     static let typingIndicatorViewHeight = 45
 }
 

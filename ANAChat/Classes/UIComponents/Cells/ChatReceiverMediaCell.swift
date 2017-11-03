@@ -29,6 +29,11 @@ class ChatReceiverMediaCell: UITableViewCell {
         self.addTapGestureRecognizer()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.cellImage.image = nil
+    }
+    
     func addTapGestureRecognizer() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(sender:)))
         tap.delegate = self
@@ -101,32 +106,41 @@ class ChatReceiverMediaCell: UITableViewCell {
                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                 self.playButton.isHidden = true
                 if let url = simpleMessage.mediaUrl{
+                    if simpleMessage.mediaData is UIImage{
+                        self.cellImage.image = simpleMessage.mediaData as? UIImage
+                    }else{
                         ImageCache.sharedInstance.getImageFromURL(url, successBlock: { (data) in
                             if url.hasSuffix("gif"){
                                 self.cellImage.image = ImageCache.sharedInstance.gifImageWithData(data)
+                                simpleMessage.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
                             }else{
                                 self.cellImage.image = UIImage(data: (data as NSData) as Data)
+                                simpleMessage.mediaData = UIImage(data: (data as NSData) as Data)
                             }
                         })
                         { (error) in
                         }
                     }
+                }
             case Int16(MessageSimpleType.MessageSimpleTypeVideo.rawValue):
                 self.descriptionLabel.text = "Video"
                 self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "videoImage")
                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                 self.playButton.isHidden = false
                 if let url = simpleMessage.previewUrl{
-                    DispatchQueue.global(qos: .default).async {
-                        do{
-                            let imgData : Data = try Data(contentsOf: URL(string: url)!)
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
-                                self.cellImage.image = UIImage(data: (imgData as NSData) as Data)
-                                myActivityIndicator.stopAnimating()
-                                myActivityIndicator.removeFromSuperview()
+                    if simpleMessage.mediaData is UIImage{
+                        self.cellImage.image = simpleMessage.mediaData as? UIImage
+                    }else{
+                        ImageCache.sharedInstance.getImageFromURL(url, successBlock: { (data) in
+                            if url.hasSuffix("gif"){
+                                self.cellImage.image = ImageCache.sharedInstance.gifImageWithData(data)
+                                simpleMessage.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                            }else{
+                                self.cellImage.image = UIImage(data: (data as NSData) as Data)
+                                simpleMessage.mediaData = UIImage(data: (data as NSData) as Data)
                             }
-                        }
-                        catch{
+                        })
+                        { (error) in
                         }
                     }
                 }

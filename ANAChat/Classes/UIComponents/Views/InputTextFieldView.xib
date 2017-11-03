@@ -4,23 +4,26 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputTextFieldView" customModule="NowFloats_iOSSDK" customModuleProvider="target">
+        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="iN0-l3-epB" customClass="InputTextFieldView" customModule="NowFloats_iOSSDK" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="502" height="57"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="saa-mQ-sEO">
+                    <rect key="frame" x="0.0" y="0.0" width="451" height="57"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yq8-Kx-SSb">
-                    <rect key="frame" x="457" y="11" width="45" height="45"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="452" y="7" width="50" height="50"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="45" id="ICA-uL-QOb"/>
-                        <constraint firstAttribute="height" constant="45" id="X3l-iK-4WD"/>
+                        <constraint firstAttribute="width" constant="50" id="ICA-uL-QOb"/>
+                        <constraint firstAttribute="height" constant="50" id="X3l-iK-4WD"/>
                     </constraints>
                     <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                     <state key="normal" image="msg_send"/>
@@ -29,10 +32,11 @@
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8PF-UW-Z2d">
-                    <rect key="frame" x="456" y="0.0" width="1" height="57"/>
+                    <rect key="frame" x="451" y="7" width="1" height="50"/>
                     <color key="backgroundColor" white="0.0" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="1" id="Nty-4P-WfT"/>
+                        <constraint firstAttribute="height" constant="50" id="z1J-GZ-42Q"/>
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j11-cb-OY5">
@@ -43,25 +47,28 @@
                     </constraints>
                 </imageView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fKa-Ru-j9j">
-                    <rect key="frame" x="18" y="5" width="423" height="47"/>
+                    <rect key="frame" x="15" y="15" width="436" height="26"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="j11-cb-OY5" firstAttribute="top" secondItem="fKa-Ru-j9j" secondAttribute="bottom" constant="4" id="1i5-01-Owc"/>
+                <constraint firstItem="j11-cb-OY5" firstAttribute="top" secondItem="fKa-Ru-j9j" secondAttribute="bottom" constant="15" id="1i5-01-Owc"/>
                 <constraint firstItem="Yq8-Kx-SSb" firstAttribute="leading" secondItem="8PF-UW-Z2d" secondAttribute="trailing" id="9Iw-1I-UQ1"/>
                 <constraint firstItem="j11-cb-OY5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="BKL-AM-dLv"/>
-                <constraint firstItem="fKa-Ru-j9j" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="18" id="UQr-eZ-bIn"/>
+                <constraint firstItem="8PF-UW-Z2d" firstAttribute="leading" secondItem="saa-mQ-sEO" secondAttribute="trailing" id="DK9-w8-9yN"/>
+                <constraint firstItem="Yq8-Kx-SSb" firstAttribute="bottom" secondItem="saa-mQ-sEO" secondAttribute="bottom" id="DZg-lL-Hlf"/>
+                <constraint firstAttribute="bottom" secondItem="saa-mQ-sEO" secondAttribute="bottom" id="KI4-Fn-ZRA"/>
+                <constraint firstItem="fKa-Ru-j9j" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="UQr-eZ-bIn"/>
+                <constraint firstItem="saa-mQ-sEO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="V57-Gx-06V"/>
                 <constraint firstAttribute="bottom" secondItem="j11-cb-OY5" secondAttribute="bottom" id="c23-eQ-k0M"/>
                 <constraint firstAttribute="trailing" secondItem="Yq8-Kx-SSb" secondAttribute="trailing" id="cpp-Yh-hBq"/>
-                <constraint firstItem="8PF-UW-Z2d" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="e0s-5O-ADl"/>
                 <constraint firstAttribute="bottom" secondItem="8PF-UW-Z2d" secondAttribute="bottom" id="g5q-wv-diJ"/>
-                <constraint firstItem="8PF-UW-Z2d" firstAttribute="leading" secondItem="fKa-Ru-j9j" secondAttribute="trailing" constant="15" id="hRT-xO-Vlq"/>
-                <constraint firstItem="j11-cb-OY5" firstAttribute="top" secondItem="Yq8-Kx-SSb" secondAttribute="bottom" id="lfR-rw-5IB"/>
-                <constraint firstItem="fKa-Ru-j9j" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="muP-TW-nxO"/>
+                <constraint firstItem="8PF-UW-Z2d" firstAttribute="leading" secondItem="fKa-Ru-j9j" secondAttribute="trailing" id="hRT-xO-Vlq"/>
+                <constraint firstItem="fKa-Ru-j9j" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="muP-TW-nxO"/>
+                <constraint firstItem="saa-mQ-sEO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ppe-5d-2KL"/>
                 <constraint firstAttribute="trailing" secondItem="j11-cb-OY5" secondAttribute="trailing" id="yVa-Tp-A00"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
