@@ -263,7 +263,7 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
     
     @objc public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
-        if (self.tableView.indexPathsForVisibleRows?[0] as NSIndexPath?) != nil{
+        if (self.tableView.indexPathsForVisibleRows?.count)! > 0{
             let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
             self.visibleSectionIndex = topIndexPath.section
             
@@ -291,7 +291,7 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if self.isTableViewScrolling == false{
-            if (self.tableView.indexPathsForVisibleRows?[0] as NSIndexPath?) != nil{
+            if (self.tableView.indexPathsForVisibleRows?.count)! > 0{
                 let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
                 if topIndexPath.row != 0{
                     self.isTableViewScrolling = true
