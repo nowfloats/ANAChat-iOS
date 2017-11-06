@@ -106,11 +106,11 @@ import MobileCoreServices
         // Do any additional setup after loading the view, typically from a nib.
     }
  
-    override var canBecomeFirstResponder: Bool{
+    override public var canBecomeFirstResponder: Bool{
         return true
     }
     
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+    override public func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake{
             let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to start the chat again.?", preferredStyle: .alert)
             let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
