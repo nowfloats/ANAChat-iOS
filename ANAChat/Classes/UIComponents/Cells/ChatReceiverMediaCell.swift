@@ -97,11 +97,15 @@ class ChatReceiverMediaCell: UITableViewCell {
         let myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = (self.cellImage.center)
         myActivityIndicator.startAnimating()
-//        self.cellImage.addSubview(myActivityIndicator)
+        //        self.cellImage.addSubview(myActivityIndicator)
         if let simpleMessage = messageObject as? Simple{
             switch simpleMessage.mediaType {
             case Int16(MessageSimpleType.MessageSimpleTypeImage.rawValue):
-                self.descriptionLabel.text = "Photo"
+                if simpleMessage.text?.characters.count == 0{
+                    self.descriptionLabel.text = "Photo"
+                }else{
+                    self.descriptionLabel.text = simpleMessage.text
+                }
                 self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "photoImage")
                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                 self.playButton.isHidden = true
@@ -111,11 +115,15 @@ class ChatReceiverMediaCell: UITableViewCell {
                     }else{
                         ImageCache.sharedInstance.getImageFromURL(url, successBlock: { (data) in
                             if url.hasSuffix("gif"){
-                                self.cellImage.image = ImageCache.sharedInstance.gifImageWithData(data)
-                                simpleMessage.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                    self.cellImage.image = ImageCache.sharedInstance.gifImageWithData(data)
+                                    simpleMessage.mediaData = self.cellImage.image
+                                }
                             }else{
-                                self.cellImage.image = UIImage(data: (data as NSData) as Data)
-                                simpleMessage.mediaData = UIImage(data: (data as NSData) as Data)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                                    self.cellImage.image = UIImage(data: (data as NSData) as Data)
+                                    simpleMessage.mediaData = self.cellImage.image
+                                }
                             }
                         })
                         { (error) in
@@ -123,7 +131,11 @@ class ChatReceiverMediaCell: UITableViewCell {
                     }
                 }
             case Int16(MessageSimpleType.MessageSimpleTypeVideo.rawValue):
-                self.descriptionLabel.text = "Video"
+                if simpleMessage.text?.characters.count == 0{
+                    self.descriptionLabel.text = "Video"
+                }else{
+                    self.descriptionLabel.text = simpleMessage.text
+                }
                 self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "videoImage")
                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                 self.playButton.isHidden = false
@@ -133,11 +145,15 @@ class ChatReceiverMediaCell: UITableViewCell {
                     }else{
                         ImageCache.sharedInstance.getImageFromURL(url, successBlock: { (data) in
                             if url.hasSuffix("gif"){
-                                self.cellImage.image = ImageCache.sharedInstance.gifImageWithData(data)
-                                simpleMessage.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                    self.cellImage.image = ImageCache.sharedInstance.gifImageWithData(data)
+                                    simpleMessage.mediaData = self.cellImage.image
+                                }
                             }else{
-                                self.cellImage.image = UIImage(data: (data as NSData) as Data)
-                                simpleMessage.mediaData = UIImage(data: (data as NSData) as Data)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                                    self.cellImage.image = UIImage(data: (data as NSData) as Data)
+                                    simpleMessage.mediaData = self.cellImage.image
+                                }
                             }
                         })
                         { (error) in

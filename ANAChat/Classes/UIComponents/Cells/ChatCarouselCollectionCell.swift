@@ -62,11 +62,15 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
                 }else{
                     ImageCache.sharedInstance.getImageFromURL(url as String, successBlock: { (data) in
                         if url.hasSuffix("gif"){
-                            self.imageView.image = ImageCache.sharedInstance.gifImageWithData(data)
-                            item.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                self.imageView.image = ImageCache.sharedInstance.gifImageWithData(data)
+                                item.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                            }
                         }else{
-                            self.imageView.image = UIImage(data: (data as NSData) as Data)
-                            item.mediaData = UIImage(data: (data as NSData) as Data)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                                self.imageView.image = UIImage(data: (data as NSData) as Data)
+                                item.mediaData = self.imageView.image
+                            }
                         }
                         
                     })
@@ -76,17 +80,21 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
             }
         }else if item.mediaType == 2{
             self.playButton.isHidden = false
-            if let previewUrl = item.previewUrl{
+            if let url = item.previewUrl{
                 if item.mediaData is UIImage{
                     self.imageView.image = item.mediaData as? UIImage
                 }else{
-                    ImageCache.sharedInstance.getImageFromURL(previewUrl as String, successBlock: { (data) in
-                        if previewUrl.hasSuffix("gif"){
-                            self.imageView.image = ImageCache.sharedInstance.gifImageWithData(data)
-                            item.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                    ImageCache.sharedInstance.getImageFromURL(url as String, successBlock: { (data) in
+                        if url.hasSuffix("gif"){
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                                self.imageView.image = ImageCache.sharedInstance.gifImageWithData(data)
+                                item.mediaData = ImageCache.sharedInstance.gifImageWithData(data)
+                            }
                         }else{
-                            self.imageView.image = UIImage(data: (data as NSData) as Data)
-                            item.mediaData = UIImage(data: (data as NSData) as Data)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                                self.imageView.image = UIImage(data: (data as NSData) as Data)
+                                item.mediaData = self.imageView.image
+                            }
                         }
                         
                     })

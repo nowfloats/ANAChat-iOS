@@ -71,6 +71,9 @@ import MobileCoreServices
         return frc
     }()
     
+    // MARK: -
+    // MARK: overridden Methods
+    
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
@@ -102,7 +105,64 @@ import MobileCoreServices
         self.loadHistory()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+ 
+    override var canBecomeFirstResponder: Bool{
+        return true
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake{
+            let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to start the chat again.?", preferredStyle: .alert)
+            let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+                //Just dismiss the action sheet
+            }
+            actionSheetController.addAction(cancelAction)
+            
+            let clearAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
+                CoreDataContentManager.deleteAllMessages(successBlock: { (success) in
+                    self.tableView.reloadData()
+                    self.clearInputSubViews()
+                    self.inputContainerViewHeightConstraint.constant = 0
+                    self.textContainerViewHeightConstraint.constant = 0
+                    self.view.endEditing(true)
+                    self.isTableViewScrolling = true
+                    self.visibleSectionIndex = NSIntegerMax
+                    self.loadHistory()
+                })
+                //Just dismiss the action sheet
+            }
+            actionSheetController.addAction(clearAction)
+            self.present(actionSheetController, animated: true, completion: nil)
+        }
+    }
+    
+    override public func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func networkIsReachable() {
+        if (dataHelper.getUnsentMessagesFromDB().count) > 0{
+            for i in 0 ..< (dataHelper.getUnsentMessagesFromDB().count) {
+                let messageObject = dataHelper.getUnsentMessagesFromDB()[i] as! Message
+                var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
+                if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                    if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
+                        metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                        requestDict[Constants.kMetaKey] = metaInfo
+                    }
+                }
+                
+                dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                    self.reloadLastPreviousCell()
+                })
+            }
+        }
+    }
+    
+    // MARK: -
+    // MARK:  UIHelper Methods
+    
     func configureUI() {
         if let contentFont = self.contentFont{
             PreferencesManager.sharedInstance.configureContentText(withFont: contentFont)
@@ -127,6 +187,20 @@ import MobileCoreServices
         self.tapGestureRecognizers()
         self.scrollToTableBottom()
         ImageCache.sharedInstance.initilizeImageDirectory()
+    }
+    
+    func registerNibs(){
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "ChatReceiveTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "receivetextcell")
+        tableView.register(UINib(nibName: "ChatSenderTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "sendtextcell")
+        tableView.register(UINib(nibName: "ChatSenderMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatSenderMediaCell")
+        tableView.register(UINib(nibName: "ChatReceiverMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiverMediaCell")
+        tableView.register(UINib(nibName: "ChatReceiveCarouselCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiveCarouselCell")
+        tableView.register(UINib(nibName: "TypingIndicatorCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "TypingIndicatorCell")
+        
+        tableView.register(UINib(nibName: "CustomHeaderView", bundle: CommonUtility.getFrameworkBundle()), forHeaderFooterViewReuseIdentifier: "CustomHeaderView")
+        
+        self.delegate?.registerCells?(self.tableView)
     }
     
     func loadHistory() {
@@ -155,20 +229,6 @@ import MobileCoreServices
         }
     }
     
-    func registerNibs(){
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.register(UINib(nibName: "ChatReceiveTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "receivetextcell")
-        tableView.register(UINib(nibName: "ChatSenderTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "sendtextcell")
-        tableView.register(UINib(nibName: "ChatSenderMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatSenderMediaCell")
-        tableView.register(UINib(nibName: "ChatReceiverMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiverMediaCell")
-        tableView.register(UINib(nibName: "ChatReceiveCarouselCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiveCarouselCell")
-        tableView.register(UINib(nibName: "TypingIndicatorCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "TypingIndicatorCell")
-
-        tableView.register(UINib(nibName: "CustomHeaderView", bundle: CommonUtility.getFrameworkBundle()), forHeaderFooterViewReuseIdentifier: "CustomHeaderView")
-        
-        self.delegate?.registerCells?(self.tableView)
-    }
-    
     func tapGestureRecognizers(){
         //Added tap gesture on tableview to recognize touch on tableview
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tableViewTapped(_:)))
@@ -176,29 +236,8 @@ import MobileCoreServices
         self.tableView.addGestureRecognizer(tapGesture)
     }
     
-    override public func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func networkIsReachable() {
-        if (dataHelper.getUnsentMessagesFromDB().count) > 0{
-            for i in 0 ..< (dataHelper.getUnsentMessagesFromDB().count) {
-                let messageObject = dataHelper.getUnsentMessagesFromDB()[i] as! Message
-                var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
-                if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-                    if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
-                        metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                        requestDict[Constants.kMetaKey] = metaInfo
-                    }
-                }
-
-                dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
-                    self.reloadLastPreviousCell()
-                })
-            }
-        }
-    }
+    // MARK: -
+    // MARK:  Delegate Methods
     
     func didTappedOnPlayButton(_ medialUrl: String){
         self.playVideo(view: self, mediaUrl: medialUrl)
@@ -812,34 +851,9 @@ import MobileCoreServices
                 }
             }
         }
-        //
-        //        let scrollPoint = CGPoint(x: 0, y: self.tableView.contentSize.height - self.tableView.frame.size.height)
-        //        self.tableView.setContentOffset(scrollPoint, animated: true)
-        //        return
-        
-        
-        //        let contentOffset = rect.size.height + rect.origin.y + 180
-        //        let offset = CGPoint.init(x: 0, y: contentOffset)
-        ////        self.tableView.beginUpdates()
-        //        self.tableView.setContentOffset(offset, animated: false)
-        ////        self.tableView.endUpdates()
-        
-        //        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-        
     }
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
-        /*
-        if let videoURL = info[UIImagePickerControllerMediaURL] as? NSURL {
-            
-            //Create AVAsset from url
-            let ass = AVAsset(url:videoURL as URL)
-            
-            if let videoThumbnail = ass.videoThumbnail{
-                print("Success")
-            }
-        }
-        */
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
         if mediaType.hasSuffix(".movie"){
             if let videoPathUrl = info[UIImagePickerControllerMediaURL] as? NSURL {
@@ -932,308 +946,6 @@ import MobileCoreServices
         }
     }
 
-    
-    /*
-    func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController)
-    {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
-        //run any code you want once the user has picked their chosen audio
-    }
-
-    @IBAction func imageTapped(_ sender: Any) {
-        let picker = UIImagePickerController()
-        picker.sourceType = .photoLibrary
-        picker.delegate = self
-        picker.allowsEditing = true
-        
-        present(picker, animated: true, completion: nil)
-        
-        print("image tapped")
-    }
-   
-    @IBAction func photoTapped(_ sender: Any) {
-        let picker = UIImagePickerController()
-        picker.sourceType = .camera
-        picker.delegate = self
-        picker.allowsEditing = true
-        
-        present(picker, animated: true, completion: nil)
-        
-        print("photo tapped")
-    }
-    
-    @IBAction func audioTapped(_ sender: Any) {
-        let picker = MPMediaPickerController(mediaTypes: .anyAudio)
-        picker.delegate = self
-        picker.allowsPickingMultipleItems = false
-        picker.prompt = NSLocalizedString("Chose audio file", comment: "Please chose an audio file")
-        self.present(picker, animated: true, completion: nil)
-        
-        print("audio tapped")
-    }
-    
-    @IBAction func videoTapped(_ sender: Any) {
-        let picker = UIImagePickerController()
-        picker.sourceType = .photoLibrary
-        picker.mediaTypes = ["public.movie"]
-        picker.delegate = self
-        picker.allowsEditing = true
-        
-        present(picker, animated: true, completion: nil)
-        
-        
-        print("video tapped")
-    }
-    
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
-        
-        if let videoURL = info[UIImagePickerControllerMediaURL] as? NSURL {
-            
-            //Create AVAsset from url
-            let ass = AVAsset(url:videoURL as URL)
-            
-            if let videoThumbnail = ass.videoThumbnail{
-                print("Success")
-            }
-        }
-        
-        let mediaType = info[UIImagePickerControllerMediaType] as! NSString
-        if mediaType.hasSuffix(".movie"){
-            let videoPathUrl = info[UIImagePickerControllerMediaURL] as? NSURL
-            APIManager.sharedInstance.uploadMedia(withMedia: videoPathUrl! as URL, completionHandler: { (response) in
-                print(response)
-            })
-            print(videoPathUrl ?? NSURL())
-        }else if  mediaType.hasSuffix(".image"){
-            print(info[UIImagePickerControllerMediaURL] ?? NSURL())
-            if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-                APIManager.sharedInstance.uploadImage(withMedia: pickedImage, completionHandler: { (response) in
-                    print(response)
-                })
-            }
-        }
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func saveVideoWithURLPath(_ videoPathUrl:NSURL){
-        var localId:String?
-
-        PHPhotoLibrary.shared().performChanges({
-            let request =  PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoPathUrl as URL)
-            localId = request?.placeholderForCreatedAsset?.localIdentifier
-
-        }) { saved, error in
-            if saved {
-                DispatchQueue.main.async(execute: { () -> Void in
-                    
-                    if let localId = localId {
-                        
-                        let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
-                        let assets = result.objects(at: NSIndexSet(indexesIn: NSRange(location: 0, length: result.count)) as IndexSet)
-                        
-                        if let asset = assets.first {
-                            print(asset as PHAsset)
-                            self.playVideo(view: self, videoAsset: asset)
-                            // Do something with result
-                        }
-                    }
-                })
-            }
-        }
-    }
-    
-    func saveVideoFromURL(urlString:NSString){
-        var localId:String?
-
-//        urlString = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
-        DispatchQueue.global(qos: .background).async {
-            if let url = URL(string: "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4" as String),
-                let urlData = NSData(contentsOf: url)
-            {
-                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0];
-                let filePath="\(documentsPath)/tempFile.mp4";
-                DispatchQueue.main.async {
-                    urlData.write(toFile: filePath, atomically: true)
-                    PHPhotoLibrary.shared().performChanges({
-                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL(fileURLWithPath: filePath))
-                        localId = request?.placeholderForCreatedAsset?.localIdentifier
-
-                    }) { completed, error in
-                        if completed {
-                            
-                            let fetchOptions = PHFetchOptions()
-                            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-                            
-                            // After uploading we fetch the PHAsset for most recent video and then get its current location url
-                            
-                            let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions).lastObject
-                            PHImageManager().requestAVAsset(forVideo: fetchResult!, options: nil, resultHandler: { (avurlAsset, audioMix, dict) in
-                                let newObj = avurlAsset as! AVURLAsset
-                                print(newObj.url)
-                                DispatchQueue.main.async {
-                                    let player = AVPlayer(url: newObj.url)
-                                    let playerViewController = AVPlayerViewController()
-                                    playerViewController.player = player
-                                    self.present(playerViewController, animated: true) {
-                                        playerViewController.player!.play()
-                                    }
-                                }
-                                // This is the URL we need now to access the video from gallery directly.
-                            })
-//
-//                            DispatchQueue.main.async(execute: { () -> Void in
-//                                
-//                                if let localId = localId {
-//                                    
-//                                    let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
-//                                    let assets = result.objects(at: NSIndexSet(indexesIn: NSRange(location: 0, length: result.count)) as IndexSet)
-//                                    
-//                                    if let asset = assets.first {
-//                                        print(asset as PHAsset)
-//                                        self.playVideo(view: self, videoAsset: asset)
-//                                        // Do something with result
-//                                    }
-//                                }
-//                            })
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    func saveImageFromURL(urlString:NSString){
-        var localId:String?
-        
-        //        urlString = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
-        DispatchQueue.global(qos: .background).async {
-            if let url = URL(string: "http://i2.cdn.cnn.com/cnnnext/dam/assets/161217142430-2017-cars-ferrari-1-overlay-tease.jpg" as String),
-                let urlData = NSData(contentsOf: url)
-            {
-                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0];
-                let filePath="\(documentsPath)/tempFile.jpg";
-                DispatchQueue.main.async {
-                    urlData.write(toFile: filePath, atomically: true)
-                    PHPhotoLibrary.shared().performChanges({
-                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL(fileURLWithPath: filePath))
-                        localId = request?.placeholderForCreatedAsset?.localIdentifier
-                        
-                    }) { completed, error in
-                        if completed {
-                            DispatchQueue.main.async(execute: { () -> Void in
-                                
-                                if let localId = localId {
-                                    
-                                    let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
-                                    let assets = result.objects(at: NSIndexSet(indexesIn: NSRange(location: 0, length: result.count)) as IndexSet)
-                                    
-                                    if let asset = assets.first {
-                                        print(asset as PHAsset)
-                                        self.playVideo(view: self, videoAsset: asset)
-                                    }
-                                }
-                            })
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    func playVideo (view: UIViewController, videoAsset: PHAsset) {
-     
-        guard (videoAsset.mediaType == .video) else {
-            print("Not a valid video media type")
-            return
-        }
-     
-        PHCachingImageManager().requestAVAsset(forVideo: videoAsset, options: nil) { (asset, audioMix, args) in
-            let asset = asset as! AVURLAsset
-     
-            DispatchQueue.main.async {
-                let player = AVPlayer(url: asset.url)
-                let playerViewController = AVPlayerViewController()
-                playerViewController.player = player
-                view.present(playerViewController, animated: true) {
-                    playerViewController.player!.play()
-                }
-            }
-        }
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
-        self.dismiss(animated: true, completion: nil)
-    }
-
-       func didTappedOnTextCell(_ inputDict:[String: Any], messageObject: Message){
-        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
-        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-            if var metaInfo = requestDict["meta"] as? [String: Any]{
-                metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
-                requestDict["meta"] = metaInfo
-            }
-        }
-        print(requestDict)
-        print(inputDict)
-        
-        dataHelper.updateDBMessage(params: requestDict, successBlock: { (messageObject) in
-            self.reloadLastPreviousCell()
-            self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
-                self.reloadLastPreviousCell()
-                self.scrollToTableBottom()
-            })
-        })
-        //        self.removeInputTextView()
-    }
-    
-    // MARK: -
-    //MARK: ButtonsViewDelegate Methods
-    func didTappedOnOptionsCell(_ inputDict:[String: Any], messageObject: Message){
-        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
-        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-            if var metaInfo = requestDict["meta"] as? [String: Any]{
-                metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
-                requestDict["meta"] = metaInfo
-            }
-        }
-        print(requestDict)
-        print(inputDict)
-        
-        dataHelper.updateDBMessage(params: requestDict, successBlock: { (messageObject) in
-            self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
-                self.reloadLastPreviousCell()
-                self.scrollToTableBottom()
-            })
-        })
-        //        self.removeInputTypeOptions()
-    }
-    func didTappedOnListCell(_ inputDict:[String: Any], messageObject: Message){
-        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
-        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-            if var metaInfo = requestDict["meta"] as? [String: Any]{
-                metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
-                requestDict["meta"] = metaInfo
-            }
-        }
-        print(requestDict)
-        print(inputDict)
-        
-        dataHelper.updateDBMessage(params: requestDict, successBlock: { (messageObject) in
-            self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
-                self.reloadLastPreviousCell()
-                self.scrollToTableBottom()
-            })
-        })
-        print(requestDict)
-    }
-     */
     ///  IMAGE ZOOM
     
     func imageTap(imageView: UIImageView)

@@ -263,22 +263,23 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
     
     @objc public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         NSObject.cancelPreviousPerformRequests(withTarget: self)
-        print("enetedred")
-        let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
-        self.visibleSectionIndex = topIndexPath.section
-
-        if scrollView.contentOffset.y > 0{
-            print(topIndexPath.row)
-            if topIndexPath.row != 0{
-                self.isTableViewScrolling = false
+        if (self.tableView.indexPathsForVisibleRows?[0] as NSIndexPath?) != nil{
+            let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
+            self.visibleSectionIndex = topIndexPath.section
+            
+            if scrollView.contentOffset.y > 0{
+                print(topIndexPath.row)
+                if topIndexPath.row != 0{
+                    self.isTableViewScrolling = false
+                }else{
+                    self.isTableViewScrolling = true
+                }
+                
+                self.tableView.reloadData()
             }else{
                 self.isTableViewScrolling = true
+                self.tableView.reloadData()
             }
-            
-            self.tableView.reloadData()
-        }else{
-            self.isTableViewScrolling = true
-            self.tableView.reloadData()
         }
     }
     
@@ -290,9 +291,11 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if self.isTableViewScrolling == false{
-            let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
-            if topIndexPath.row != 0{
-                self.isTableViewScrolling = true
+            if (self.tableView.indexPathsForVisibleRows?[0] as NSIndexPath?) != nil{
+                let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
+                if topIndexPath.row != 0{
+                    self.isTableViewScrolling = true
+                }
             }
             self.tableView.reloadData()
         }

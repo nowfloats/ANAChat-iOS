@@ -76,6 +76,29 @@ public class CoreDataContentManager: NSObject {
         }
     }
     
+    class func deleteAllMessages(successBlock successCompletion: @escaping (_ success: Bool) -> Void) {
+        let fr:NSFetchRequest<Message>=Message.fetchRequest()
+        do {
+            let fetchedList=try CoreDataContentManager.backgroundObjectContext().fetch(fr)
+            if fetchedList.count==0 {
+                print("no resutls. i need to add something")
+            }else{
+                for i in 0 ..< fetchedList.count {
+                    CoreDataContentManager.backgroundObjectContext().delete(fetchedList[i] as NSManagedObject)
+                    if i == fetchedList.count - 1{
+                        CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                            successCompletion(success)
+                        }, failBlock: { (error) in
+                            successCompletion(false)
+                        })
+                    }
+                }
+            }
+        }catch {
+            print(error)
+        }
+    }
+    
     class func fetchMessages (){
         let fr:NSFetchRequest<Message>=Message.fetchRequest()
         do {
