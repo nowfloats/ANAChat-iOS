@@ -74,7 +74,9 @@ modify the method implementation of below methods:
             }
             
             - (void)messaging:(nonnull FIRMessaging *)messaging didRefreshRegistrationToken:(nonnull NSString *)fcmToken {
-                [AppLauncherManager didReceiveFcmTokenWithToken:fcmToken baseAPIUrl:@"#baseUrl" businessId:@"#businessID"];
+                if fcmToken.characters.count > 0{
+                    [AppLauncherManager didReceiveFcmTokenWithToken:fcmToken baseAPIUrl:@"#baseUrl" businessId:@"#businessID"];
+                }
             }
             
             - (void)messaging:(nonnull FIRMessaging *)messaging didReceiveMessage:(nonnull FIRMessagingRemoteMessage *)remoteMessage{
@@ -157,8 +159,14 @@ Objective C :
         
 
 Note:   1. Use the above codes with valid businessID and baseAPIUrl
-            2. Above code is for pushViewController, you can use ChatViewController as per your requirement.
-            
+            2. Above code is for pushing the ChatViewController, you can use ChatViewController as per your requirement.
+            3. Configure the FCM server key on fcm-plugin to send the push notifications to the App. Use below steps to get FCM server key.
+                On  FCM console
+                    1. Click the settings icon/cog wheel next to your project name at the top of the new Firebase Console
+                    2. Click Project settings
+                    3. Click on the Cloud Messaging tab
+                    4. The key is right under Server Key
+                    
 #### Source Code Installation
 
 
