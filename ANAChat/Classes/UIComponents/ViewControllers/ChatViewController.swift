@@ -38,6 +38,11 @@ import MobileCoreServices
     var isTableViewScrolling = Bool()
     var visibleSectionIndex = Int()
 
+    var isSyncInProgress = Bool()
+    var isLastPage = Bool()
+    
+    var refreshControl: UIRefreshControl!
+
     @IBOutlet weak var headerLogo: UIImageView!
     @IBOutlet weak var headerDescriptionLabel: UILabel!
     @IBOutlet weak var headerTitleLabel: UILabel!
@@ -59,6 +64,13 @@ import MobileCoreServices
         let sortDescriptor = NSSortDescriptor(key: Constants.kTimeStampKey, ascending: true)
         
         messagesFetchRequest.sortDescriptors = [sortDescriptor]
+        if CoreDataContentManager.fetchMessagesCount() > ConfigurationConstants.pageLimit{
+            messagesFetchRequest.fetchOffset = CoreDataContentManager.fetchMessagesCount() - ConfigurationConstants.pageLimit
+        }else{
+            messagesFetchRequest.fetchOffset = 0
+        }
+        messagesFetchRequest.fetchBatchSize = ConfigurationConstants.pageLimit*2
+
         let frc = NSFetchedResultsController(fetchRequest: messagesFetchRequest, managedObjectContext: CoreDataContentManager.managedObjectContext(), sectionNameKeyPath: "dateStamp", cacheName: nil)
         frc.delegate = self
         frc.fetchRequest.shouldRefreshRefetchedObjects = true
@@ -85,6 +97,7 @@ import MobileCoreServices
         self.headerView.backgroundColor = PreferencesManager.sharedInstance.getBaseThemeColor()
         if let baseUrl = self.baseAPIUrl , self.baseAPIUrl.characters.count > 0{
             APIManager.sharedInstance.configureAPIBaseUrl(withString: baseUrl)
+            self.loadHistory(isOnLoad: true)
         }else{
             self.didTappedBackButton()
         }
@@ -102,7 +115,6 @@ import MobileCoreServices
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
-        self.loadHistory()
         // Do any additional setup after loading the view, typically from a nib.
     }
  
@@ -111,6 +123,7 @@ import MobileCoreServices
     }
     
     override public func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        /*
         if motion == .motionShake{
             let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to start the chat again.?", preferredStyle: .alert)
             let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
@@ -134,8 +147,143 @@ import MobileCoreServices
             actionSheetController.addAction(clearAction)
             self.present(actionSheetController, animated: true, completion: nil)
         }
+         */
     }
     
+    // MARK: -
+    // MARK:  History Helper Methods
+    
+    func loadHistory(isOnLoad onLoad : Bool) {
+        
+        if self.isSyncInProgress || self.isLastPage{
+            return
+        }
+        
+        self.isSyncInProgress = true
+        
+        if reachability.isReachable{
+            var interval = Int()
+            
+            CoreDataContentManager.deleteAllWaitingPlaceholderImages { (success) in
+                
+            }
+            
+            if onLoad == false{
+                if let lastObject = self.messagesFetchController?.fetchedObjects?.first{
+                    interval = CommonUtility.getTimeInterval(fromDate: lastObject.timestamp!)
+                }
+            }
+            
+            var requestDictionary = [String: Any]()
+            requestDictionary[Constants.kUserIdKey] = PreferencesManager.getUserId()
+            requestDictionary[Constants.kBusinessIdKey] = PreferencesManager.sharedInstance.getBusinessId()
+            requestDictionary[Constants.kSizeKey] = String(ConfigurationConstants.pageLimit)
+            if onLoad{
+                requestDictionary[Constants.kPageKey] = String(0)
+            }else{
+                if interval > 0{
+                    requestDictionary[Constants.kLastMessageTimeStampKey] = String(interval)
+                }
+            }
+            
+            dataHelper.syncHistoryFromServer(params: requestDictionary, apiPath: nil) { (response) in
+                if let chatsArray = response["content"] as? NSArray{
+                    if chatsArray.count == 0 && (self.messagesFetchController?.fetchedObjects?.count)! == 0{
+                        let responseDict = CommonUtility.loadJson(forFilename: "allChatsMock")
+                        FCMMessagesManager.syncHistory(withResponseObject: responseDict!) { (success) in
+                            self.isSyncInProgress = false
+                            DispatchQueue.main.async {
+                                if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
+                                    self.tableView.reloadData()
+                                    if onLoad{
+                                        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                                            self.loadInputView(lastObject)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        DispatchQueue.global().async {
+                            FCMMessagesManager.syncHistory(withResponseObject: response as NSDictionary) { (success) in
+                                
+                                DispatchQueue.main.async {
+                                    if onLoad == false{
+                                        if let numberOfElements = response[Constants.kNumberOfElementsKey] as? NSInteger , numberOfElements > 0{
+                                            let dbOffset = (self.messagesFetchController?.fetchedObjects?.count)! + numberOfElements
+                                            if CoreDataContentManager.fetchMessagesCount() > dbOffset{
+                                                self.messagesFetchController?.fetchRequest.fetchOffset = CoreDataContentManager.fetchMessagesCount() - dbOffset
+                                            }else{
+                                                self.messagesFetchController?.fetchRequest.fetchOffset = 0
+                                            }
+                                            do {
+                                                NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: nil)
+                                                let sortDescriptor = NSSortDescriptor(key: Constants.kTimeStampKey, ascending: true)
+                                                self.messagesFetchController?.fetchRequest.sortDescriptors = [sortDescriptor]
+                                                try self.messagesFetchController?.performFetch()
+                                            }
+                                            catch {
+                                                print("Unable to fetch cart Objects")
+                                            }
+                                        }
+                                    }
+                                    self.isSyncInProgress = false
+                                    
+                                    if let isLastPage = response[Constants.kIsLastKey] as? Bool{
+                                        if isLastPage == true{
+                                            self.isLastPage = true
+                                        }
+                                    }
+                                    DispatchQueue.main.async {
+                                        if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
+                                            if onLoad{
+                                                if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                                                    self.loadInputView(lastObject)
+                                                }
+                                            }else{
+                                                self.updateTableViewContentAfterLoadmoreMessages()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
+                self.isSyncInProgress = false
+                if onLoad{
+                    if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                        self.loadInputView(lastObject)
+                    }
+                }else{
+                    let dbOffset = (self.messagesFetchController?.fetchedObjects?.count)! + ConfigurationConstants.pageLimit
+                    if CoreDataContentManager.fetchMessagesCount() > dbOffset{
+                        self.messagesFetchController?.fetchRequest.fetchOffset = CoreDataContentManager.fetchMessagesCount() - dbOffset
+                    }else{
+                        self.messagesFetchController?.fetchRequest.fetchOffset = 0
+                    }
+                    
+                    do {
+                        NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: nil)
+                        let sortDescriptor = NSSortDescriptor(key: Constants.kTimeStampKey, ascending: true)
+                        self.messagesFetchController?.fetchRequest.sortDescriptors = [sortDescriptor]
+                        try self.messagesFetchController?.performFetch()
+                        
+                        self.updateTableViewContentAfterLoadmoreMessages()
+                    }
+                    catch {
+                        print("Unable to fetch cart Objects")
+                    }
+                    
+                    self.updateTableViewContentAfterLoadmoreMessages()
+                }
+            }
+        }
+    }
+
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -187,6 +335,16 @@ import MobileCoreServices
         self.tapGestureRecognizers()
         self.scrollToTableBottom()
         ImageCache.sharedInstance.initilizeImageDirectory()
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refreshControl.tintColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+        if #available(iOS 10.0, *) {
+            self.tableView.refreshControl = refreshControl
+        } else {
+            self.tableView.addSubview(refreshControl)
+        }
+        self.automaticallyAdjustsScrollViewInsets = false
+
     }
     
     func registerNibs(){
@@ -203,38 +361,18 @@ import MobileCoreServices
         self.delegate?.registerCells?(self.tableView)
     }
     
-    func loadHistory() {
-        CoreDataContentManager.deleteAllWaitingPlaceholderImages { (success) in
-            
-        }
-        if (self.messagesFetchController?.fetchedObjects?.count)! == 0{
-            dataHelper.syncHistoryFromServer(successBlock: { (responseDict) in
-                if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
-                    print(self.messagesFetchController?.fetchedObjects?.last ?? Message())
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-                            self.loadInputView(lastObject)
-                        }
-                    }
-                }
-            })
-        }else{
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-                    self.loadInputView(lastObject)
-                }
-            }
-        }
-    }
-    
     func tapGestureRecognizers(){
         //Added tap gesture on tableview to recognize touch on tableview
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tableViewTapped(_:)))
         tapGesture.delegate = self
         self.tableView.addGestureRecognizer(tapGesture)
     }
+    
+    func refresh(_ sender: Any) {
+        refreshControl.endRefreshing()
+        self.loadHistory(isOnLoad: false)
+    }
+
     
     // MARK: -
     // MARK:  Delegate Methods
@@ -529,6 +667,11 @@ import MobileCoreServices
     // MARK: InputTextFieldViewDelegate Methods
     
     func didTappedOnInputCell(_ inputDict:[String: Any], messageObject: Message?){
+        if !reachability.isReachable{
+            self.showAlert("Unable to connect to the network , Please check your internet settings and try again")
+            return
+        }
+        
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillShow(withNotification:)), name: .UIKeyboardWillShow, object: nil)
@@ -555,6 +698,11 @@ import MobileCoreServices
     }
    
     func  syncInputMessageToServer(_ inputDict:[String: Any], messageObject: Message?) {
+        if !reachability.isReachable{
+            self.showAlert("Unable to connect to the network , Please check your internet settings and try again")
+            return
+        }
+        
         var requestDict = [String: Any]()
         if let messageObject = messageObject{
             requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
@@ -576,8 +724,6 @@ import MobileCoreServices
             }
 
         }
-        print(requestDict)
-        print(inputDict)
         if messageObject is Carousel{
             dataHelper.updateCarouselDBMessage(params: requestDict, successBlock: { (messageObject) in
                 self.reloadLastPreviousCell()
@@ -815,7 +961,7 @@ import MobileCoreServices
         let dic = notification.userInfo
         let duration = dic?["UIKeyboardAnimationDurationUserInfoKey"] as? Double
         self.inputTextViewBottomConstraint.constant = 0
-        scrollToTableBottom()
+//        scrollToTableBottom()
         UIView.animate(withDuration: duration!, delay:0.0, options: UIViewAnimationOptions.allowAnimatedContent, animations: {
             self.view.layoutIfNeeded()
         }) { (_ finished: Bool) in
@@ -844,10 +990,16 @@ import MobileCoreServices
             if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
                 let indexPath = IndexPath(row: (self.messagesFetchController?.sections?.last?.numberOfObjects)! - 1, section: (self.messagesFetchController?.sections?.count)! - 1)
                 UIView.animate(withDuration: 0.25, delay:0.0, options: UIViewAnimationOptions.allowAnimatedContent, animations: {
-                    self.tableView.scrollToRow(at: indexPath, at: .none, animated: false)
+                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
                 }) { (_ finished: Bool) in
                     if(finished){
+                        if self.inputTextView != nil,self.textContainerViewHeightConstraint.constant == CGFloat(CellHeights.textInputViewHeight){
+                            if self.reachability.isReachable{
+                                self.inputTextView.textView.becomeFirstResponder()
+                            }
+                        }
                     }
+                    
                 }
             }
         }
@@ -1028,4 +1180,16 @@ import MobileCoreServices
         }
         imgVi?.frame = contentsFrame!
     }
+    
+    // MARK: -
+    // MARK: DBHelper Methods
+    
+    func updateTableViewContentAfterLoadmoreMessages(){
+        let oldContentOffsetY = self.tableView.contentSize.height - self.tableView.contentOffset.y
+        self.tableView.reloadData()
+        let newOffset = CGPoint(x : self.tableView.contentOffset.x, y : self.tableView.contentSize.height - oldContentOffsetY)
+        self.tableView.contentOffset = newOffset
+    }
+    
+
 }

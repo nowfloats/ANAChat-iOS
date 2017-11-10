@@ -59,6 +59,14 @@ struct Constants {
     static let kTimeKey                 = "time"
     static let kMultipleKey             = "multiple"
     static let kStaticBusinessId        = "ChatBot"
+    static let kUserIdKey               = "userId"
+    static let kBusinessIdKey           = "businessId"
+    static let kSizeKey                 = "size"
+    static let kPageKey                 = "page"
+    static let kNumberKey               = "number"
+    static let kIsLastKey               = "isLast"
+    static let kLastMessageTimeStampKey = "lastMessageTimeStamp"
+    static let kNumberOfElementsKey     = "numberOfElements"
 }
 
 struct AlertTexts {
@@ -87,6 +95,10 @@ struct CellIdentifiers {
 struct DataBaseConstans {
     static let kUserIdKey            = "userIdInfo"
 
+}
+
+struct ConfigurationConstants {
+    static let pageLimit = 20
 }
 
 enum GCMPushType:Int{

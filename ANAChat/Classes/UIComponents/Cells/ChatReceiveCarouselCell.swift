@@ -12,11 +12,17 @@ class ChatReceiveCarouselCell: UITableViewCell ,ChatCarouselCollectionCellDelega
     var delegate: InputCellProtocolDelegate?
     var showOptions : Bool?
     
+    var previousMessageTimeStamp = NSDate()
+
     override func awakeFromNib() {
         super.awakeFromNib()
         collectionview.delegate = self
         collectionview.dataSource = self
         collectionview.register(UINib.init(nibName: "ChatCarouselCollectionCell", bundle: CommonUtility.getFrameworkBundle()), forCellWithReuseIdentifier: "ChatCarouselCollectionCell")
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -34,11 +40,10 @@ class ChatReceiveCarouselCell: UITableViewCell ,ChatCarouselCollectionCellDelega
             self.sortedItems = carousel.items?.sortedArray(using: [sortDescriptor])
             self.collectionview.reloadData()
             self.collectionview.scrollRectToVisible(CGRect.zero, animated: false)
-            /*
-            if (self.sortedItems?.count)! > 0{
-                self.collectionview.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
-            }
-             */
+        }
+        if (self.sortedItems?.count)! > 0 , self.previousMessageTimeStamp != self.messageObject.timestamp{
+            self.previousMessageTimeStamp = self.messageObject.timestamp!
+            self.collectionview.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
         }
     }
     

@@ -478,10 +478,18 @@ extension ChatViewController:NSFetchedResultsControllerDelegate {
     // MARK: Fetched Results Controller Delegate Methods
     public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()
+        if (isSyncInProgress) {
+            UIView.setAnimationsEnabled(false)
+        }
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
+        
+        if self.isSyncInProgress == true{
+            self.updateTableViewContentAfterLoadmoreMessages()
+            UIView.setAnimationsEnabled(true)
+        }
     }
     
     public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

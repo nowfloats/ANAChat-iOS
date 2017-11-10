@@ -46,9 +46,13 @@ import UIKit
     
     public class func getDate(fromString dateString : NSString) -> NSDate{
         let date = NSDate(timeIntervalSince1970:TimeInterval(dateString.doubleValue/1000))
-        return date;
+        return date
     }
     
+    public class func getTimeInterval(fromDate date : NSDate) -> Int{
+        return Int(date.timeIntervalSince1970*1000)
+    }
+
     public class func getTimeString(_ messageTimestamp : NSDate) -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"

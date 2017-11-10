@@ -1,5 +1,9 @@
 //
 //  ChatCarouselCollectionCell.swift
+//  NowFloats-iOSSDK
+//
+//  Created by Rakesh Tatekonda on 29/09/17.
+//  Copyright © 2017 NowFloats. All rights reserved.
 //
 
 import UIKit
@@ -20,6 +24,7 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
     @IBOutlet weak var cellContentView: UIView!
     @IBOutlet weak var buttonsTableViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var imageViewHeightConstraint: NSLayoutConstraint!
     var item: CarouselItem?
     var delegate: ChatCarouselCollectionCellDelegate?
     var options: [Any]?
@@ -45,7 +50,7 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         super.prepareForReuse()
         self.imageView.image = nil
     }
-
+    
     func configureCell(_ item:CarouselItem, showOptions : Bool){
         self.playButton.isHidden = true
         self.showOptions = showOptions
@@ -54,6 +59,11 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         self.options = item.options?.sortedArray(using: [sortDescriptor])
         self.titleLabel.text = item.title
         self.descriptionLabel.text = item.desc
+        if item.title?.characters.count == 0, item.desc?.characters.count == 0{
+            self.imageViewHeightConstraint.constant = 210
+        }else{
+            self.imageViewHeightConstraint.constant = 130
+        }
         if item.mediaType == 0{
             self.playButton.isHidden = true
             if let url = item.mediaUrl{

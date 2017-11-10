@@ -108,6 +108,7 @@
                 <outlet property="cellContentView" destination="aGS-r4-T10" id="hyg-dy-ucU"/>
                 <outlet property="descriptionLabel" destination="Ii7-zM-FUq" id="TFb-Pn-e81"/>
                 <outlet property="imageView" destination="xVk-nM-k90" id="xqP-mH-3dq"/>
+                <outlet property="imageViewHeightConstraint" destination="Nco-zZ-bJK" id="0s6-D5-mGR"/>
                 <outlet property="playButton" destination="Bmy-ix-yMZ" id="g0i-0D-Ffs"/>
                 <outlet property="titleLabel" destination="uD3-Bk-TfM" id="TeL-vx-kZ9"/>
             </connections>

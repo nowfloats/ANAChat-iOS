@@ -6,7 +6,7 @@ import UIKit
 
 @objc public class BaseViewController: UIViewController {
     
-    private var reachability:Reachability!
+    public var reachability:Reachability!
 
     override public func viewDidLoad() {
         super.viewDidLoad()

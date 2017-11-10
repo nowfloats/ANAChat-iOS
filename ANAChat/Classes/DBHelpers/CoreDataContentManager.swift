@@ -118,6 +118,12 @@ public class CoreDataContentManager: NSObject {
         }
     }
     
+    class func fetchMessagesCount() -> Int{
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+        let count = try! CoreDataContentManager.backgroundObjectContext().count(for: fetchRequest)
+        return count
+    }
+    
     class func fetchRequest(withEntityName entity: String , predicate : NSPredicate , sortDescriptor : NSSortDescriptor) -> [Any]{
         var request: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest()
         request = NSFetchRequest(entityName: entity)
@@ -1539,6 +1545,9 @@ public class CoreDataContentManager: NSObject {
                 }
                 if let timeStamp = inputModel.messageTimeStamp{
                     messageObject.timestamp = timeStamp
+                }
+                if let dateStamp = inputModel.messageDateStamp{
+                    messageObject.dateStamp = dateStamp
                 }
                 messageObject.syncedWithServer = NSNumber(value: true) as! Bool
                 CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in

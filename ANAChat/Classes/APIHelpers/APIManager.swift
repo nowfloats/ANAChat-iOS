@@ -117,8 +117,8 @@ class APIManager: NSObject {
         task.resume()
     }
     
-    func get(params : Dictionary<String, String>?, apiPath : String? ,completionHandler:@escaping ([String: Any]) -> ()) {
-        
+    func get(params : [String: Any]?, apiPath : String? ,completionHandler:@escaping ([String: Any]) -> ()) {
+
         var finalApiPathString = String()
         
         if let apiPath = apiPath{
@@ -170,6 +170,14 @@ class APIManager: NSObject {
     
     func postMessageToServer(params : [String: Any]?, apiPath : String? , messageObject : Message,completionHandler:@escaping ([String: Any]) -> ()) {
         post(params: params, apiPath: apiPath) { (response) in
+            completionHandler(response)
+        }
+    }
+    
+    //History API
+    
+    func getHistoryFromServer(params : [String: Any], apiPath : String? , completionHandler:@escaping ([String: Any]) -> ()){
+        get(params: params, apiPath: apiPath) { (response) in
             completionHandler(response)
         }
     }

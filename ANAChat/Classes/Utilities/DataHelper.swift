@@ -6,10 +6,9 @@ import UIKit
 
 @objc class DataHelper: NSObject {
     
-    public func syncHistoryFromServer(successBlock successCompletion: @escaping (_ response: NSDictionary) -> Void){
-        let responseDict = CommonUtility.loadJson(forFilename: "allChatsMock")
-        FCMMessagesManager.syncHistory(withResponseObject: responseDict!) { (success) in
-            successCompletion(responseDict!)
+    public func syncHistoryFromServer(params : [String: Any], apiPath : String? ,successBlock successCompletion: @escaping (_ response: NSDictionary) -> Void){
+        APIManager.sharedInstance.getHistoryFromServer(params: params, apiPath: "chatdata/messages") { (response) in
+            successCompletion(response as NSDictionary)
         }
     }
     

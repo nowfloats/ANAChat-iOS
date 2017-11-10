@@ -44,8 +44,6 @@
 		30BE4ABA1FA7593100F64363 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		30BE4ABD1FA7594500F64363 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		30BE4ABE1FA7594500F64363 /* SDKReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKReachability.swift; sourceTree = "<group>"; };
-		30BE4AC21FA7594500F64363 /* ChatCarouselCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCarouselCollectionCell.swift; sourceTree = "<group>"; };
-		30BE4AC31FA7594500F64363 /* ChatCarouselCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatCarouselCollectionCell.xib; sourceTree = "<group>"; };
 		30BE4AC41FA7594500F64363 /* ChatListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListTableViewCell.swift; sourceTree = "<group>"; };
 		30BE4AC51FA7594500F64363 /* ChatListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatListTableViewCell.xib; sourceTree = "<group>"; };
 		30BE4AC61FA7594500F64363 /* ChatOptionsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatOptionsTableCell.swift; sourceTree = "<group>"; };
@@ -143,6 +141,8 @@
 		30BE4B2C1FA7594500F64363 /* Simple+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Simple+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		30BE4B2D1FA7594500F64363 /* TimeRange+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeRange+CoreDataClass.swift"; sourceTree = "<group>"; };
 		30BE4B2E1FA7594500F64363 /* TimeRange+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeRange+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		30CFC5091FB5D24200DD95A9 /* ChatCarouselCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCarouselCollectionCell.swift; sourceTree = "<group>"; };
+		30CFC50A1FB5D24200DD95A9 /* ChatCarouselCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatCarouselCollectionCell.xib; sourceTree = "<group>"; };
 		30F60ED81FACB0120010C26F /* InputTextFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputTextFieldView.xib; sourceTree = "<group>"; };
 		3AA8E5965D48453B1D3AD48D2FC928BD /* ANAChat-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ANAChat-umbrella.h"; sourceTree = "<group>"; };
 		3B0AFD2491288033548D6D938C0DCED9 /* Pods-ANAChat_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ANAChat_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -281,8 +281,8 @@
 		30BE4AC11FA7594500F64363 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				30BE4AC21FA7594500F64363 /* ChatCarouselCollectionCell.swift */,
-				30BE4AC31FA7594500F64363 /* ChatCarouselCollectionCell.xib */,
+				30CFC5091FB5D24200DD95A9 /* ChatCarouselCollectionCell.swift */,
+				30CFC50A1FB5D24200DD95A9 /* ChatCarouselCollectionCell.xib */,
 				30BE4AC41FA7594500F64363 /* ChatListTableViewCell.swift */,
 				30BE4AC51FA7594500F64363 /* ChatListTableViewCell.xib */,
 				30BE4AC61FA7594500F64363 /* ChatOptionsTableCell.swift */,

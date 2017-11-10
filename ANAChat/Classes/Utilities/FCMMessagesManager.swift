@@ -127,7 +127,7 @@ public class FCMMessagesManager: NSObject {
  */
     
     public class func syncHistory(withResponseObject responseInfo:NSDictionary, successBlock successCompletion: @escaping (_ success: Bool) -> Void){
-        if let chatsArray = responseInfo["chats"] as? NSArray{
+        if let chatsArray = responseInfo["content"] as? NSArray{
             if chatsArray.count == 0 {
                 successCompletion(true)
             }
