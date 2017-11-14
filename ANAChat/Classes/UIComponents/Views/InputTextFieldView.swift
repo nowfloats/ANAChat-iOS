@@ -231,8 +231,8 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("TextField should return method called")
-        textField.resignFirstResponder();
-        return true;
+        textField.resignFirstResponder()
+        return true
     }
     
     

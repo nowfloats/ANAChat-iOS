@@ -17,7 +17,20 @@ class CustomHeaderView: UITableViewHeaderFooterView {
             dateFormatter2.dateFormat = "dd MMM, yyyy"
             dateFormatter2.timeZone = NSTimeZone.system
             let datestring = dateFormatter2.string(from: dateFromString)
-            self.dateLabel.text = datestring
+            let currentDate = NSDate()
+            let todayDate = currentDate.addingTimeInterval(-86400)
+            let yesterdayDate = currentDate.addingTimeInterval(-172800.0)
+            let today = CommonUtility.getTimeInterval(fromDate: todayDate)
+            let yesterday = CommonUtility.getTimeInterval(fromDate: yesterdayDate)
+            
+            let ts = CommonUtility.getTimeInterval(fromDate: dateFromString as NSDate)
+            if ts >= today{
+                self.dateLabel.text = "Today"
+            }else if ts >= yesterday{
+                self.dateLabel.text = "Yesterday"
+            }else{
+                self.dateLabel.text = datestring
+            }
         }
         self.dateLabel.layer.cornerRadius = 10.0
         self.dateLabel.layer.masksToBounds = true

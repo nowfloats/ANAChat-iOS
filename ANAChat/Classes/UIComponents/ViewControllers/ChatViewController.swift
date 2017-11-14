@@ -676,10 +676,9 @@ import MobileCoreServices
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillShow(withNotification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillHide(withNotification:)), name: .UIKeyboardWillHide, object: nil)
-        
+        self.view.endEditing(true)
         self.inputContainerViewHeightConstraint.constant = 0
         self.textContainerViewHeightConstraint.constant = 0
-        self.view.endEditing(true)
         self.clearInputSubViews()
         self.syncInputMessageToServer(inputDict, messageObject: messageObject)
     }

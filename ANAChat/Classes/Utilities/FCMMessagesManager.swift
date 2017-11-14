@@ -65,25 +65,60 @@ public class FCMMessagesManager: NSObject {
         CoreDataContentManager.deleteAllWaitingPlaceholderImages { (success) in
             
             if self.dataArray.list.count > 0 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     
                     CoreDataContentManager.addWaitingPlaceholderCell(withCompletionBlock: { (success) in
                         notifyUserNewMessageBlock(success: true)
                     })
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    self.dataArray.list = self.dataArray.list.ascendingArrayWithKeyValue(key: "meta.timestamp").mutableCopy() as! NSMutableArray
-                    CoreDataContentManager.deleteAllWaitingPlaceholderImages { (success) in
-                        self.syncMessage(withMessageObject: (self.dataArray.peek())!) { (success, messageInfo) in
-                            if self.dataArray.list.contains(messageInfo){
-                                self.dataArray.list.remove(messageInfo)
-                            }
-                            isSyncing = false
-                            if success{
-                                notifyUserNewMessageBlock(success: true)
-                                if !self.dataArray.isEmpty{
-                                    self.syncMessagesWithDelay()
+                    var delay = Double()
+                    if self.dataArray.list.count == 1{
+                        let info = self.dataArray.list[0] as! NSDictionary
+                        if let dataInfo = info["data"] as? NSDictionary{
+                            if let messageType = dataInfo["type"] as? NSInteger{
+                                switch messageType {
+                                case 2:
+                                    delay = 0.0
+                                default :
+                                    delay = 2.0
                                 }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                                    self.dataArray.list = self.dataArray.list.ascendingArrayWithKeyValue(key: "meta.timestamp").mutableCopy() as! NSMutableArray
+                                    self.syncMessage(withMessageObject: (self.dataArray.peek())!) { (success, messageInfo) in
+                                        if self.dataArray.list.contains(messageInfo){
+                                            self.dataArray.list.remove(messageInfo)
+                                        }
+                                        isSyncing = false
+                                        if success{
+                                            notifyUserNewMessageBlock(success: true)
+                                            if !self.dataArray.isEmpty{
+                                                self.syncMessagesWithDelay()
+                                            }
+                                        }
+                                    }
+                                    CoreDataContentManager.deleteAllWaitingPlaceholderImages { (success) in
+                                        
+                                    }
+                                }
+                            }
+                        }
+                        
+                    }else{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            self.dataArray.list = self.dataArray.list.ascendingArrayWithKeyValue(key: "meta.timestamp").mutableCopy() as! NSMutableArray
+                            self.syncMessage(withMessageObject: (self.dataArray.peek())!) { (success, messageInfo) in
+                                if self.dataArray.list.contains(messageInfo){
+                                    self.dataArray.list.remove(messageInfo)
+                                }
+                                isSyncing = false
+                                if success{
+                                    notifyUserNewMessageBlock(success: true)
+                                    if !self.dataArray.isEmpty{
+                                        self.syncMessagesWithDelay()
+                                    }
+                                }
+                            }
+                            CoreDataContentManager.deleteAllWaitingPlaceholderImages { (success) in
+                                
                             }
                         }
                     }
