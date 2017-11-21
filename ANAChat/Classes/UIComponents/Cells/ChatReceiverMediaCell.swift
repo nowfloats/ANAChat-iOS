@@ -101,7 +101,7 @@ class ChatReceiverMediaCell: UITableViewCell {
         if let simpleMessage = messageObject as? Simple{
             switch simpleMessage.mediaType {
             case Int16(MessageSimpleType.MessageSimpleTypeImage.rawValue):
-                if simpleMessage.text?.characters.count == 0{
+                if simpleMessage.text?.count == 0{
                     self.descriptionLabel.text = "Photo"
                 }else{
                     self.descriptionLabel.text = simpleMessage.text
@@ -131,7 +131,7 @@ class ChatReceiverMediaCell: UITableViewCell {
                     }
                 }
             case Int16(MessageSimpleType.MessageSimpleTypeVideo.rawValue):
-                if simpleMessage.text?.characters.count == 0{
+                if simpleMessage.text?.count == 0{
                     self.descriptionLabel.text = "Video"
                 }else{
                     self.descriptionLabel.text = simpleMessage.text

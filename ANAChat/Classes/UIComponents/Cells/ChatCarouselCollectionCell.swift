@@ -59,7 +59,7 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         self.options = item.options?.sortedArray(using: [sortDescriptor])
         self.titleLabel.text = item.title
         self.descriptionLabel.text = item.desc
-        if item.title?.characters.count == 0, item.desc?.characters.count == 0{
+        if item.title?.count == 0, item.desc?.count == 0{
             self.imageViewHeightConstraint.constant = 210
         }else{
             self.imageViewHeightConstraint.constant = 130

@@ -43,7 +43,7 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
                             self.textView.text = defaultString
                         }
                         if let placeHolder = inputTypeText.placeHolder {
-                            if self.textView.text.characters.count > 0{
+                            if self.textView.text.count > 0{
                                 textView.textColor = UIColor.black
                             }else{
                                 textView.textColor = UIColor.lightGray
@@ -62,7 +62,7 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
 
                         }
                         if let placeHolder = inputTypeText.placeHolder {
-                            if self.textView.text.characters.count > 0{
+                            if self.textView.text.count > 0{
                                 textView.textColor = UIColor.black
                             }else{
                                 textView.textColor = UIColor.lightGray
@@ -88,7 +88,7 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
     
     @IBAction func sendButtonTapped(_ sender: Any) {
         
-        let fieldTextLength = self.textView.text!.characters.count
+        let fieldTextLength = self.textView.text!.count
         if fieldTextLength == 0 {
             self.sendAlertCallBack(alertText: "please enter proper text")
             return
@@ -204,7 +204,7 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
     
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool{
         let totalText = NSString(string: textView.text!).replacingCharacters(in: range, with: text)
-        let fieldTextLength = totalText.characters.count
+        let fieldTextLength = totalText.count
         if fieldTextLength > 0 {
             inputBtn.tintColor = PreferencesManager.sharedInstance.getBaseThemeColor()
             self.inputBtn.isUserInteractionEnabled = true

@@ -22,15 +22,15 @@ extension String {
     func isValidEmail() -> Bool {
         // here, `try!` will always succeed because the pattern is valid
         let regex = try! NSRegularExpression(pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$", options: .caseInsensitive)
-        return regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: characters.count)) != nil
+        return regex.firstMatch(in: self, options: [], range: NSRange(location: 0, length: count)) != nil
     }
     
     var isValidPhoneNumber: Bool {
         do {
             let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
-            let matches = detector.matches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
+            let matches = detector.matches(in: self, options: [], range: NSMakeRange(0, self.count))
             if let res = matches.first {
-                return res.resultType == .phoneNumber && res.range.location == 0 && res.range.length == self.characters.count && self.characters.count == 10
+                return res.resultType == .phoneNumber && res.range.location == 0 && res.range.length == self.count && self.count == 10
             } else {
                 return false
             }
@@ -96,7 +96,7 @@ extension UIColor {
         var int = UInt32()
         Scanner(string: hex).scanHexInt32(&int)
         let a, r, g, b: UInt32
-        switch hex.characters.count {
+        switch hex.count {
         case 3: // RGB (12-bit)
             (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
         case 6: // RGB (24-bit)

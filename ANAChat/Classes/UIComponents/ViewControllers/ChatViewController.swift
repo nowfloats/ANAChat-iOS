@@ -7,14 +7,15 @@ import CoreData
 import MediaPlayer
 import Photos
 import AVKit
-//import GooglePlacePicker
+
 import MobileCoreServices
 
-@objc protocol ChatViewControllerDelegate {
+@objc public protocol ChatViewControllerDelegate {
     //Implement below methods to implement custom external cells
     @objc optional func getExternalTableCell(cell indexPath:IndexPath, messageObject: External) -> UITableViewCell
     @objc optional func getExternalTableCell(heightAt indexPath:IndexPath , messageObject: External) -> CGFloat
     @objc optional func registerCells(_ tableView: UITableView)
+    @objc optional func presentLocationPopupOnViewController(_ vc: UIViewController)
 }
 
 @objc public class ChatViewController: BaseViewController ,MPMediaPickerControllerDelegate , UIImagePickerControllerDelegate , UINavigationControllerDelegate  , UIGestureRecognizerDelegate  , InputCellProtocolDelegate , ChatMediaCellDelegate ,UIDocumentMenuDelegate , UIDocumentPickerDelegate{
@@ -56,7 +57,8 @@ import MobileCoreServices
     @IBOutlet weak var textContainerView: UIView!
     @IBOutlet weak var textContainerViewHeightConstraint: NSLayoutConstraint!
 
-    weak var delegate:ChatViewControllerDelegate?
+    public weak var delegate:ChatViewControllerDelegate?
+    
     lazy var dataHelper = DataHelper()
     
     lazy var messagesFetchController:NSFetchedResultsController<Message>? = {
@@ -93,9 +95,11 @@ import MobileCoreServices
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillShow(withNotification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillHide(withNotification:)), name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.locationReceived(_:)), name: NSNotification.Name(rawValue: "LocationReceived"), object: nil)
+        
         self.navigationController?.navigationBar.isHidden = true
         self.headerView.backgroundColor = PreferencesManager.sharedInstance.getBaseThemeColor()
-        if let baseUrl = self.baseAPIUrl , self.baseAPIUrl.characters.count > 0{
+        if let baseUrl = self.baseAPIUrl , self.baseAPIUrl.count > 0{
             APIManager.sharedInstance.configureAPIBaseUrl(withString: baseUrl)
             self.loadHistory(isOnLoad: true)
         }else{
@@ -104,17 +108,24 @@ import MobileCoreServices
 //        self.scrollToTableBottom()
     }
     
+    
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "LocationReceived"), object: nil)
+
     }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3.0){
+            self.didTappedOnSendLocationCell(nil)
+        }
+
         // Do any additional setup after loading the view, typically from a nib.
     }
  
@@ -887,37 +898,42 @@ import MobileCoreServices
         self.syncInputMessageToServer(inputDict, messageObject: messageObject)
     }
     
-    func didTappedOnSendLocationCell(_ messageObject: Message) {
+    func didTappedOnSendLocationCell(_ messageObject: Message?) {
+        self.delegate?.presentLocationPopupOnViewController?(self)
+
         if let _ = messageObject as? InputLocation{
-            /*
-            let config = GMSPlacePickerConfig(viewport: nil)
-            let placePicker = GMSPlacePicker(config: config)
-            
-            placePicker.pickPlace(callback: {(place, error) -> Void in
-                if let error = error {
-                    print("Pick Place error: \(error.localizedDescription)")
-                    return
-                }
-                if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
-                    let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to share the selected location?", preferredStyle: .alert)
-                    let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
-                    }
-                    actionSheetController.addAction(cancelAction)
-                    
-                    let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
-                        var locationInfo = [String: Any]()
-                        
-                        locationInfo[Constants.kLatitudeKey] = latitude
-                        locationInfo[Constants.kLongitudeKey] = longitude
-                        let inputDict = [Constants.kInputKey: ["location": locationInfo]]
-                        self.didTappedOnInputCell(inputDict, messageObject: messageObject)
-                    }
-                    actionSheetController.addAction(okAction)
-                    
-                    self.present(actionSheetController, animated: true, completion: nil)
-                }
-            })
-             */
+            self.delegate?.presentLocationPopupOnViewController?(self)
+//            #if ANAChatPod
+//            //#Neglect import statement if it is installed through cocoapods
+//            #else
+//                let config = GMSPlacePickerConfig(viewport: nil)
+//                let placePicker = GMSPlacePicker(config: config)
+//
+//                placePicker.pickPlace(callback: {(place, error) -> Void in
+//                    if let error = error {
+//                        print("Pick Place error: \(error.localizedDescription)")
+//                        return
+//                    }
+//                    if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
+//                        let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to share the selected location?", preferredStyle: .alert)
+//                        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+//                        }
+//                        actionSheetController.addAction(cancelAction)
+//
+//                        let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
+//                            var locationInfo = [String: Any]()
+//
+//                            locationInfo[Constants.kLatitudeKey] = latitude
+//                            locationInfo[Constants.kLongitudeKey] = longitude
+//                            let inputDict = [Constants.kInputKey: ["location": locationInfo]]
+//                            self.didTappedOnInputCell(inputDict, messageObject: messageObject)
+//                        }
+//                        actionSheetController.addAction(okAction)
+//
+//                        self.present(actionSheetController, animated: true, completion: nil)
+//                    }
+//                })
+//            #endif
         }
     }
     
@@ -982,9 +998,23 @@ import MobileCoreServices
         }
     }
     
+    @objc func locationReceived(_ notification : NSNotification){
+        
+        if let latitude = notification.userInfo?["latitude"] , let longitude = notification.userInfo?["longitude"] {
+            if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                if lastObject is InputLocation{
+                    var locationInfo = [String: Any]()
+                    
+                    locationInfo[Constants.kLatitudeKey] = latitude
+                    locationInfo[Constants.kLongitudeKey] = longitude
+                    let inputDict = [Constants.kInputKey: ["location": locationInfo]]
+                    self.didTappedOnInputCell(inputDict, messageObject: lastObject)
+                }
+            }
+        }
+    }
     
-    func scrollToTableBottom() -> Void
-    {
+    func scrollToTableBottom() -> Void{
         DispatchQueue.main.async {
             if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
                 let indexPath = IndexPath(row: (self.messagesFetchController?.sections?.last?.numberOfObjects)! - 1, section: (self.messagesFetchController?.sections?.count)! - 1)

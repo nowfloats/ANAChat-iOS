@@ -6,7 +6,10 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 
+
 Pod::Spec.new do |s|
+Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+
   s.name             = 'ANAChat'
   s.version          = '0.2.7'
   s.summary          = 'ANAChat iOS'
@@ -27,7 +30,7 @@ DESC
   s.author           = { 'RakeshTatekonda' => 'rakesh.tatekonda@nowfloats.com' }
   s.source           = { :git => 'https://github.com/Kitsune-tools/ANAChat-iOS.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-    s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' }
+    s.pod_target_xcconfig = { 'SWIFT_VERSION' => '3.0' ,'OTHER_SWIFT_FLAGS' => '-DANAChatPod'}
 
   s.ios.deployment_target = '8.0'
   s.source_files = 'ANAChat/Classes/**/*.{h,m,swift}'
@@ -38,4 +41,5 @@ DESC
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit'
     s.dependency 'Firebase/Messaging'
+s.dependency 'GooglePlacePicker'
 end
