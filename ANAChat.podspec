@@ -8,10 +8,9 @@
 
 
 Pod::Spec.new do |s|
-Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
 
   s.name             = 'ANAChat'
-  s.version          = '0.3.1'
+  s.version          = '0.3.2'
   s.summary          = 'ANAChat iOS'
 
 # This description is used to generate tags and improve search results.
@@ -41,5 +40,4 @@ DESC
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit'
     s.dependency 'Firebase/Messaging'
-s.dependency 'GooglePlacePicker'
 end
