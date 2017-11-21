@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
 
   s.name             = 'ANAChat'
-  s.version          = '0.2.7'
+  s.version          = '0.2.8'
   s.summary          = 'ANAChat iOS'
 
 # This description is used to generate tags and improve search results.
