@@ -86,6 +86,7 @@ struct CellHeights {
 
 struct NotificationConstants {
     static let kMessageReceivedNotification = "kMessageReceivedNotification"
+    static let kLocationReceivedNotification = "kLocationReceivedNotification"
 }
 
 struct CellIdentifiers {

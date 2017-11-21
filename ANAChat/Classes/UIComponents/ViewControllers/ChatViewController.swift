@@ -95,8 +95,8 @@ import MobileCoreServices
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillShow(withNotification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillHide(withNotification:)), name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.locationReceived(_:)), name: NSNotification.Name(rawValue: "LocationReceived"), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.locationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kLocationReceivedNotification), object: nil)
+
         self.navigationController?.navigationBar.isHidden = true
         self.headerView.backgroundColor = PreferencesManager.sharedInstance.getBaseThemeColor()
         if let baseUrl = self.baseAPIUrl , self.baseAPIUrl.count > 0{
@@ -115,17 +115,12 @@ import MobileCoreServices
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "LocationReceived"), object: nil)
-
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationConstants.kLocationReceivedNotification), object: nil)
     }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3.0){
-            self.didTappedOnSendLocationCell(nil)
-        }
-
         // Do any additional setup after loading the view, typically from a nib.
     }
  
@@ -899,7 +894,6 @@ import MobileCoreServices
     }
     
     func didTappedOnSendLocationCell(_ messageObject: Message?) {
-        self.delegate?.presentLocationPopupOnViewController?(self)
 
         if let _ = messageObject as? InputLocation{
             self.delegate?.presentLocationPopupOnViewController?(self)
