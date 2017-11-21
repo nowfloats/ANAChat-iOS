@@ -893,7 +893,7 @@ import MobileCoreServices
         self.syncInputMessageToServer(inputDict, messageObject: messageObject)
     }
     
-    func didTappedOnSendLocationCell(_ messageObject: Message?) {
+    func didTappedOnSendLocationCell(_ messageObject: Message) {
 
         if let _ = messageObject as? InputLocation{
             self.delegate?.presentLocationPopupOnViewController?(self)
