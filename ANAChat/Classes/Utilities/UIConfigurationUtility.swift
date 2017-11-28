@@ -22,7 +22,7 @@ struct UIConfigurationUtility{
     struct Colors{
         static let BaseThemeColor = UIColor.init(hexString: "#8cc83c")
         static let BackgroundColor = UIColor.init(hexString: "#F1F2F4")
-        static let SenderThemeColor = UIColor.init(hexString: "#000000")
+        static let SenderThemeColor = UIColor.init(hexString: "#3C3C3C")
         static let MediaDescriptionColor = UIColor.init(hexString: "#FFFFFF")
     }
     

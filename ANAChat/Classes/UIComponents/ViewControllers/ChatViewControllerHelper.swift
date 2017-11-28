@@ -136,6 +136,18 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
                             if input is InputLocation{
                                 cell = self.getSenderMediaCell(messageObject: input, indexPath: indexPath, showArrow: showArrow)
                             }
+                        case Int16(MessageInputType.MessageInputTypeDate.rawValue):
+                            if input is InputDate{
+                                cell = self.getRightTextCell(messageObject: input,indexPath: indexPath,showArrow: showArrow)
+                            }
+                        case Int16(MessageInputType.MessageInputTypeTime.rawValue):
+                            if input is InputTime{
+                                cell = self.getRightTextCell(messageObject: input,indexPath: indexPath,showArrow: showArrow)
+                            }
+                        case Int16(MessageInputType.MessageInputTypeAddress.rawValue):
+                            if input is InputAddress{
+                                cell = self.getRightTextCell(messageObject: input,indexPath: indexPath,showArrow: showArrow)
+                            }
                         default:
                             break
                         }
@@ -369,6 +381,33 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                            }
+                        case Int16(MessageInputType.MessageInputTypeDate.rawValue):
+                            if input is InputDate{
+                                if let _ = input.inputInfo as? NSDictionary{
+                                    let dateText = CommonUtility.getDateTextFromMessageObject(input as! InputDate)
+                                    if dateText.count > 0{
+                                        cellHeight =  CommonUtility.heightOfCell(with: dateText)
+                                    }
+                                }
+                            }
+                        case Int16(MessageInputType.MessageInputTypeTime.rawValue):
+                            if input is InputTime{
+                                if let _ = input.inputInfo as? NSDictionary{
+                                    let timeText = CommonUtility.getTimeTextFromMessageObject(input as! InputTime)
+                                    if timeText.count > 0{
+                                        cellHeight =  CommonUtility.heightOfCell(with: timeText)
+                                    }
+                                }
+                            }
+                        case Int16(MessageInputType.MessageInputTypeAddress.rawValue):
+                            if input is InputAddress{
+                                if let _ = input.inputInfo as? NSDictionary{
+                                    let addressText = CommonUtility.getAddressTextFromMessageObject(input as! InputAddress)
+                                    if addressText.count > 0{
+                                        cellHeight =  CommonUtility.heightOfCell(with: addressText)
                                     }
                                 }
                             }

@@ -857,6 +857,7 @@ import MobileCoreServices
 
     
     func didTappedOnAddressCell(_ messageObject: Message){
+        self.view.endEditing(true)
         if let inputTypeAddress = messageObject as? InputAddress{
             print("show address")
             NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
@@ -871,6 +872,7 @@ import MobileCoreServices
     }
     
     func didTappedOnListCell(_ messageObject: Message){
+        self.view.endEditing(true)
         let listView =  CommonUtility.getFrameworkBundle().loadNibNamed("InputListView", owner: self, options: nil)?[0] as! InputListView
         listView.delegate = self
         listView.configure(messageObject: messageObject as! InputTypeOptions)
@@ -879,6 +881,7 @@ import MobileCoreServices
     }
     
     func didTappedOnSendDateCell(_ messageObject: Message){
+        self.view.endEditing(true)
         self.inputDatePickerView = CommonUtility.getFrameworkBundle().loadNibNamed("DatePickerView", owner: self, options: nil)?[0] as? DatePickerView
         self.inputDatePickerView?.frame = (self.navigationController?.view.bounds)!
         self.inputDatePickerView?.configure(messageObject: messageObject)
@@ -894,40 +897,39 @@ import MobileCoreServices
     }
     
     func didTappedOnSendLocationCell(_ messageObject: Message) {
+        self.view.endEditing(true)
 
         if let _ = messageObject as? InputLocation{
             self.delegate?.presentLocationPopupOnViewController?(self)
-//            #if ANAChatPod
-//            //#Neglect import statement if it is installed through cocoapods
-//            #else
-//                let config = GMSPlacePickerConfig(viewport: nil)
-//                let placePicker = GMSPlacePicker(config: config)
-//
-//                placePicker.pickPlace(callback: {(place, error) -> Void in
-//                    if let error = error {
-//                        print("Pick Place error: \(error.localizedDescription)")
-//                        return
-//                    }
-//                    if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
-//                        let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to share the selected location?", preferredStyle: .alert)
-//                        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
-//                        }
-//                        actionSheetController.addAction(cancelAction)
-//
-//                        let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
-//                            var locationInfo = [String: Any]()
-//
-//                            locationInfo[Constants.kLatitudeKey] = latitude
-//                            locationInfo[Constants.kLongitudeKey] = longitude
-//                            let inputDict = [Constants.kInputKey: ["location": locationInfo]]
-//                            self.didTappedOnInputCell(inputDict, messageObject: messageObject)
-//                        }
-//                        actionSheetController.addAction(okAction)
-//
-//                        self.present(actionSheetController, animated: true, completion: nil)
-//                    }
-//                })
-//            #endif
+            /*
+            let config = GMSPlacePickerConfig(viewport: nil)
+            let placePicker = GMSPlacePicker(config: config)
+            
+            placePicker.pickPlace(callback: {(place, error) -> Void in
+                if let error = error {
+                    print("Pick Place error: \(error.localizedDescription)")
+                    return
+                }
+                if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
+                    let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to share the selected location?", preferredStyle: .alert)
+                    let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+                    }
+                    actionSheetController.addAction(cancelAction)
+                    
+                    let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
+                        var locationInfo = [String: Any]()
+                        
+                        locationInfo[Constants.kLatitudeKey] = latitude
+                        locationInfo[Constants.kLongitudeKey] = longitude
+                        let inputDict = [Constants.kInputKey: ["location": locationInfo]]
+                        self.didTappedOnInputCell(inputDict, messageObject: messageObject)
+                    }
+                    actionSheetController.addAction(okAction)
+                    
+                    self.present(actionSheetController, animated: true, completion: nil)
+                }
+            })
+             */
         }
     }
     

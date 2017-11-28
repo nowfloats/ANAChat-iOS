@@ -171,7 +171,24 @@ class ChatSenderMediaCell: UITableViewCell {
                     }
                 }
             }
+        }else if let inputTypeLocation = messageObject as? InputLocation{
+            if let inputInfo = inputTypeLocation.inputInfo as? NSDictionary{
+                self.playButton.isHidden = true
+                self.descriptionLabel.text = "Map"
+                if let locationInfo = inputInfo["location"] as? NSDictionary{
+                    if let latitude = locationInfo[Constants.kLatitudeKey], let longitude = locationInfo[Constants.kLongitudeKey]{
+                        let staticMapUrl = String.init(format: "http://maps.google.com/maps/api/staticmap?markers=color:red|%f,%f&%@&sensor=true", (latitude as AnyObject).doubleValue, (longitude as AnyObject).doubleValue,"zoom=14&size=270x270")
+                        let urlString : String = staticMapUrl.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!
+                        ImageCache.sharedInstance.getImageFromURL(urlString as String, successBlock: { (data) in
+                            self.cellImage.image = UIImage(data: (data as NSData) as Data)
+                        })
+                        { (error) in
+                        }
+                    }
+                }
+            }
         }
+
         
         if let messageTimeStamp = messageObject.timestamp{
            self.timeLbl.text =  CommonUtility.getTimeString(messageTimeStamp)

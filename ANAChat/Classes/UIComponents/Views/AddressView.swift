@@ -105,7 +105,7 @@ class AddressView: UIView,UIGestureRecognizerDelegate, UITextFieldDelegate{
                         isValidFields = false
                     }
                 }
-                if requiredFields.contains("locality"){
+                if requiredFields.contains("state"){
                     if localityTextField.text!.isEmpty{
                         isValidFields = false
                     }
@@ -149,7 +149,7 @@ class AddressView: UIView,UIGestureRecognizerDelegate, UITextFieldDelegate{
                 addressInfo["area"] = streetNameTextField.text
             }
             if !localityTextField.text!.isEmpty{
-                addressInfo["locality"] = localityTextField.text
+                addressInfo["state"] = localityTextField.text
             }
             if !cityTextField.text!.isEmpty{
                 addressInfo["city"] = cityTextField.text

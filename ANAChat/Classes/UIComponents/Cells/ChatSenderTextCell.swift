@@ -82,6 +82,22 @@ class ChatSenderTextCell: UITableViewCell {
                         self.textLbl.text = text
                     }
                 }
+            case Int16(MessageInputType.MessageInputTypeDate.rawValue):
+                if let inputDate = inputMessage as? InputDate{
+                    let text = CommonUtility.getDateTextFromMessageObject(inputDate)
+                    self.textLbl.text = text
+                }
+            case Int16(MessageInputType.MessageInputTypeTime.rawValue):
+                if let inputTime = inputMessage as? InputTime{
+                    let text = CommonUtility.getTimeTextFromMessageObject(inputTime)
+                    self.textLbl.text = text
+                }
+            case Int16(MessageInputType.MessageInputTypeAddress.rawValue):
+                if let inputAddress = inputMessage as? InputAddress{
+                    let text = CommonUtility.getAddressTextFromMessageObject(inputAddress)
+                    self.textLbl.text = text
+                }
+
             default:
                 if let inputInfo = inputMessage.inputInfo as? NSDictionary{
                     if let text = inputInfo[Constants.kValKey] as? String{

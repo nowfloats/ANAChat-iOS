@@ -118,4 +118,67 @@ import UIKit
         }
         return sameParticipant
     }
+    
+    public class func getDateTextFromMessageObject(_ inputDate : InputDate) -> String{
+        var dateString  = String()
+        if let inputInfo = inputDate.inputInfo as? NSDictionary{
+            if let dateInfo = inputInfo[Constants.kDateKey] as? NSDictionary{
+                if let dayInfo = dateInfo[Constants.kMdayKey] as? NSNumber, let monthInfo = dateInfo[Constants.kMonthKey] as? NSNumber, let yearInfo = dateInfo[Constants.kYearKey] as? NSNumber {
+                    dateString = String(format :  "%02d-%02d-%02d",dayInfo.intValue,monthInfo.intValue,yearInfo.intValue)
+                }
+            }
+        }
+        return dateString
+    }
+    
+    public class func getTimeTextFromMessageObject(_ inputTime : InputTime) -> String{
+        var timeString  = String()
+        if let inputInfo = inputTime.inputInfo as? NSDictionary{
+            if let dateInfo = inputInfo[Constants.kTimeKey] as? NSDictionary{
+                if let hourInfo = dateInfo[Constants.kHourKey] as? NSNumber, let minuteInfo = dateInfo[Constants.kMinuteKey] as? NSNumber, let _ = dateInfo[Constants.kSecondKey] as? NSNumber {
+                    var hourInInt = hourInfo.intValue
+                    let minuteInInt = minuteInfo.intValue
+                    if hourInInt > 12{
+                        hourInInt =  hourInfo.intValue - 12
+                        timeString = String(format :  "%02d:%02d PM",hourInInt,minuteInInt)
+                    }else{
+                        timeString = String(format :  "%02d:%02d AM",hourInInt,minuteInInt)
+                    }
+                }
+            }
+        }
+        return timeString
+    }
+    
+    public class func getAddressTextFromMessageObject(_ inputAddress : InputAddress) -> String{
+        var addressString  = String()
+        if let inputInfo = inputAddress.inputInfo as? NSDictionary{
+            if let addressInfo = inputInfo[Constants.kAddressKey] as? NSDictionary{
+                if let lineInfo = addressInfo[Constants.kLineAddressKey] as? String{
+                    addressString.append(lineInfo)
+                    addressString.append(",")
+                }
+                if let areaInfo = addressInfo[Constants.kAreaKey] as? String{
+                    addressString.append(areaInfo)
+                    addressString.append(",")
+                }
+                if let cityInfo = addressInfo[Constants.kCityKey] as? String{
+                    addressString.append(cityInfo)
+                    addressString.append(",")
+                }
+                if let stateInfo = addressInfo[Constants.kStateKey] as? String{
+                    addressString.append(stateInfo)
+                    addressString.append(",")
+                }
+                if let countryInfo = addressInfo[Constants.kCountryInfo] as? String{
+                    addressString.append(countryInfo)
+                    addressString.append(",")
+                }
+                if let pinInfo = addressInfo[Constants.kPinInfo] as? String{
+                    addressString.append(pinInfo)
+                }
+            }
+        }
+        return addressString
+    }
 }

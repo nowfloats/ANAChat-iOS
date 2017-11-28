@@ -63,7 +63,6 @@
 		30BE4AD51FA7594500F64363 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		30BE4AD71FA7594500F64363 /* ChatViewControllerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewControllerHelper.swift; sourceTree = "<group>"; };
 		30BE4AD91FA7594500F64363 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
-		30BE4ADA1FA7594500F64363 /* AddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddressView.xib; sourceTree = "<group>"; };
 		30BE4ADB1FA7594500F64363 /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		30BE4ADC1FA7594500F64363 /* CustomHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomHeaderView.xib; sourceTree = "<group>"; };
 		30BE4ADD1FA7594500F64363 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 		30BE4B2C1FA7594500F64363 /* Simple+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Simple+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		30BE4B2D1FA7594500F64363 /* TimeRange+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeRange+CoreDataClass.swift"; sourceTree = "<group>"; };
 		30BE4B2E1FA7594500F64363 /* TimeRange+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeRange+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		30C499DD1FCD6393005B2095 /* AddressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressView.xib; sourceTree = "<group>"; };
 		30CFC5091FB5D24200DD95A9 /* ChatCarouselCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCarouselCollectionCell.swift; sourceTree = "<group>"; };
 		30CFC50A1FB5D24200DD95A9 /* ChatCarouselCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatCarouselCollectionCell.xib; sourceTree = "<group>"; };
 		30F60ED81FACB0120010C26F /* InputTextFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputTextFieldView.xib; sourceTree = "<group>"; };
@@ -317,7 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				30BE4AD91FA7594500F64363 /* AddressView.swift */,
-				30BE4ADA1FA7594500F64363 /* AddressView.xib */,
+				30C499DD1FCD6393005B2095 /* AddressView.xib */,
 				30BE4ADB1FA7594500F64363 /* CustomHeaderView.swift */,
 				30BE4ADC1FA7594500F64363 /* CustomHeaderView.xib */,
 				30BE4ADD1FA7594500F64363 /* DatePickerView.swift */,

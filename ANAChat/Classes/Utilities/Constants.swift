@@ -67,6 +67,13 @@ struct Constants {
     static let kIsLastKey               = "isLast"
     static let kLastMessageTimeStampKey = "lastMessageTimeStamp"
     static let kNumberOfElementsKey     = "numberOfElements"
+    static let kAddressKey              = "address"
+    static let kLineAddressKey          = "line1"
+    static let kAreaKey                 = "area"
+    static let kCityKey                 = "city"
+    static let kStateKey                = "state"
+    static let kCountryInfo             = "country"
+    static let kPinInfo                 = "pin"
 }
 
 struct AlertTexts {
