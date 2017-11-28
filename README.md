@@ -74,7 +74,7 @@ modify the method implementation of below methods:
             }
             
             - (void)messaging:(nonnull FIRMessaging *)messaging didRefreshRegistrationToken:(nonnull NSString *)fcmToken {
-                if fcmToken.characters.count > 0{
+                if (fcmToken.length > 0){
                     [AppLauncherManager didReceiveFcmTokenWithToken:fcmToken baseAPIUrl:@"#baseUrl" businessId:@"#businessID"];
                 }
             }
@@ -91,7 +91,6 @@ modify the method implementation of below methods:
             - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
                 [FIRMessaging messaging].APNSToken = deviceToken;
             }
-
 
 5. Add the below permissions to Target `info.plist` file by opening it as `Source Code`
 
@@ -157,15 +156,114 @@ Objective C :
             controller.headerLogoImageName = @"chatty";
             [self.navigationController pushViewController:controller animated:YES];
         
+7. If you want to support location input type. You can include a  `GooglePlacePicker`  in your project with the [Google Places Documentation](https://developers.google.com/places/ios-api/start) . After Integrating the places to the application, Follow below steps to complete the Installation.
 
-Note:   1. Use the above codes with valid businessID and baseAPIUrl
-            2. Above code is for pushing the ChatViewController, you can use ChatViewController as per your requirement.
-            3. Configure the FCM server key on fcm-plugin to send the push notifications to the App. Use below steps to get FCM server key.
-                On  FCM console
-                    1. Click the settings icon/cog wheel next to your project name at the top of the new Firebase Console
-                    2. Click Project settings
-                    3. Click on the Cloud Messaging tab
-                    4. The key is right under Server Key
+Swift :
+Import `GooglePlacePicker`  in your module where you are initializing the SDK code
+
+             import GooglePlacePicker
+
+Connect to `ChatViewControllerDelegate` and the implement the below method:
+
+            controller.delegate = self
+
+copy the below code to your module:
+
+            func presentLocationPopupOnViewController(_ vc: UIViewController){
+                let config = GMSPlacePickerConfig(viewport: nil)
+                let placePicker = GMSPlacePicker(config: config)
+                
+                placePicker.pickPlace(callback: {(place, error) -> Void in
+                if let error = error {
+                print("Pick Place error: \(error.localizedDescription)")
+                return
+                }
+                if let latitude = place?.coordinate.latitude, let longitude = place?.coordinate.longitude{
+                        let alertController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to share the selected location?", preferredStyle: .alert)
+                        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+                        }
+                        alertController.addAction(cancelAction)
+                        
+                        let okAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
+                        
+                        let locationInfo:[String: String] = ["latitude": String(latitude), "longitude" : String(longitude)]
+                        // post a notification
+                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "kLocationReceivedNotification"), object: nil, userInfo: locationInfo)
+                        
+                        }
+                        alertController.addAction(okAction)
+                        
+                        vc.present(alertController, animated: true, completion: nil)
+                    }
+                })
+            }
+
+
+Objective C :
+Import `GooglePlacePicker`  in your module where you are initializing the SDK code
+
+
+            @import GooglePlacePicker;
+
+
+Connect to `ChatViewControllerDelegate` and the implement the below method:
+
+
+            controller.delegate = self
+
+copy the below code to your module:
+
+            - (void)presentLocationPopupOnViewController:(UIViewController * _Nonnull)vc {
+                GMSPlacePickerConfig *config = [[GMSPlacePickerConfig alloc] initWithViewport:nil];
+                GMSPlacePicker *placePicker = [[GMSPlacePicker alloc] initWithConfig:config];
+
+                [placePicker pickPlaceWithCallback:^(GMSPlace *place, NSError *error) {
+                    if (error != nil) {
+                    NSLog(@"Pick Place error %@", [error localizedDescription]);
+                    return;
+                    }
+                    UIAlertController * alert = [UIAlertController
+                    alertControllerWithTitle:@"Alert"
+                    message:@"Do you want to share the selected location?"
+                    preferredStyle:UIAlertControllerStyleAlert];
+
+
+                    UIAlertAction   *cancelAction = [UIAlertAction
+                    actionWithTitle:@"Cancel"
+                    style:UIAlertActionStyleCancel
+                    handler:^(UIAlertAction * action) {
+
+                    }];
+
+                    UIAlertAction   *okAction = [UIAlertAction
+                    actionWithTitle:@"Ok"
+                    style:UIAlertActionStyleDefault
+                    handler:^(UIAlertAction * action) {
+                    if(place.coordinate.latitude && place.coordinate.longitude){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:
+                    @"kLocationReceivedNotification" object:nil userInfo:
+                    @{@"latitude" : [NSString stringWithFormat:@"%f",place.coordinate.latitude],
+                    @"longitude" : [NSString stringWithFormat:@"%f",place.coordinate.longitude]}];
+                    }
+                    }];
+
+
+                    [alert addAction:cancelAction];
+                    [alert addAction:okAction];
+
+                    [vc presentViewController:alert animated:YES completion:nil];
+                }];
+            }
+
+Note:   1. Use the above codes with valid businessID and baseAPIUrl__
+            2. Above code is for pushing the ChatViewController, you can use ChatViewController as per your requirement__
+            3. Configure the FCM server key on fcm-plugin to send the push notifications to the App. Use below steps to get FCM server key.__
+                On  FCM console__
+                    1. Click the settings icon/cog wheel next to your project name at the top of the new Firebase Console__
+                    2. Click Project settings__
+                    3. Click on the Cloud Messaging tab__
+                    4. The key is right under Server Key__
+            4. Follow step 7 only if you want to support Input type location
                     
 #### Source Code Installation
 
@@ -176,7 +274,7 @@ If you wish to install ANAChat directly into your application from source, then 
 
 2. FCM configuration is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/ios/client) to install and configure.
 
-follow the above steps from 4 to 7  to complete the installation
+follow the above steps from 4 to 8 to complete the installation
 
 ## License
 
