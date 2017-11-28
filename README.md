@@ -240,11 +240,11 @@ copy the below code to your module:
                     style:UIAlertActionStyleDefault
                     handler:^(UIAlertAction * action) {
                     if(place.coordinate.latitude && place.coordinate.longitude){
-                    [[NSNotificationCenter defaultCenter] postNotificationName:
-                    @"kLocationReceivedNotification" object:nil userInfo:
-                    @{@"latitude" : [NSString stringWithFormat:@"%f",place.coordinate.latitude],
-                    @"longitude" : [NSString stringWithFormat:@"%f",place.coordinate.longitude]}];
-                    }
+                        [[NSNotificationCenter defaultCenter] postNotificationName:
+                        @"kLocationReceivedNotification" object:nil userInfo:
+                        @{@"latitude" : [NSString stringWithFormat:@"%f",place.coordinate.latitude],
+                        @"longitude" : [NSString stringWithFormat:@"%f",place.coordinate.longitude]}];
+                        }
                     }];
 
 
@@ -255,15 +255,17 @@ copy the below code to your module:
                 }];
             }
 
-Note:   1. Use the above codes with valid businessID and baseAPIUrl__
-            2. Above code is for pushing the ChatViewController, you can use ChatViewController as per your requirement__
-            3. Configure the FCM server key on fcm-plugin to send the push notifications to the App. Use below steps to get FCM server key.__
-                On  FCM console__
-                    1. Click the settings icon/cog wheel next to your project name at the top of the new Firebase Console__
-                    2. Click Project settings__
-                    3. Click on the Cloud Messaging tab__
-                    4. The key is right under Server Key__
-            4. Follow step 7 only if you want to support Input type location
+Note:
+
+1.  Use the above codes with valid businessID and baseAPIUrl.
+2.  Above code is for pushing the ChatViewController, you can use ChatViewController as per your requirement
+3.  Configure the FCM server key on fcm-plugin to send the push notifications to the App. Use below steps to get FCM server key.
+    1. On  FCM console
+    2. Click the settings icon/cog wheel next to your project name at the top of the new Firebase Console
+    3. Click Project settings
+    4. Click on the Cloud Messaging tab
+    5. The key is right under Server Key
+4. Follow step 7 only if you want to support Input type location
                     
 #### Source Code Installation
 
