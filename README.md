@@ -156,7 +156,7 @@ Objective C :
             controller.headerLogoImageName = @"chatty";
             [self.navigationController pushViewController:controller animated:YES];
         
-7. If you want to support location input type. You can include a  `GooglePlacePicker`  in your project with the [Google Places Documentation](https://developers.google.com/places/ios-api/start) . After Integrating the places to the application, Follow below steps to complete the Installation.
+7. If you want to support location input type. You can include a  `GooglePlacePicker`  in your project with the [Google Places Documentation](https://developers.google.com/places/ios-api/start)(Follow the link upto Step 4). After Integrating the places to the application, Follow below steps to complete the Installation.
 
 Swift :
 Import `GooglePlacePicker`  in your module where you are initializing the SDK code
@@ -206,7 +206,7 @@ Import `GooglePlacePicker`  in your module where you are initializing the SDK co
             @import GooglePlacePicker;
 
 
-Connect to `ChatViewControllerDelegate` and the implement the below method:
+Connect to `ChatViewControllerDelegate` and implement the below method:
 
 
             controller.delegate = self
