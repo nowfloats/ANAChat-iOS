@@ -26,6 +26,8 @@ import MobileCoreServices
     var inputTypeButton : InputTypeButton?
     var inputDatePickerView : DatePickerView?
     
+    var customAlertView : CustomAlertView?
+
     public var businessId : String = ""
     public var headerTitle : String = "Chatty"
     public var headerDescription : String = "(ANA Intelligence agent)"
@@ -351,6 +353,9 @@ import MobileCoreServices
         }
         self.automaticallyAdjustsScrollViewInsets = false
 
+        if self.reachability.isReachable ==  false{
+            self.showCustomAlertView()
+        }
     }
     
     func registerNibs(){
@@ -669,6 +674,34 @@ import MobileCoreServices
             }
         }
     }
+    
+    //MARK: -
+    // MARK: CustomAlertView Methods
+
+    func showCustomAlertView(){
+        if customAlertView != nil{
+            return
+        }
+        
+        customAlertView = CommonUtility.getFrameworkBundle().loadNibNamed("CustomAlertView", owner: self, options: nil)?[0] as? CustomAlertView
+        customAlertView?.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+        customAlertView?.frame = CGRect(x: 0, y: 0, width: Int(UIScreen.main.bounds.size.width), height: Int(UIScreen.main.bounds.size.height))
+        customAlertView?.contentBackgroundView.frame = CGRect(x: 0, y: Int(UIScreen.main.bounds.size.height), width: Int((customAlertView?.contentBackgroundView.frame.size.width)!), height: Int((customAlertView?.contentBackgroundView.frame.size.height)!))
+        let win:UIWindow = UIApplication.shared.delegate!.window!!
+        win.addSubview(customAlertView!)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.customAlertView?.contentBackgroundView.frame = CGRect(x: 0, y: Int(UIScreen.main.bounds.size.height) - Int((self.customAlertView?.contentBackgroundView.frame.size.height)!), width: Int((self.customAlertView?.contentBackgroundView.frame.size.width)!), height: Int((self.customAlertView?.contentBackgroundView.frame.size.height)!))
+        }
+        customAlertView?.addTapGesture(tapNumber: 1, target: self, action: #selector(removeCustomAlertview))
+    }
+    
+    func removeCustomAlertview(){
+        if customAlertView != nil{
+            customAlertView?.removeFromSuperview()
+        }
+    }
+    
     // MARK: -
     // MARK: InputTextFieldViewDelegate Methods
     

@@ -18,6 +18,7 @@ class ChatSenderMediaCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var mediaTypeImageView: UIImageView!
     @IBOutlet weak var shadowView: UIView!
+    @IBOutlet weak var statusImageView: UIImageView!
     
     var delegate:ChatMediaCellDelegate?
     var shape = CAShapeLayer()
@@ -119,6 +120,14 @@ class ChatSenderMediaCell: UITableViewCell {
     public func configureView(_ messageObject:Message , showArrow : Bool){
         self.playButton.isHidden = true
         self.messageObject = messageObject
+        if messageObject.syncedWithServer == true{
+            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sentImage").withRenderingMode(.alwaysTemplate)
+        }else{
+            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sendingImage").withRenderingMode(.alwaysTemplate)
+        }
+        self.statusImageView.tintColor = UIColor.white
+
+        
         let myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = (self.cellImage.center)
         myActivityIndicator.startAnimating()
@@ -162,7 +171,7 @@ class ChatSenderMediaCell: UITableViewCell {
                                 self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "attachmentIcon")
                                 self.cellImage.backgroundColor = UIColor.white
                                 self.cellImage.contentMode = .scaleAspectFit
-                                self.mediaTypeImageView.image = CommonUtility.getImageFromBundle(name: "attachmentIcon")
+                                self.cellImage.image = UIImage(named : "attachmentIcon")
                             default:
                                 break
                             }
@@ -171,7 +180,8 @@ class ChatSenderMediaCell: UITableViewCell {
                     }
                 }
             }
-        }else if let inputTypeLocation = messageObject as? InputLocation{
+        }
+        else if let inputTypeLocation = messageObject as? InputLocation{
             if let inputInfo = inputTypeLocation.inputInfo as? NSDictionary{
                 self.playButton.isHidden = true
                 self.descriptionLabel.text = "Map"
@@ -189,7 +199,6 @@ class ChatSenderMediaCell: UITableViewCell {
             }
         }
 
-        
         if let messageTimeStamp = messageObject.timestamp{
            self.timeLbl.text =  CommonUtility.getTimeString(messageTimeStamp)
         }else{

@@ -11,6 +11,9 @@
 		231B3961F25C5514FC50456917B3B4CB /* Pods-ANAChat_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5901323187388A1B3CD1A90D1D347DA0 /* Pods-ANAChat_Example-dummy.m */; };
 		27AB601779404C0A698059799D63927F /* ANAChat-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E91AA439E6F9DF148C9C6362F1E8C2C0 /* ANAChat-dummy.m */; };
 		2CB5395526431829DF28FB13A79A100B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		30A969181FD9446D009C0121 /* ChatSenderTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A969151FD9446D009C0121 /* ChatSenderTextCell.swift */; };
+		30A969191FD9446D009C0121 /* ChatSenderMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A969171FD9446D009C0121 /* ChatSenderMediaCell.swift */; };
+		30A9691C1FD94477009C0121 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30A9691A1FD94477009C0121 /* CustomAlertView.swift */; };
 		43CBE4A0E414DF031B9FA7A4360940A1 /* Pods-ANAChat_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9AA7E18FCCCA087542D4AA7A10B224 /* Pods-ANAChat_Tests-dummy.m */; };
 		519E54F8EBE7D1CABC956E11E7C495DF /* ANAChat-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AA8E5965D48453B1D3AD48D2FC928BD /* ANAChat-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		586D7B40F500C9C6F7FF55F29B64D886 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
@@ -37,9 +40,15 @@
 		2CEFA7E4A3779D66E5FE40EC1935FFEA /* Pods-ANAChat_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ANAChat_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2D7013B9F58789E5E38C2B4E0E6D6CB5 /* Pods-ANAChat_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ANAChat_Example-resources.sh"; sourceTree = "<group>"; };
 		3027C5881FA85BE8002DE921 /* Chat_iOSSDK.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chat_iOSSDK.xcdatamodel; sourceTree = "<group>"; };
-		3027C5891FA85C44002DE921 /* SDKAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SDKAssets.xcassets; sourceTree = "<group>"; };
 		3059CC091FA76C5E007C4C47 /* FCMMessagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMMessagesManager.swift; sourceTree = "<group>"; };
 		3059CC0A1FA76CD5007C4C47 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		30A969131FD94457009C0121 /* SDKAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SDKAssets.xcassets; sourceTree = "<group>"; };
+		30A969141FD9446D009C0121 /* ChatSenderMediaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatSenderMediaCell.xib; sourceTree = "<group>"; };
+		30A969151FD9446D009C0121 /* ChatSenderTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatSenderTextCell.swift; sourceTree = "<group>"; };
+		30A969161FD9446D009C0121 /* ChatSenderTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatSenderTextCell.xib; sourceTree = "<group>"; };
+		30A969171FD9446D009C0121 /* ChatSenderMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatSenderMediaCell.swift; sourceTree = "<group>"; };
+		30A9691A1FD94477009C0121 /* CustomAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
+		30A9691B1FD94477009C0121 /* CustomAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomAlertView.xib; sourceTree = "<group>"; };
 		30B126941FA75CC60012652B /* SDKMain.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SDKMain.storyboard; sourceTree = "<group>"; };
 		30BE4ABA1FA7593100F64363 /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		30BE4ABD1FA7594500F64363 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -54,10 +63,6 @@
 		30BE4ACB1FA7594500F64363 /* ChatReceiverMediaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatReceiverMediaCell.xib; sourceTree = "<group>"; };
 		30BE4ACC1FA7594500F64363 /* ChatReceiveTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatReceiveTextCell.swift; sourceTree = "<group>"; };
 		30BE4ACD1FA7594500F64363 /* ChatReceiveTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatReceiveTextCell.xib; sourceTree = "<group>"; };
-		30BE4ACE1FA7594500F64363 /* ChatSenderMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSenderMediaCell.swift; sourceTree = "<group>"; };
-		30BE4ACF1FA7594500F64363 /* ChatSenderMediaCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatSenderMediaCell.xib; sourceTree = "<group>"; };
-		30BE4AD01FA7594500F64363 /* ChatSenderTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSenderTextCell.swift; sourceTree = "<group>"; };
-		30BE4AD11FA7594500F64363 /* ChatSenderTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatSenderTextCell.xib; sourceTree = "<group>"; };
 		30BE4AD21FA7594500F64363 /* TypingIndicatorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingIndicatorCell.swift; sourceTree = "<group>"; };
 		30BE4AD31FA7594500F64363 /* TypingIndicatorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TypingIndicatorCell.xib; sourceTree = "<group>"; };
 		30BE4AD51FA7594500F64363 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -246,7 +251,7 @@
 		30BE4AB91FA7593100F64363 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				3027C5891FA85C44002DE921 /* SDKAssets.xcassets */,
+				30A969131FD94457009C0121 /* SDKAssets.xcassets */,
 				30BE4ABC1FA7594500F64363 /* APIHelpers */,
 				30BE4B081FA7594500F64363 /* DBHelpers */,
 				30BE4B061FA7594500F64363 /* MockJson */,
@@ -281,6 +286,10 @@
 		30BE4AC11FA7594500F64363 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				30A969171FD9446D009C0121 /* ChatSenderMediaCell.swift */,
+				30A969141FD9446D009C0121 /* ChatSenderMediaCell.xib */,
+				30A969151FD9446D009C0121 /* ChatSenderTextCell.swift */,
+				30A969161FD9446D009C0121 /* ChatSenderTextCell.xib */,
 				30CFC5091FB5D24200DD95A9 /* ChatCarouselCollectionCell.swift */,
 				30CFC50A1FB5D24200DD95A9 /* ChatCarouselCollectionCell.xib */,
 				30BE4AC41FA7594500F64363 /* ChatListTableViewCell.swift */,
@@ -293,10 +302,6 @@
 				30BE4ACB1FA7594500F64363 /* ChatReceiverMediaCell.xib */,
 				30BE4ACC1FA7594500F64363 /* ChatReceiveTextCell.swift */,
 				30BE4ACD1FA7594500F64363 /* ChatReceiveTextCell.xib */,
-				30BE4ACE1FA7594500F64363 /* ChatSenderMediaCell.swift */,
-				30BE4ACF1FA7594500F64363 /* ChatSenderMediaCell.xib */,
-				30BE4AD01FA7594500F64363 /* ChatSenderTextCell.swift */,
-				30BE4AD11FA7594500F64363 /* ChatSenderTextCell.xib */,
 				30BE4AD21FA7594500F64363 /* TypingIndicatorCell.swift */,
 				30BE4AD31FA7594500F64363 /* TypingIndicatorCell.xib */,
 			);
@@ -316,6 +321,8 @@
 		30BE4AD81FA7594500F64363 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				30A9691A1FD94477009C0121 /* CustomAlertView.swift */,
+				30A9691B1FD94477009C0121 /* CustomAlertView.xib */,
 				30BE4AD91FA7594500F64363 /* AddressView.swift */,
 				30C499DD1FCD6393005B2095 /* AddressView.xib */,
 				30BE4ADB1FA7594500F64363 /* CustomHeaderView.swift */,
@@ -592,7 +599,7 @@
 				LastUpgradeCheck = 0700;
 				TargetAttributes = {
 					798155A62E4282C7808211A34F74F6BF = {
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 0910;
 					};
 				};
 			};
@@ -628,7 +635,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30A969191FD9446D009C0121 /* ChatSenderMediaCell.swift in Sources */,
 				27AB601779404C0A698059799D63927F /* ANAChat-dummy.m in Sources */,
+				30A9691C1FD94477009C0121 /* CustomAlertView.swift in Sources */,
+				30A969181FD9446D009C0121 /* ChatSenderTextCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

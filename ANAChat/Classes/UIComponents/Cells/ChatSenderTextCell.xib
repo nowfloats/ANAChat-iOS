@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -49,27 +49,34 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8:31 PM" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nnx-UG-inX" userLabel="timeLbl">
-                                <rect key="frame" x="-7.5" y="49.5" width="90" height="11"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="90" id="VSr-pu-dCu"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="49.5" width="66.5" height="11"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YnB-6Z-LIi">
+                                <rect key="frame" x="71.5" y="49" width="10" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="MRh-xy-5ZP"/>
+                                    <constraint firstAttribute="width" constant="10" id="nJC-Ao-KQO"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Nnx-UG-inX" firstAttribute="top" secondItem="lYg-sG-Sim" secondAttribute="bottom" constant="1" id="2AO-G7-FgP"/>
                             <constraint firstAttribute="bottom" secondItem="Nnx-UG-inX" secondAttribute="bottom" constant="4" id="9dk-f0-yzq"/>
-                            <constraint firstAttribute="trailing" secondItem="Nnx-UG-inX" secondAttribute="trailing" constant="8" id="9wb-z3-DzV"/>
                             <constraint firstAttribute="trailing" secondItem="0Wm-zI-ek0" secondAttribute="trailing" constant="-5" id="HIi-i6-pc5"/>
                             <constraint firstItem="0Wm-zI-ek0" firstAttribute="top" secondItem="rV8-ML-g1H" secondAttribute="top" id="Jlo-lj-wxM"/>
                             <constraint firstAttribute="trailing" secondItem="lYg-sG-Sim" secondAttribute="trailing" constant="28" id="MLc-VC-Jo5"/>
+                            <constraint firstItem="YnB-6Z-LIi" firstAttribute="leading" secondItem="Nnx-UG-inX" secondAttribute="trailing" constant="5" id="Wbc-yA-54B"/>
                             <constraint firstItem="0Wm-zI-ek0" firstAttribute="leading" secondItem="rV8-ML-g1H" secondAttribute="leading" id="c2J-YM-zzv"/>
                             <constraint firstItem="lYg-sG-Sim" firstAttribute="leading" secondItem="rV8-ML-g1H" secondAttribute="leading" constant="30" id="dvC-FM-NPC"/>
                             <constraint firstAttribute="bottom" secondItem="0Wm-zI-ek0" secondAttribute="bottom" id="ebv-x9-CJo"/>
                             <constraint firstAttribute="bottom" secondItem="lYg-sG-Sim" secondAttribute="bottom" constant="16" id="fM2-7G-3sq"/>
+                            <constraint firstItem="YnB-6Z-LIi" firstAttribute="centerY" secondItem="Nnx-UG-inX" secondAttribute="centerY" constant="-1" id="m9Y-3O-bji"/>
+                            <constraint firstItem="Nnx-UG-inX" firstAttribute="leading" secondItem="rV8-ML-g1H" secondAttribute="leading" id="oOQ-L4-T1X"/>
+                            <constraint firstItem="f5g-RM-VNL" firstAttribute="leading" secondItem="YnB-6Z-LIi" secondAttribute="trailing" constant="6" id="oeB-lW-5m4"/>
                             <constraint firstItem="f5g-RM-VNL" firstAttribute="top" secondItem="rV8-ML-g1H" secondAttribute="top" id="pc9-fn-se1"/>
                             <constraint firstAttribute="trailing" secondItem="f5g-RM-VNL" secondAttribute="trailing" id="uUf-yO-MTx"/>
                             <constraint firstAttribute="bottom" secondItem="f5g-RM-VNL" secondAttribute="bottom" id="vZ8-UI-E7Y"/>
@@ -105,6 +112,7 @@
                 <outlet property="paddingImageView" destination="f5g-RM-VNL" id="84L-Ab-mir"/>
                 <outlet property="senderTextCellView" destination="rV8-ML-g1H" id="1kk-Ll-Q0l"/>
                 <outlet property="shadowView" destination="mOa-mc-Blm" id="3VT-Dm-MUB"/>
+                <outlet property="statusImageView" destination="YnB-6Z-LIi" id="haA-oJ-Y2S"/>
                 <outlet property="textLbl" destination="lYg-sG-Sim" id="E6Z-ED-TLi"/>
                 <outlet property="timeLbl" destination="Nnx-UG-inX" id="5QS-gN-crd"/>
             </connections>

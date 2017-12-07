@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -44,7 +44,7 @@
                                         <rect key="frame" x="0.0" y="207" width="214" height="27"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jkX-0O-hjy" userLabel="timeLbl">
-                                                <rect key="frame" x="150" y="7" width="55" height="13"/>
+                                                <rect key="frame" x="137" y="7" width="55" height="13"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="13" id="ICf-Cg-0uT"/>
                                                     <constraint firstAttribute="width" constant="55" id="efH-bG-7HE"/>
@@ -54,7 +54,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcV-Xs-9g0">
-                                                <rect key="frame" x="24" y="7" width="106" height="13"/>
+                                                <rect key="frame" x="24" y="7" width="93" height="13"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="13" id="Bfb-xL-UEF"/>
                                                 </constraints>
@@ -69,6 +69,13 @@
                                                     <constraint firstAttribute="width" constant="12" id="s98-Hy-RAq"/>
                                                 </constraints>
                                             </imageView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hd5-dK-WpE">
+                                                <rect key="frame" x="198" y="7.5" width="10" height="10"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="10" id="GKd-o0-WRP"/>
+                                                    <constraint firstAttribute="height" constant="10" id="TG9-dg-mzW"/>
+                                                </constraints>
+                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -76,9 +83,11 @@
                                             <constraint firstItem="xvj-BI-tnj" firstAttribute="centerY" secondItem="hUu-aB-ubK" secondAttribute="centerY" id="3NC-eZ-swE"/>
                                             <constraint firstItem="hcV-Xs-9g0" firstAttribute="leading" secondItem="xvj-BI-tnj" secondAttribute="trailing" constant="5" id="8gJ-NE-Afg"/>
                                             <constraint firstItem="xvj-BI-tnj" firstAttribute="leading" secondItem="hUu-aB-ubK" secondAttribute="leading" constant="7" id="FC0-9w-YLM"/>
-                                            <constraint firstAttribute="trailing" secondItem="jkX-0O-hjy" secondAttribute="trailing" constant="9" id="FJg-zj-cuh"/>
+                                            <constraint firstItem="hd5-dK-WpE" firstAttribute="leading" secondItem="jkX-0O-hjy" secondAttribute="trailing" constant="6" id="LUE-Qb-4BS"/>
                                             <constraint firstItem="jkX-0O-hjy" firstAttribute="leading" secondItem="hcV-Xs-9g0" secondAttribute="trailing" constant="20" id="N4t-fu-hNQ"/>
                                             <constraint firstAttribute="bottom" secondItem="jkX-0O-hjy" secondAttribute="bottom" constant="7" id="hS2-FN-t3L"/>
+                                            <constraint firstItem="hd5-dK-WpE" firstAttribute="centerY" secondItem="jkX-0O-hjy" secondAttribute="centerY" constant="-1" id="k3D-NG-DAy"/>
+                                            <constraint firstAttribute="trailing" secondItem="hd5-dK-WpE" secondAttribute="trailing" constant="6" id="lWU-gD-HQu"/>
                                             <constraint firstAttribute="height" constant="27" id="tyU-vp-1HR"/>
                                             <constraint firstItem="hcV-Xs-9g0" firstAttribute="centerY" secondItem="hUu-aB-ubK" secondAttribute="centerY" id="vv5-ed-nyT"/>
                                         </constraints>
@@ -152,6 +161,7 @@
                 <outlet property="paddingImageView" destination="2l3-3R-Afi" id="Jp7-Ia-lAt"/>
                 <outlet property="playButton" destination="72V-kn-NDv" id="CVj-5U-HVG"/>
                 <outlet property="shadowView" destination="sEy-Td-6WQ" id="fl7-Jz-aUd"/>
+                <outlet property="statusImageView" destination="hd5-dK-WpE" id="S4a-E7-nE6"/>
                 <outlet property="timeLbl" destination="jkX-0O-hjy" id="nK8-cu-c7t"/>
             </connections>
         </tableViewCell>

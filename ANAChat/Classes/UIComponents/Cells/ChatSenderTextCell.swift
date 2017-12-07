@@ -14,6 +14,7 @@ class ChatSenderTextCell: UITableViewCell {
     @IBOutlet weak var arrowViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var cellBackgroundView: UIView!
+    @IBOutlet weak var statusImageView: UIImageView!
     
     var shape = CAShapeLayer()
     var maskLayer = CAShapeLayer()
@@ -67,6 +68,12 @@ class ChatSenderTextCell: UITableViewCell {
             self.arrowViewHeightConstraint.constant = 0
         }
         
+        if messageObject.syncedWithServer == true{
+            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sentImage")
+        }else{
+            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sendingImage")
+        }
+        
         self.setNeedsLayout()
         if let simpleMessage = messageObject as? Simple{
             if let text = simpleMessage.text{
@@ -97,7 +104,6 @@ class ChatSenderTextCell: UITableViewCell {
                     let text = CommonUtility.getAddressTextFromMessageObject(inputAddress)
                     self.textLbl.text = text
                 }
-
             default:
                 if let inputInfo = inputMessage.inputInfo as? NSDictionary{
                     if let text = inputInfo[Constants.kValKey] as? String{

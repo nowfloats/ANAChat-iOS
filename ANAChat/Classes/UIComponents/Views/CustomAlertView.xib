@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomAlertView" customModule="NowFloats_iOSSDK" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yiT-IT-1Hc">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="500"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ywr-SX-kbT">
+                            <rect key="frame" x="0.0" y="322" width="375" height="178"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noInternetImage" translatesAutoresizingMaskIntoConstraints="NO" id="Q4j-20-r4r">
+                                    <rect key="frame" x="167" y="27" width="40" height="33"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="33" id="2tc-0S-bls"/>
+                                        <constraint firstAttribute="width" constant="40" id="Mjt-Ls-5dB"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unable to connect" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ii6-Gx-8yA">
+                                    <rect key="frame" x="20" y="68" width="335" height="18"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="18" id="t7z-pg-uGw"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uh oh, seems like you've lost your internet connection" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PoN-a5-jaN">
+                                    <rect key="frame" x="20" y="90" width="335" height="12"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="12" id="Sb5-7O-6Id"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                    <color key="textColor" red="0.50980392156862742" green="0.50980392156862742" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y0f-rL-NJ2">
+                                    <rect key="frame" x="116.5" y="115" width="142" height="26"/>
+                                    <color key="backgroundColor" red="0.80784313730000001" green="0.1058823529" blue="0.078431372550000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="142" id="gEG-Ma-seq"/>
+                                        <constraint firstAttribute="height" constant="26" id="r62-59-Sen"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="10"/>
+                                    <state key="normal" title="Check settings">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="settingsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="d6j-hT-y4L"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="PoN-a5-jaN" firstAttribute="leading" secondItem="ywr-SX-kbT" secondAttribute="leading" constant="20" id="1Sw-VV-prF"/>
+                                <constraint firstItem="y0f-rL-NJ2" firstAttribute="top" secondItem="PoN-a5-jaN" secondAttribute="bottom" constant="13" id="3mF-GU-hWw"/>
+                                <constraint firstItem="Q4j-20-r4r" firstAttribute="top" secondItem="ywr-SX-kbT" secondAttribute="top" constant="27" id="5sr-ac-JRK"/>
+                                <constraint firstItem="Ii6-Gx-8yA" firstAttribute="leading" secondItem="ywr-SX-kbT" secondAttribute="leading" constant="20" id="8Hv-tT-ody"/>
+                                <constraint firstAttribute="trailing" secondItem="Ii6-Gx-8yA" secondAttribute="trailing" constant="20" id="A5v-sN-XdQ"/>
+                                <constraint firstItem="Ii6-Gx-8yA" firstAttribute="top" secondItem="Q4j-20-r4r" secondAttribute="bottom" constant="8" id="AAa-sM-APB"/>
+                                <constraint firstItem="y0f-rL-NJ2" firstAttribute="centerX" secondItem="ywr-SX-kbT" secondAttribute="centerX" id="F2j-1G-A8z"/>
+                                <constraint firstItem="Q4j-20-r4r" firstAttribute="centerX" secondItem="ywr-SX-kbT" secondAttribute="centerX" id="OVg-VV-b7N"/>
+                                <constraint firstAttribute="trailing" secondItem="PoN-a5-jaN" secondAttribute="trailing" constant="20" id="QEH-8M-zLZ"/>
+                                <constraint firstItem="PoN-a5-jaN" firstAttribute="top" secondItem="Ii6-Gx-8yA" secondAttribute="bottom" constant="4" id="Uqn-oA-172"/>
+                                <constraint firstAttribute="height" constant="178" id="spq-f3-yzc"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="ywr-SX-kbT" firstAttribute="leading" secondItem="yiT-IT-1Hc" secondAttribute="leading" id="MJN-LB-0pV"/>
+                        <constraint firstAttribute="trailing" secondItem="ywr-SX-kbT" secondAttribute="trailing" id="iJN-QP-ZE7"/>
+                        <constraint firstAttribute="bottom" secondItem="ywr-SX-kbT" secondAttribute="bottom" id="ifw-Zg-k8j"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="yiT-IT-1Hc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CJ5-0K-xpv"/>
+                <constraint firstItem="yiT-IT-1Hc" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="PC6-gY-lVc"/>
+                <constraint firstItem="yiT-IT-1Hc" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="QQn-QB-OaF"/>
+                <constraint firstItem="yiT-IT-1Hc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="coS-fy-mvL"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="alertDescription" destination="PoN-a5-jaN" id="j5j-45-Mab"/>
+                <outlet property="alertTitle" destination="Ii6-Gx-8yA" id="yJf-aj-di8"/>
+                <outlet property="contentBackgroundView" destination="ywr-SX-kbT" id="7zz-CE-53j"/>
+                <outlet property="headerView" destination="Q4j-20-r4r" id="B7g-zi-WPq"/>
+                <outlet property="settingsButton" destination="y0f-rL-NJ2" id="n2F-cm-B4e"/>
+            </connections>
+            <point key="canvasLocation" x="29.5" y="-211"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="noInternetImage" width="40" height="33"/>
+    </resources>
+</document>
