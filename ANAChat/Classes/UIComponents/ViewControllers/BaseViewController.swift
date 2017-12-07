@@ -14,7 +14,7 @@ import UIKit
         do {
             try self.reachability.startNotifier()
             if self.reachability.isReachable{
-                self.networkIsReachable()
+                self.networkIsReachable(true)
             }
         } catch {
         }
@@ -43,18 +43,19 @@ import UIKit
     @objc func reachabilityChanged(notification:Notification) {
         let reachability = notification.object as! Reachability
         if reachability.isReachable {
-            self.networkIsReachable()
+            self.networkIsReachable(true)
             if reachability.isReachableViaWiFi {
                 print("Reachable via WiFi")
             } else {
                 print("Reachable via Cellular")
             }
         } else {
+            self.networkIsReachable(false)
             print("Network not reachable")
         }
     }
     
-    func networkIsReachable() {
+    func networkIsReachable(_ isReachable : Bool) {
         //Subclasses implement this method to provide custom implementation when network is reachable
     }
 }

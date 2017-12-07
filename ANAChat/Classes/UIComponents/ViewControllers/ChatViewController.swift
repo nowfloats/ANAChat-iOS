@@ -26,11 +26,8 @@ import MobileCoreServices
     var inputTypeButton : InputTypeButton?
     var inputDatePickerView : DatePickerView?
     
-    var customAlertView : CustomAlertView?
-
     public var businessId : String = ""
     public var headerTitle : String = "Chatty"
-    public var headerDescription : String = "(ANA Intelligence agent)"
     public var headerLogoImageName : String = "chatty"
     public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
     public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
@@ -297,22 +294,27 @@ import MobileCoreServices
         // Dispose of any resources that can be recreated.
     }
     
-    override func networkIsReachable() {
-        if (dataHelper.getUnsentMessagesFromDB().count) > 0{
-            for i in 0 ..< (dataHelper.getUnsentMessagesFromDB().count) {
-                let messageObject = dataHelper.getUnsentMessagesFromDB()[i] as! Message
-                var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
-                if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-                    if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
-                        metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                        requestDict[Constants.kMetaKey] = metaInfo
+    override func networkIsReachable(_ isReachable: Bool) {
+        if isReachable == true {
+            self.headerDescriptionLabel.text = Constants.kAvailableKey
+            if (dataHelper.getUnsentMessagesFromDB().count) > 0{
+                for i in 0 ..< (dataHelper.getUnsentMessagesFromDB().count) {
+                    let messageObject = dataHelper.getUnsentMessagesFromDB()[i] as! Message
+                    var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
+                    if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                        if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
+                            metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                            requestDict[Constants.kMetaKey] = metaInfo
+                        }
                     }
+                    
+                    dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                        self.reloadLastPreviousCell()
+                    })
                 }
-                
-                dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
-                    self.reloadLastPreviousCell()
-                })
             }
+        }else{
+            self.headerDescriptionLabel.text = Constants.kConnectingKey
         }
     }
     
@@ -327,7 +329,6 @@ import MobileCoreServices
         PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
         PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
         headerTitleLabel.text = headerTitle
-        headerDescriptionLabel.text = headerDescription
         if self.headerLogoImageName == "chatty"{
             headerLogo.image =  CommonUtility.getImageFromBundle(name: "chatty")
         }else{
@@ -352,10 +353,6 @@ import MobileCoreServices
             self.tableView.addSubview(refreshControl)
         }
         self.automaticallyAdjustsScrollViewInsets = false
-
-        if self.reachability.isReachable ==  false{
-            self.showCustomAlertView()
-        }
     }
     
     func registerNibs(){
@@ -672,33 +669,6 @@ import MobileCoreServices
                     self.inputDatePickerView = nil
                 })
             }
-        }
-    }
-    
-    //MARK: -
-    // MARK: CustomAlertView Methods
-
-    func showCustomAlertView(){
-        if customAlertView != nil{
-            return
-        }
-        
-        customAlertView = CommonUtility.getFrameworkBundle().loadNibNamed("CustomAlertView", owner: self, options: nil)?[0] as? CustomAlertView
-        customAlertView?.backgroundColor = UIColor.black.withAlphaComponent(0.3)
-        customAlertView?.frame = CGRect(x: 0, y: 0, width: Int(UIScreen.main.bounds.size.width), height: Int(UIScreen.main.bounds.size.height))
-        customAlertView?.contentBackgroundView.frame = CGRect(x: 0, y: Int(UIScreen.main.bounds.size.height), width: Int((customAlertView?.contentBackgroundView.frame.size.width)!), height: Int((customAlertView?.contentBackgroundView.frame.size.height)!))
-        let win:UIWindow = UIApplication.shared.delegate!.window!!
-        win.addSubview(customAlertView!)
-        
-        UIView.animate(withDuration: 0.3) {
-            self.customAlertView?.contentBackgroundView.frame = CGRect(x: 0, y: Int(UIScreen.main.bounds.size.height) - Int((self.customAlertView?.contentBackgroundView.frame.size.height)!), width: Int((self.customAlertView?.contentBackgroundView.frame.size.width)!), height: Int((self.customAlertView?.contentBackgroundView.frame.size.height)!))
-        }
-        customAlertView?.addTapGesture(tapNumber: 1, target: self, action: #selector(removeCustomAlertview))
-    }
-    
-    func removeCustomAlertview(){
-        if customAlertView != nil{
-            customAlertView?.removeFromSuperview()
         }
     }
     

@@ -74,6 +74,8 @@ struct Constants {
     static let kStateKey                = "state"
     static let kCountryInfo             = "country"
     static let kPinInfo                 = "pin"
+    static let kAvailableKey            = "Available"
+    static let kConnectingKey           = "Trying to connect"
 }
 
 struct AlertTexts {
