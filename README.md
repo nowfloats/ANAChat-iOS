@@ -139,7 +139,6 @@ Swift:
             controller.businessId = "#businessID"
             controller.baseAPIUrl = "#baseUrl"
             controller.headerTitle = "Chatty"
-            controller.headerDescription = "(ANA Intelligence Agent)"
             controller.baseThemeColor = UIColor.init(red: 0.549, green: 0.784, blue: 0.235, alpha: 1.0)
             controller.headerLogoImageName = "chatty"
             self.navigationController?.pushViewController(controller, animated: true)
@@ -151,7 +150,6 @@ Objective C :
             controller.businessId = @"#businessID";
             controller.baseAPIUrl = @"#baseUrl";
             controller.headerTitle = @"Chatty";
-            controller.headerDescription = @"(ANA Intelligence Agent)";
             controller.baseThemeColor = [UIColor colorWithRed:0.549 green:0.784 blue:0.235 alpha:1.0];
             controller.headerLogoImageName = @"chatty";
             [self.navigationController pushViewController:controller animated:YES];
