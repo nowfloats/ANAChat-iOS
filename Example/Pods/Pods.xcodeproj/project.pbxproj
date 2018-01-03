@@ -42,7 +42,6 @@
 		3027C5881FA85BE8002DE921 /* Chat_iOSSDK.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chat_iOSSDK.xcdatamodel; sourceTree = "<group>"; };
 		3059CC091FA76C5E007C4C47 /* FCMMessagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMMessagesManager.swift; sourceTree = "<group>"; };
 		3059CC0A1FA76CD5007C4C47 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
-		30A969131FD94457009C0121 /* SDKAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SDKAssets.xcassets; sourceTree = "<group>"; };
 		30A969141FD9446D009C0121 /* ChatSenderMediaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatSenderMediaCell.xib; sourceTree = "<group>"; };
 		30A969151FD9446D009C0121 /* ChatSenderTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatSenderTextCell.swift; sourceTree = "<group>"; };
 		30A969161FD9446D009C0121 /* ChatSenderTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatSenderTextCell.xib; sourceTree = "<group>"; };
@@ -148,6 +147,7 @@
 		30C499DD1FCD6393005B2095 /* AddressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressView.xib; sourceTree = "<group>"; };
 		30CFC5091FB5D24200DD95A9 /* ChatCarouselCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCarouselCollectionCell.swift; sourceTree = "<group>"; };
 		30CFC50A1FB5D24200DD95A9 /* ChatCarouselCollectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatCarouselCollectionCell.xib; sourceTree = "<group>"; };
+		30ED78B51FFCC088007CEA67 /* SDKAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = SDKAssets.xcassets; sourceTree = "<group>"; };
 		30F60ED81FACB0120010C26F /* InputTextFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InputTextFieldView.xib; sourceTree = "<group>"; };
 		3AA8E5965D48453B1D3AD48D2FC928BD /* ANAChat-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ANAChat-umbrella.h"; sourceTree = "<group>"; };
 		3B0AFD2491288033548D6D938C0DCED9 /* Pods-ANAChat_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ANAChat_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -251,7 +251,7 @@
 		30BE4AB91FA7593100F64363 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				30A969131FD94457009C0121 /* SDKAssets.xcassets */,
+				30ED78B51FFCC088007CEA67 /* SDKAssets.xcassets */,
 				30BE4ABC1FA7594500F64363 /* APIHelpers */,
 				30BE4B081FA7594500F64363 /* DBHelpers */,
 				30BE4B061FA7594500F64363 /* MockJson */,

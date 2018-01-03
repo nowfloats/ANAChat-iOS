@@ -35,6 +35,7 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         // Initialization code
         titleLabel.font = UIConfigurationUtility.Fonts.carouselTitleFont
         descriptionLabel.font = UIConfigurationUtility.Fonts.carouselDescriptionFont
+        titleLabel.textColor = UIConfigurationUtility.Colors.TextColor
         self.buttonsTableView.delegate = self
         self.buttonsTableView.dataSource = self
 //        self.buttonsTableView.delegate = self
@@ -64,6 +65,8 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         }else{
             self.imageViewHeightConstraint.constant = 130
         }
+        self.imageView.image = CommonUtility.getImageFromBundle(name: "placeholder")
+
         if item.mediaType == 0{
             self.playButton.isHidden = true
             if let url = item.mediaUrl{

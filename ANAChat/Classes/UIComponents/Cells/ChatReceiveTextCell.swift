@@ -30,6 +30,7 @@ class ChatReceiveTextCell: UITableViewCell {
         cellBackgroundView?.layer.cornerRadius = 10.0
         self.arrowView.backgroundColor = UIColor.clear
         textLbl?.font = PreferencesManager.sharedInstance.getContentFont()
+        textLbl.textColor = UIConfigurationUtility.Colors.TextColor
         timeLbl?.font = UIConfigurationUtility.Fonts.TimeLblFont
         timeLbl?.alpha = 0.5
         

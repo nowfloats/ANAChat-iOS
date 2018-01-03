@@ -25,6 +25,7 @@ class ChatSenderTextCell: UITableViewCell {
         paddingImageView.backgroundColor = PreferencesManager.sharedInstance.getSenderThemeColor()
         cellBackgroundView?.layer.cornerRadius = 10.0
         textLbl?.font = PreferencesManager.sharedInstance.getContentFont()
+        textLbl.textColor = UIConfigurationUtility.Colors.TextColor
         timeLbl?.font = UIConfigurationUtility.Fonts.TimeLblFont
         timeLbl?.alpha = 0.5
 
@@ -69,11 +70,13 @@ class ChatSenderTextCell: UITableViewCell {
         }
         
         if messageObject.syncedWithServer == true{
-            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sentImage")
+            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sentImage").withRenderingMode(.alwaysTemplate)
         }else{
-            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sendingImage")
+            self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sendingImage").withRenderingMode(.alwaysTemplate)
         }
         
+        self.statusImageView.tintColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+
         self.setNeedsLayout()
         if let simpleMessage = messageObject as? Simple{
             if let text = simpleMessage.text{

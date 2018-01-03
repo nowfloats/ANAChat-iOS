@@ -24,6 +24,7 @@ struct UIConfigurationUtility{
         static let BackgroundColor = UIColor.init(hexString: "#F1F2F4")
         static let SenderThemeColor = UIColor.init(hexString: "#3C3C3C")
         static let MediaDescriptionColor = UIColor.init(hexString: "#FFFFFF")
+        static let TextColor = UIColor.init(hexString: "#3c3c3c")
     }
     
 }

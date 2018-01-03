@@ -97,6 +97,7 @@ class ChatReceiverMediaCell: UITableViewCell {
         let myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         myActivityIndicator.center = (self.cellImage.center)
         myActivityIndicator.startAnimating()
+        self.cellImage.image = CommonUtility.getImageFromBundle(name: "placeholder")
         //        self.cellImage.addSubview(myActivityIndicator)
         if let simpleMessage = messageObject as? Simple{
             switch simpleMessage.mediaType {

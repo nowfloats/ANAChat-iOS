@@ -31,6 +31,8 @@ import MobileCoreServices
     public var headerLogoImageName : String = "chatty"
     public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
     public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
+    public var botTitleColor : UIColor = UIColor.white
+
     public var baseAPIUrl : String!
     
     var contentFont : UIFont?
@@ -325,6 +327,8 @@ import MobileCoreServices
         if let contentFont = self.contentFont{
             PreferencesManager.sharedInstance.configureContentText(withFont: contentFont)
         }
+        self.headerTitleLabel.textColor = self.botTitleColor
+        self.headerDescriptionLabel.textColor = self.botTitleColor
         PreferencesManager.sharedInstance.configureSenderTheme(withColor: senderThemeColor)
         PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
         PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
