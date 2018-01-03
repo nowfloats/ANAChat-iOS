@@ -28,7 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		23F8AAD5F51F1758812C782E /* ANAChat.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = ANAChat.podspec; path = ../ANAChat.podspec; sourceTree = "<group>"; };
+		23F8AAD5F51F1758812C782E /* ANAChat.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = ANAChat.podspec; path = ../ANAChat.podspec; sourceTree = "<group>"; };
 		56A061D5A0A13D59552C6B38 /* Pods-ANAChat_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ANAChat_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ANAChat_Tests/Pods-ANAChat_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* ANAChat_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ANAChat_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,12 +41,12 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		68D509DF7871319E6BA9146B /* Pods-ANAChat_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ANAChat_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ANAChat_Tests/Pods-ANAChat_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		859E0DE1A18E0B9BB8BB8131 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		859E0DE1A18E0B9BB8BB8131 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		876B1EFB0A5F4F3169313476 /* Pods-ANAChat_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ANAChat_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ANAChat_Example/Pods-ANAChat_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		9AEAF1020596B95DDA6A689D /* Pods_ANAChat_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ANAChat_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB4F6DFE7C055A5926DB2E2D /* Pods_ANAChat_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ANAChat_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA9B8C4467BD77FCE0E1779B /* Pods-ANAChat_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ANAChat_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-ANAChat_Example/Pods-ANAChat_Example.release.xcconfig"; sourceTree = "<group>"; };
-		F31103C0206325694069ADAC /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		F31103C0206325694069ADAC /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -529,7 +529,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -544,7 +544,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
