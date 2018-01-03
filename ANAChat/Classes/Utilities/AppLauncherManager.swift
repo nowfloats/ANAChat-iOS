@@ -6,7 +6,7 @@ import UIKit
 
 @objc public class AppLauncherManager: NSObject {
     
-    public class func didReceiveFcmToken(withToken fcmToken: String , baseAPIUrl : String, businessId : String) {
+    @objc public class func didReceiveFcmToken(withToken fcmToken: String , baseAPIUrl : String, businessId : String) {
         if baseAPIUrl.count > 0{
             APIManager.sharedInstance.configureAPIBaseUrl(withString: baseAPIUrl)
             print("Firebase registration token: \(fcmToken)")
@@ -28,7 +28,7 @@ import UIKit
         }
     }
     
-    public class func didReceiveRemoteNotification(_ userInfo: [AnyHashable : Any]){
+    @objc public class func didReceiveRemoteNotification(_ userInfo: [AnyHashable : Any]){
         switch UIApplication.shared.applicationState {
         case .active:
             FCMMessagesManager.messageReceivedFromFCMNotification(withNotificationInfo: userInfo as NSDictionary, playSound: true)

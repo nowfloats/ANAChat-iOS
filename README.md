@@ -258,11 +258,14 @@ copy the below code to your module:
 
 If you wish to install ANAChat directly into your application from source, then clone the repository and add code and resources to your application:
 
-1. Clone the respository and navigate to ANAChat-iOS-master/ANAChat/  and Drag and drop Classes folder into your project, instructing Xcode to copy items into your destination group's folder.
+1. Clone the respository and navigate to ANAChat-iOS-master/ANAChat/  and Drag and drop Classes folder into your project, instructing Xcode to copy items into your destination group's folder. If you are importing files into Objective C project, run the project after adding the files.
 
 2. FCM configuration is required to use this SDK please check the documentation [here](https://firebase.google.com/docs/cloud-messaging/ios/client) to install and configure.
 
-follow the above steps from 4 to 8 to complete the installation
+3. Follow the above steps from 4 to 8 to complete the installation.
+
+    If you are importing into Objective C project, Replace import statement to "Your-Project-Name-Swift.h".
+    If you are importing into Swift project, No import statement is required.
 
 Note:
 

@@ -15,7 +15,7 @@ import UIKit
         return uuid.uuidString.lowercased()
     }
 
-    public class func getFrameworkBundle() -> Bundle{
+    @objc public class func getFrameworkBundle() -> Bundle{
         let podBundle = Bundle(for: CoreDataManager.self)
         if  let bundleURL = podBundle.url(forResource: "ANAChat", withExtension: "bundle"){
             let bundle = Bundle(url : bundleURL)
@@ -25,7 +25,7 @@ import UIKit
         }
     }
     
-    public class func getImageFromBundle(name: String) -> UIImage {
+    @objc public class func getImageFromBundle(name: String) -> UIImage {
         return UIImage(named: name, in: CommonUtility.getFrameworkBundle(), compatibleWith: nil)!
     }
     

@@ -1538,28 +1538,19 @@ public class CoreDataContentManager: NSObject {
     
     class func updateDataBaseWithResponseObject(_ responseObject :[String: Any], message : Message,successCompletion: @escaping (_ success: Bool) -> Void ){
         let inputModel = InputModel.init(responseObject)
-        if let timeStamp = message.timestamp{
-            getMessageObjectWithTimeStamp(timeStamp, successCompletion: { (messageObject) in
-                if let messageId = inputModel.messageId{
-                    messageObject.messageId = messageId
-                }
-                if let timeStamp = inputModel.messageTimeStamp{
-                    messageObject.timestamp = timeStamp
-                }
-                if let dateStamp = inputModel.messageDateStamp{
-                    messageObject.dateStamp = dateStamp
-                }
-                messageObject.syncedWithServer = NSNumber(value: true) as! Bool
-                CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
-                    successCompletion(true)
-                }, failBlock: { (error) in
-                    successCompletion(true)
-                })
-                print(messageObject)
-            }, failCompletion: { (error) in
-                print(error ?? Error.self)
-            })
+        if let timeStamp = inputModel.messageTimeStamp{
+            message.timestamp = timeStamp
         }
+        if let dateStamp = inputModel.messageDateStamp{
+            message.dateStamp = dateStamp
+        }
+        
+        message.syncedWithServer = NSNumber(value: true) as! Bool
+        CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+            successCompletion(true)
+        }, failBlock: { (error) in
+            successCompletion(true)
+        })
     }
     
     class func getMessageObjectWithTimeStamp(_ timestamp : NSDate ,  successCompletion: @escaping (_ simpleObject: Message) -> Void , failCompletion: @escaping (_ error: Error?) -> Void){

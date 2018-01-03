@@ -26,14 +26,14 @@ import MobileCoreServices
     var inputTypeButton : InputTypeButton?
     var inputDatePickerView : DatePickerView?
     
-    public var businessId : String = ""
-    public var headerTitle : String = "Chatty"
-    public var headerLogoImageName : String = "chatty"
-    public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
-    public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
-    public var botTitleColor : UIColor = UIColor.white
+    @objc public var businessId : String = ""
+    @objc public var headerTitle : String = "Chatty"
+    @objc public var headerLogoImageName : String = "chatty"
+    @objc public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+    @objc public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
+    @objc public var botTitleColor : UIColor = UIColor.white
 
-    public var baseAPIUrl : String!
+    @objc public var baseAPIUrl : String!
     
     var contentFont : UIFont?
     
@@ -58,7 +58,7 @@ import MobileCoreServices
     @IBOutlet weak var textContainerView: UIView!
     @IBOutlet weak var textContainerViewHeightConstraint: NSLayoutConstraint!
 
-    public weak var delegate:ChatViewControllerDelegate?
+    @objc public weak var delegate:ChatViewControllerDelegate?
     
     lazy var dataHelper = DataHelper()
     
@@ -380,7 +380,7 @@ import MobileCoreServices
         self.tableView.addGestureRecognizer(tapGesture)
     }
     
-    func refresh(_ sender: Any) {
+    @objc func refresh(_ sender: Any) {
         refreshControl.endRefreshing()
         self.loadHistory(isOnLoad: false)
     }
