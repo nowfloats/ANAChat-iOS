@@ -1,22 +1,37 @@
 {
   "name": "ANAChat",
-  "version": "0.1.0",
-  "summary": "A short description of ANAChat.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/RakeshTatekonda609/ANAChat",
+  "version": "0.3.6",
+  "summary": "ANAChat iOS",
+  "description": "The Powerful **ANAChat**  iOS SDK allows you to integrate ANA to your app. Customise the UI according to your App Theme and you are all set. It is that simple!",
+  "homepage": "https://github.com/Kitsune-tools/ANAChat-iOS",
   "license": {
-    "type": "MIT",
+    "type": "GNU LESSER GENERAL PUBLIC LICENSE",
     "file": "LICENSE"
   },
   "authors": {
-    "RakeshTatekonda609": "rakesh.tatekonda@nowfloats.com"
+    "RakeshTatekonda": "rakesh.tatekonda@nowfloats.com"
   },
   "source": {
-    "git": "https://github.com/RakeshTatekonda609/ANAChat.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/Kitsune-tools/ANAChat-iOS.git",
+    "tag": "0.3.6"
+  },
+  "pod_target_xcconfig": {
+    "SWIFT_VERSION": "3.0",
+    "OTHER_SWIFT_FLAGS": "-DANAChatPod"
   },
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "ANAChat/Classes/**/*"
+  "source_files": "ANAChat/Classes/**/*.{h,m,swift}",
+  "resource_bundles": {
+    "ANAChat": [
+      "ANAChat/Classes/**/*.{storyboard,xib,xcassets,json,imageset,png,xcdatamodeld}"
+    ]
+  },
+  "frameworks": "UIKit",
+  "dependencies": {
+    "Firebase/Messaging": [
+
+    ]
+  }
 }
