@@ -125,10 +125,6 @@ import MobileCoreServices
         // Do any additional setup after loading the view, typically from a nib.
     }
  
-    override public var canBecomeFirstResponder: Bool{
-        return true
-    }
-    
     override public func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         /*
         if motion == .motionShake{
