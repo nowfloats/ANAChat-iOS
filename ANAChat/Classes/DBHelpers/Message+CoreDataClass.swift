@@ -2,6 +2,7 @@
 //  Message+CoreDataClass.swift
 //
 
+
 import Foundation
 import CoreData
 

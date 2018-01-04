@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13240" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Carousel" representedClassName=".Carousel" parentEntity="Message" syncable="YES">
         <attribute name="inputInfo" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="mandatory" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -49,6 +49,7 @@
         <relationship name="timeRange" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TimeRange" inverseName="inputTime" inverseEntity="TimeRange" syncable="YES"/>
     </entity>
     <entity name="InputTypeMedia" representedClassName=".InputTypeMedia" parentEntity="Input" syncable="YES">
+        <attribute name="mediaData" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="mediaType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="InputTypeOptions" representedClassName=".InputTypeOptions" parentEntity="Input" syncable="YES">
@@ -66,6 +67,7 @@
     </entity>
     <entity name="Message" representedClassName=".Message" syncable="YES">
         <attribute name="dateStamp" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flowId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="responseTo" optional="YES" attributeType="String" syncable="YES"/>
@@ -118,10 +120,10 @@
         <element name="InputDate" positionX="-20" positionY="-526" width="128" height="58"/>
         <element name="InputLocation" positionX="-9" positionY="-703" width="128" height="73"/>
         <element name="InputTime" positionX="-20" positionY="-616" width="128" height="58"/>
-        <element name="InputTypeMedia" positionX="-369" positionY="-801" width="128" height="60"/>
+        <element name="InputTypeMedia" positionX="-369" positionY="-801" width="128" height="75"/>
         <element name="InputTypeOptions" positionX="-11" positionY="-796" width="128" height="75"/>
         <element name="InputTypeText" positionX="-189" positionY="-468" width="128" height="150"/>
-        <element name="Message" positionX="-578" positionY="-751" width="128" height="210"/>
+        <element name="Message" positionX="-578" positionY="-751" width="128" height="225"/>
         <element name="Options" positionX="-2" positionY="-954" width="128" height="135"/>
         <element name="Participant" positionX="-560" positionY="-522" width="128" height="103"/>
         <element name="Simple" positionX="-389" positionY="-522" width="128" height="120"/>

@@ -2,6 +2,7 @@
 //  Message+CoreDataProperties.swift
 //
 
+
 import Foundation
 import CoreData
 
@@ -12,6 +13,7 @@ extension Message {
         return NSFetchRequest<Message>(entityName: "Message")
     }
 
+    @NSManaged public var dateStamp: String?
     @NSManaged public var messageId: String?
     @NSManaged public var messageType: Int16
     @NSManaged public var responseTo: String?
@@ -20,7 +22,7 @@ extension Message {
     @NSManaged public var sessionStatus: Bool
     @NSManaged public var syncedWithServer: Bool
     @NSManaged public var timestamp: NSDate?
-    @NSManaged public var dateStamp: String?
+    @NSManaged public var flowId: String?
     @NSManaged public var recipient: Participant?
     @NSManaged public var sender: Participant?
 

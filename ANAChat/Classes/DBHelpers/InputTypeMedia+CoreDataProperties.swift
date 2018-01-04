@@ -2,6 +2,7 @@
 //  InputTypeMedia+CoreDataProperties.swift
 //
 
+
 import Foundation
 import CoreData
 
@@ -13,5 +14,6 @@ extension InputTypeMedia {
     }
 
     @NSManaged public var mediaType: Int16
+    @NSManaged public var mediaData: NSObject?
 
 }
