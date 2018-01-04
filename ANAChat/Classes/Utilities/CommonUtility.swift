@@ -181,4 +181,11 @@ import UIKit
         }
         return addressString
     }
+    
+    @objc public class func getEventsDictionaryForAdditionalParams() -> Array<Any>{
+        var eventsArray = Array<Any>()
+        eventsArray.append(["type" : NSNumber(value: 21) , "data" : PreferencesManager.sharedInstance.getAdditionalParamsInfo()])
+        return eventsArray
+    }
+
 }

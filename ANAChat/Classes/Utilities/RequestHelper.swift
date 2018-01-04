@@ -262,6 +262,9 @@ class RequestHelper: NSObject {
                             contentInfo[Constants.kInputKey] = inputMessageInfo
                         }
                     }
+                    if PreferencesManager.sharedInstance.getAdditionalParamsInfo().length > 0{
+                        requestDictionary["events"] = CommonUtility.getEventsDictionaryForAdditionalParams()
+                    }
                 case Int16(MessageInputType.MessageInputTypeAddress.rawValue):
                     if let inputTypeAddress = inputObject as? InputAddress{
                         contentInfo[Constants.kMandatoryKey] = NSNumber(value:inputObject.mandatory)

@@ -32,9 +32,9 @@ import MobileCoreServices
     @objc public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
     @objc public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
     @objc public var botTitleColor : UIColor = UIColor.white
-
     @objc public var baseAPIUrl : String!
-    
+    @objc var additionalParams : Dictionary<String, Any>!
+
     var contentFont : UIFont?
     
     var isTableViewScrolling = Bool()
@@ -328,6 +328,8 @@ import MobileCoreServices
         PreferencesManager.sharedInstance.configureSenderTheme(withColor: senderThemeColor)
         PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
         PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
+        PreferencesManager.sharedInstance.configureAdditionalParameters(withDict: self.additionalParams)
+
         headerTitleLabel.text = headerTitle
         if self.headerLogoImageName == "chatty"{
             headerLogo.image =  CommonUtility.getImageFromBundle(name: "chatty")

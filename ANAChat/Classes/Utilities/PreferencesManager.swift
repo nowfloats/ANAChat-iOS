@@ -10,7 +10,8 @@ class PreferencesManager: NSObject {
     var senderThemeColor : UIColor?
     var contentTextFont : UIFont?
     var businessId : String?
-    
+    var additionalParams : Dictionary<String, Any>?
+
     func configureBaseTheme(withColor baseThemeColor : UIColor){
         self.baseThemeColor = baseThemeColor
     }
@@ -55,6 +56,24 @@ class PreferencesManager: NSObject {
         return Constants.kStaticBusinessId
     }
     
+    func configureAdditionalParameters(withDict params: Dictionary<String, Any>?){
+        self.additionalParams = params
+    }
+    
+    func getAdditionalParamsInfo() -> NSString{
+        if let params = self.additionalParams{
+            if params.count > 0{
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
+                    return NSString.init(data: jsonData, encoding: String.Encoding.utf8.rawValue)!
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        return ""
+    }
+
     class func setUserId(_ userId: String){
         // Create UserDefaults
         let defaults = UserDefaults.standard
