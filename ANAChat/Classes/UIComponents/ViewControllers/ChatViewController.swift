@@ -33,7 +33,7 @@ import MobileCoreServices
     @objc public var senderThemeColor : UIColor = PreferencesManager.sharedInstance.getSenderThemeColor()
     @objc public var botTitleColor : UIColor = UIColor.white
     @objc public var baseAPIUrl : String!
-    @objc var additionalParams : Dictionary<String, Any>!
+    @objc public var additionalParams : Dictionary<String, Any>!
 
     var contentFont : UIFont?
     
