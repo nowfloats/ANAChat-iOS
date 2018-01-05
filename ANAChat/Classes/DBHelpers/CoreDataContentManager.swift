@@ -5,7 +5,7 @@
 import UIKit
 import CoreData
 
-public class CoreDataContentManager: NSObject {
+@objc public class CoreDataContentManager: NSObject {
     class func managedObjectContext() -> NSManagedObjectContext {
         return CoreDataManager.sharedInstance.managedObjectContext
     }
@@ -76,12 +76,12 @@ public class CoreDataContentManager: NSObject {
         }
     }
     
-    class func deleteAllMessages(successBlock successCompletion: @escaping (_ success: Bool) -> Void) {
+    @objc public class func deleteAllMessages(successBlock successCompletion: @escaping (_ success: Bool) -> Void) {
         let fr:NSFetchRequest<Message>=Message.fetchRequest()
         do {
             let fetchedList=try CoreDataContentManager.backgroundObjectContext().fetch(fr)
             if fetchedList.count==0 {
-                print("no resutls. i need to add something")
+//                print("no resutls. i need to add something")
             }else{
                 for i in 0 ..< fetchedList.count {
                     CoreDataContentManager.backgroundObjectContext().delete(fetchedList[i] as NSManagedObject)
