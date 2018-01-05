@@ -146,7 +146,9 @@ class ChatSenderMediaCell: UITableViewCell {
                                 self.mediaTypeImageView.backgroundColor = UIColor.clear
                                 self.descriptionLabel.text = "Photo"
                                 self.playButton.isHidden = true
-                                if let url = mediaInfo["url"] as? String{
+                                if inputTypeMedia.mediaData is UIImage{
+                                    self.cellImage.image = inputTypeMedia.mediaData as? UIImage
+                                }else if let url = mediaInfo["url"] as? String{
                                     ImageCache.sharedInstance.getImageFromURL(url as String, successBlock: { (data) in
                                         self.cellImage.image = UIImage(data: (data as NSData) as Data)
                                     })

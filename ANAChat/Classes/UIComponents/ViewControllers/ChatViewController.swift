@@ -298,17 +298,57 @@ import MobileCoreServices
             if (dataHelper.getUnsentMessagesFromDB().count) > 0{
                 for i in 0 ..< (dataHelper.getUnsentMessagesFromDB().count) {
                     let messageObject = dataHelper.getUnsentMessagesFromDB()[i] as! Message
-                    var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
-                    if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-                        if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
-                            metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                            requestDict[Constants.kMetaKey] = metaInfo
+                    if messageObject is InputTypeMedia{
+                        if let inputTypeMedia = messageObject as? InputTypeMedia , messageObject == self.messagesFetchController?.fetchedObjects?.last{
+                            switch inputTypeMedia.mediaType {
+                            case Int16(MessageSimpleType.MessageSimpleTypeImage.rawValue):
+                                if inputTypeMedia.mediaData != nil && inputTypeMedia.mediaData is UIImage{
+                                    self.syncMediaInputImage(inputTypeMedia.mediaData as! UIImage, messageObject: messageObject)
+                                }else{
+                                    CoreDataContentManager.backgroundObjectContext().delete(messageObject)
+                                    CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                                        
+                                    }, failBlock: { (error) in
+                                        
+                                    })
+                                }
+                                break
+                            case Int16(MessageSimpleType.MessageSimpleTypeVideo.rawValue):
+                                if inputTypeMedia.mediaData != nil && inputTypeMedia.mediaData is NSURL{
+                                    self.syncMediaInputVideo(inputTypeMedia.mediaData as! NSURL, messageObject: messageObject)
+                                }else{
+                                    CoreDataContentManager.backgroundObjectContext().delete(messageObject)
+                                    CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                                        
+                                    }, failBlock: { (error) in
+                                        
+                                    })
+                                }
+                                break
+                            default:
+                                break
+                            }
+                        }else{
+                            CoreDataContentManager.backgroundObjectContext().delete(messageObject)
+                            CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                                
+                            }, failBlock: { (error) in
+                                
+                            })
                         }
+                    }else{
+                        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
+                        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                            if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
+                                metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                                requestDict[Constants.kMetaKey] = metaInfo
+                            }
+                        }
+                        
+                        dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                            self.reloadLastPreviousCell()
+                        })
                     }
-                    
-                    dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
-                        self.reloadLastPreviousCell()
-                    })
                 }
             }
         }else{
@@ -988,10 +1028,9 @@ import MobileCoreServices
     
     @objc func notificationReceived(_ notification : NSNotification) {
         if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
-            self.reloadLastPreviousCell()
-            self.scrollToTableBottom()
-            print(self.messagesFetchController?.fetchedObjects?.last ?? Message())
             DispatchQueue.main.async {
+                self.reloadLastPreviousCell()
+                self.scrollToTableBottom()
                 if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
                     self.loadInputView(lastObject)
                 }
@@ -1036,6 +1075,7 @@ import MobileCoreServices
     }
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+        
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
         if mediaType.hasSuffix(".movie"){
             if let videoPathUrl = info[UIImagePickerControllerMediaURL] as? NSURL {
@@ -1045,19 +1085,8 @@ import MobileCoreServices
                             if inputObject.inputInfo == nil{
                                 switch inputObject.inputType{
                                 case Int16(MessageInputType.MessageInputTypeMedia.rawValue):
-                                    APIManager.sharedInstance.uploadMedia(withMedia: videoPathUrl as URL, completionHandler: { (response) in
-                                        if let links = response["links"] as? NSArray{
-                                            if links.count > 0 {
-                                                let linksInfo = links.object(at: 0) as? NSDictionary
-                                                let mediaInfo = [Constants.kUrlKey : linksInfo!["href"], Constants.kTypeKey : NSNumber(value:2)]
-                                                let inputDict = [Constants.kInputKey: [Constants.kMediaKey: [mediaInfo]]]
-                                                    DispatchQueue.main.async {
-                                                        self.clearInputSubViews()
-                                                    }
-                                                    self.syncInputMessageToServer(inputDict, messageObject: lastObject)
-                                            }
-                                        }
-                                    })
+                                    self.dismiss(animated: true, completion: nil)
+                                    self.syncMediaInputVideo(videoPathUrl, messageObject: lastObject)
                                 default:
                                     break
                                 }
@@ -1067,11 +1096,6 @@ import MobileCoreServices
                 }
                 
             }
-
-//            APIManager.sharedInstance.uploadMedia(withMedia: videoPathUrl! as URL, completionHandler: { (response) in
-//                print(response)
-//            })
-//            print(videoPathUrl ?? NSURL())
         }else if  mediaType.hasSuffix(".image"){
             if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
                 if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
@@ -1080,20 +1104,8 @@ import MobileCoreServices
                             if inputObject.inputInfo == nil{
                                 switch inputObject.inputType{
                                 case Int16(MessageInputType.MessageInputTypeMedia.rawValue):
-                                    APIManager.sharedInstance.uploadImage(withMedia: pickedImage, completionHandler: { (response) in
-                                        if let links = response["links"] as? NSArray{
-                                            if links.count > 0 {
-                                                let linksInfo = links.object(at: 0) as? NSDictionary
-                                                let mediaInfo = [Constants.kUrlKey : linksInfo!["href"], Constants.kTypeKey : NSNumber(value:0)]
-                                                
-                                                let inputDict = [Constants.kInputKey: [Constants.kMediaKey: [mediaInfo]]]
-                                                DispatchQueue.main.async {
-                                                    self.clearInputSubViews()
-                                                }
-                                                self.syncInputMessageToServer(inputDict, messageObject: lastObject)
-                                            }
-                                        }
-                                    })
+                                    self.dismiss(animated: true, completion: nil)
+                                    self.syncMediaInputImage(pickedImage, messageObject: lastObject)
                                 default:
                                     break
                                 }
@@ -1101,10 +1113,140 @@ import MobileCoreServices
                         }
                     }
                 }
-              
+                
             }
         }
-        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    func syncMediaInputImage(_ image : UIImage , messageObject : Message){
+        if !reachability.isReachable{
+            self.showAlert("Unable to connect to the network , Please check your internet settings and try again")
+            return
+        }
+        
+        let mediaInfo = [ Constants.kTypeKey : NSNumber(value:0)] as [String : Any]
+        let inputDict = [Constants.kInputKey: [Constants.kMediaKey: [mediaInfo]]]
+        
+        var requestDict = [String: Any]()
+        requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+            if var metaInfo = requestDict["meta"] as? [String: Any]{
+                metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                requestDict["meta"] = metaInfo
+            }
+        }
+        
+        dataHelper.updateInputDBMessage(params: requestDict, successBlock: { (messageObject) in
+            
+            if let inputMedia = messageObject as? InputTypeMedia{
+                inputMedia.mediaData = image
+            }
+            
+            CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                self.reloadLastPreviousCell()
+                self.scrollToTableBottom()
+                DispatchQueue.main.async {
+                    self.view.endEditing(true)
+                    self.inputContainerViewHeightConstraint.constant = 0
+                    self.textContainerViewHeightConstraint.constant = 0
+                    self.clearInputSubViews()
+                }
+                
+                APIManager.sharedInstance.uploadImage(withMedia: image, completionHandler: { (response) in
+                    if let links = response["links"] as? NSArray{
+                        if links.count > 0 {
+                            let linksInfo = links.object(at: 0) as? NSDictionary
+                            let mediaInfo = [Constants.kUrlKey : linksInfo!["href"], Constants.kTypeKey : NSNumber(value:0)]
+                            
+                            let inputDict = [Constants.kInputKey: [Constants.kMediaKey: [mediaInfo]]]
+                            
+                            var requestDict = [String: Any]()
+                            requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+                            if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                                if var metaInfo = requestDict["meta"] as? [String: Any]{
+                                    metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                                    metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                                    requestDict["meta"] = metaInfo
+                                }
+                            }
+                            
+                            if let input = messageObject as? Input{
+                                input.inputInfo = inputDict[Constants.kInputKey] as NSObject?
+                                self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                                })
+                            }
+                        }
+                    }
+                })
+            }, failBlock: { (error) in
+            })
+        })
+    }
+    
+    func syncMediaInputVideo(_ videoUrl : NSURL , messageObject : Message){
+        if !reachability.isReachable{
+            self.showAlert("Unable to connect to the network , Please check your internet settings and try again")
+            return
+        }
+        
+        let mediaInfo = [ Constants.kTypeKey : NSNumber(value:2)] as [String : Any]
+        let inputDict = [Constants.kInputKey: [Constants.kMediaKey: [mediaInfo]]]
+        
+        var requestDict = [String: Any]()
+        requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+            if var metaInfo = requestDict["meta"] as? [String: Any]{
+                metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                requestDict["meta"] = metaInfo
+            }
+        }
+        
+        dataHelper.updateInputDBMessage(params: requestDict, successBlock: { (messageObject) in
+            if let inputMedia = messageObject as? InputTypeMedia{
+                inputMedia.mediaData = videoUrl
+            }
+            
+            CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                self.reloadLastPreviousCell()
+                self.scrollToTableBottom()
+                DispatchQueue.main.async {
+                    self.view.endEditing(true)
+                    self.inputContainerViewHeightConstraint.constant = 0
+                    self.textContainerViewHeightConstraint.constant = 0
+                    self.clearInputSubViews()
+                }
+                APIManager.sharedInstance.uploadMedia(withMedia: videoUrl as URL, completionHandler: { (response) in
+                    if let links = response["links"] as? NSArray{
+                        if links.count > 0 {
+                            let linksInfo = links.object(at: 0) as? NSDictionary
+                            let mediaInfo = [Constants.kUrlKey : linksInfo!["href"], Constants.kTypeKey : NSNumber(value:2)]
+                            
+                            let inputDict = [Constants.kInputKey: [Constants.kMediaKey: [mediaInfo]]]
+                            
+                            var requestDict = [String: Any]()
+                            requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+                            if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                                if var metaInfo = requestDict["meta"] as? [String: Any]{
+                                    metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                                    metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                                    requestDict["meta"] = metaInfo
+                                }
+                            }
+                            
+                            if let input = messageObject as? Input{
+                                input.inputInfo = inputDict[Constants.kInputKey] as NSObject?
+                                self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                                })
+                            }
+                        }
+                    }
+                })
+            }, failBlock: { (error) in
+            })
+        })
     }
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
