@@ -88,11 +88,13 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
     
     @IBAction func sendButtonTapped(_ sender: Any) {
         
-        let fieldTextLength = self.textView.text!.count
+        let trimmedString = self.textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let fieldTextLength = trimmedString.count
         if fieldTextLength == 0 {
             self.sendAlertCallBack(alertText: "please enter proper text")
             return
         }
+        
         if let messageObject = self.messageObject , messageObject.messageType == 2{
             if let inputObject = messageObject as? Input{
                 switch inputObject.inputType{
