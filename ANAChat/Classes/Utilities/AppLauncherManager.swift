@@ -33,7 +33,7 @@ import UIKit
             APIManager.sharedInstance.configureAPIBaseUrl(withString: baseAPIUrl)
             print("Firebase registration token: \(fcmToken)")
             var inputDict = [String: Any]()
-            inputDict["deviceId"] = "wkjwwjjwwfgwgh2wwwwssw22222"
+            inputDict["deviceId"] = UIDevice.current.identifierForVendor!.uuidString
             inputDict["fcmNotificationId"] = fcmToken
             inputDict["devicePlatform"] = "IOS"
             inputDict["userId"] = userId
