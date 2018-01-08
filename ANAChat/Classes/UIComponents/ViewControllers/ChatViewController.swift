@@ -337,17 +337,25 @@ import MobileCoreServices
                             })
                         }
                     }else{
-                        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
-                        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-                            if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
-                                metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                                requestDict[Constants.kMetaKey] = metaInfo
+                        if messageObject == self.messagesFetchController?.fetchedObjects?.last{
+                            var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: nil)
+                            if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                                if var metaInfo = requestDict[Constants.kMetaKey] as? [String: Any]{
+                                    metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                                    requestDict[Constants.kMetaKey] = metaInfo
+                                }
                             }
+                            
+                            dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                                self.reloadLastPreviousCell()
+                            })
+                        }else{
+                            CoreDataContentManager.backgroundObjectContext().delete(messageObject)
+                            CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                            }, failBlock: { (error) in
+                                
+                            })
                         }
-                        
-                        dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
-                            self.reloadLastPreviousCell()
-                        })
                     }
                 }
             }
