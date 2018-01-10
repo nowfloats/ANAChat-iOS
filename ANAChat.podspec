@@ -10,7 +10,7 @@
 Pod::Spec.new do |s|
 
   s.name             = 'ANAChat'
-  s.version          = '0.4.6'
+  s.version          = '0.4.7'
   s.summary          = 'ANAChat iOS'
 
 # This description is used to generate tags and improve search results.

@@ -560,9 +560,19 @@ import MobileCoreServices
         ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: CGFloat(CellHeights.textInputViewHeight), superView: self.textContainerView, subView: self.inputTextView)
         
         self.textContainerViewHeightConstraint.constant = CGFloat(CellHeights.textInputViewHeight)
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.0){
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
+            };
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            UIView.animate(withDuration: 0.3) {
+                if self.inputTextView != nil,self.textContainerViewHeightConstraint.constant == CGFloat(CellHeights.textInputViewHeight){
+                    if self.reachability.isReachable{
+                        self.inputTextView.textView.becomeFirstResponder()
+                    }
+                }
             };
         }
     }
@@ -1070,11 +1080,6 @@ import MobileCoreServices
                     self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
                 }) { (_ finished: Bool) in
                     if(finished){
-                        if self.inputTextView != nil,self.textContainerViewHeightConstraint.constant == CGFloat(CellHeights.textInputViewHeight){
-                            if self.reachability.isReachable{
-                                self.inputTextView.textView.becomeFirstResponder()
-                            }
-                        }
                     }
                     
                 }
