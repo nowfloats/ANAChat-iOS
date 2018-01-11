@@ -34,6 +34,7 @@ import MobileCoreServices
     @objc public var botTitleColor : UIColor = UIColor.white
     @objc public var baseAPIUrl : String!
     @objc public var additionalParams : Dictionary<String, Any>!
+    @objc public var openUrlInWebView : Bool = Bool()
 
     var contentFont : UIFont?
     
@@ -997,7 +998,14 @@ import MobileCoreServices
     }
     
     func didTappedOnOpenUrl(_ url:String){
-        UIApplication.shared.openURL(URL(string: url)!)
+        if self.navigationController != nil && self.openUrlInWebView == true{
+            let storyboard = UIStoryboard(name: "SDKMain", bundle: CommonUtility.getFrameworkBundle())
+            let controller = storyboard.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+            controller.url = url
+            self.navigationController?.pushViewController(controller, animated: true)
+        }else{
+            UIApplication.shared.openURL(URL(string: url)!)
+        }
     }
 
     func showAlert(_ alertText:String){

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1tC-M2-Rj1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1tC-M2-Rj1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Chat View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="ChatViewController" id="BYZ-38-t0r" customClass="ChatViewController" customModule="NowFloats_iOSSDK" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChatViewController" id="BYZ-38-t0r" customClass="ChatViewController" customModule="ANAChat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -51,7 +52,7 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hX4-sT-Czp">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trying to connect" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hX4-sT-Czp">
                                         <rect key="frame" x="108" y="48.5" width="247" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="Jou-HJ-kmM"/>
@@ -148,7 +149,7 @@
         <!--Zoom View Controller-->
         <scene sceneID="a1S-VC-AS9">
             <objects>
-                <viewController storyboardIdentifier="ZoomViewController" id="Kyn-Vc-1xi" customClass="ZoomViewController" customModule="NowFloats_iOSSDK" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ZoomViewController" id="Kyn-Vc-1xi" customClass="ZoomViewController" customModule="ANAChat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Deq-FY-EYp"/>
                         <viewControllerLayoutGuide type="bottom" id="DgP-yy-bZQ"/>
@@ -192,10 +193,84 @@
             </objects>
             <point key="canvasLocation" x="2551.1999999999998" y="-225.33733133433284"/>
         </scene>
+        <!--Web View Controller-->
+        <scene sceneID="vr4-pz-btl">
+            <objects>
+                <viewController storyboardIdentifier="WebViewController" id="jFf-ZF-ddQ" customClass="WebViewController" customModule="ANAChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ge0-1u-r9c"/>
+                        <viewControllerLayoutGuide type="bottom" id="VFS-kd-58R"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xHw-a5-clo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="enV-Ri-fmN">
+                                <rect key="frame" x="0.0" y="74" width="375" height="593"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C4h-RB-pqN">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDo-sN-MtW">
+                                        <rect key="frame" x="17" y="29" width="25" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="GgT-oh-yRj"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="25" id="caJ-K2-D73"/>
+                                            <constraint firstAttribute="width" constant="25" id="dGG-aK-ZuD"/>
+                                        </constraints>
+                                        <state key="normal" image="backIcon"/>
+                                        <connections>
+                                            <action selector="backButtonTapped:" destination="jFf-ZF-ddQ" eventType="touchUpInside" id="nlU-KK-1XZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2zY-g2-Vo1">
+                                        <rect key="frame" x="326" y="29" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="E1p-Ka-aCJ"/>
+                                            <constraint firstAttribute="width" constant="32" id="VmV-Jn-Kfd"/>
+                                        </constraints>
+                                        <state key="normal" image="safariIcon"/>
+                                        <connections>
+                                            <action selector="didTappedOnOpenBrowser:" destination="jFf-ZF-ddQ" eventType="touchUpInside" id="JoJ-lX-Nwr"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="KDo-sN-MtW" firstAttribute="centerY" secondItem="C4h-RB-pqN" secondAttribute="centerY" constant="8" id="3Ai-Ao-4d9"/>
+                                    <constraint firstAttribute="trailing" secondItem="2zY-g2-Vo1" secondAttribute="trailing" constant="17" id="Chm-MY-ZT3"/>
+                                    <constraint firstAttribute="height" constant="74" id="JMX-GI-nHw"/>
+                                    <constraint firstItem="KDo-sN-MtW" firstAttribute="leading" secondItem="C4h-RB-pqN" secondAttribute="leading" constant="17" id="a7b-kZ-pLT"/>
+                                    <constraint firstItem="2zY-g2-Vo1" firstAttribute="centerY" secondItem="C4h-RB-pqN" secondAttribute="centerY" constant="8" id="aa7-0J-D7K"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="enV-Ri-fmN" secondAttribute="trailing" id="Gwh-dM-DYU"/>
+                            <constraint firstAttribute="trailing" secondItem="C4h-RB-pqN" secondAttribute="trailing" id="IJs-Z1-1y4"/>
+                            <constraint firstItem="enV-Ri-fmN" firstAttribute="leading" secondItem="xHw-a5-clo" secondAttribute="leading" id="Mua-oY-u47"/>
+                            <constraint firstItem="C4h-RB-pqN" firstAttribute="leading" secondItem="xHw-a5-clo" secondAttribute="leading" id="Vzn-Od-F1E"/>
+                            <constraint firstItem="enV-Ri-fmN" firstAttribute="top" secondItem="xHw-a5-clo" secondAttribute="top" constant="74" id="XAV-6N-giT"/>
+                            <constraint firstItem="C4h-RB-pqN" firstAttribute="top" secondItem="xHw-a5-clo" secondAttribute="top" id="qFR-sU-0bQ"/>
+                            <constraint firstItem="VFS-kd-58R" firstAttribute="top" secondItem="enV-Ri-fmN" secondAttribute="bottom" id="x4C-Lf-QP9"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="headerView" destination="C4h-RB-pqN" id="oth-b7-aow"/>
+                        <outlet property="webView" destination="enV-Ri-fmN" id="OYx-Uv-hHI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tov-7B-tbC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3240.8000000000002" y="-326.08695652173918"/>
+        </scene>
         <!--Starting View Controller-->
         <scene sceneID="gZY-OB-dB2">
             <objects>
-                <viewController id="4wb-89-XOD" customClass="NFStartingViewController" customModule="NowFloats_iOSSDK" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4wb-89-XOD" customClass="NFStartingViewController" customModule="ANAChat" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="oNZ-TA-fiY"/>
                         <viewControllerLayoutGuide type="bottom" id="nL9-8D-MPo"/>
@@ -251,5 +326,6 @@
         <image name="backIcon" width="14" height="22"/>
         <image name="bgDoodle" width="540" height="693"/>
         <image name="chatty" width="50" height="50"/>
+        <image name="safariIcon" width="32" height="32"/>
     </resources>
 </document>
