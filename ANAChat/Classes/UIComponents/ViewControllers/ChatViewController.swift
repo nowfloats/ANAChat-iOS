@@ -1125,7 +1125,6 @@ import MobileCoreServices
                             if inputObject.inputInfo == nil{
                                 switch inputObject.inputType{
                                 case Int16(MessageInputType.MessageInputTypeMedia.rawValue):
-                                    self.dismiss(animated: true, completion: nil)
                                     self.syncMediaInputImage(pickedImage, messageObject: lastObject)
                                 default:
                                     break
@@ -1166,9 +1165,10 @@ import MobileCoreServices
             }
             
             CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
-                self.reloadLastPreviousCell()
-                self.scrollToTableBottom()
                 DispatchQueue.main.async {
+                    self.reloadLastPreviousCell()
+                    self.scrollToTableBottom()
+                    self.dismiss(animated: true, completion: nil)
                     self.view.endEditing(true)
                     self.inputContainerViewHeightConstraint.constant = 0
                     self.textContainerViewHeightConstraint.constant = 0
