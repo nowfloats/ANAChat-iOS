@@ -20,6 +20,8 @@ class ChatSenderMediaCell: UITableViewCell {
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var statusImageView: UIImageView!
     
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
+
     var delegate:ChatMediaCellDelegate?
     var shape = CAShapeLayer()
     var messageObject : Message!
@@ -126,14 +128,18 @@ class ChatSenderMediaCell: UITableViewCell {
             self.statusImageView.image = CommonUtility.getImageFromBundle(name: "sendingImage").withRenderingMode(.alwaysTemplate)
         }
         self.statusImageView.tintColor = UIColor.white
-
         
-        let myActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-        myActivityIndicator.center = (self.cellImage.center)
-        myActivityIndicator.startAnimating()
         self.cellImage.image = CommonUtility.getImageFromBundle(name: "placeholder")
-//        self.cellImage.addSubview(myActivityIndicator)
+
         if let inputTypeMedia = messageObject as? InputTypeMedia{
+            if messageObject.syncedWithServer == true{
+                activityIndicator.removeFromSuperview()
+            }else{
+                activityIndicator.removeFromSuperview()
+                activityIndicator.center = (self.cellImage.center)
+                activityIndicator.startAnimating()
+                self.cellImage.addSubview(activityIndicator)
+            }
             if let inputInfo = inputTypeMedia.inputInfo as? NSDictionary{
                 if let mediaInfoArray = inputInfo["media"] as? NSArray{
                     if mediaInfoArray.count > 0{
