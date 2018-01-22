@@ -66,10 +66,12 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName=".Message" syncable="YES">
+        <attribute name="currentFlowId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateStamp" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="flowId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="prevFlowId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="responseTo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="senderType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="sessionId" optional="YES" attributeType="String" syncable="YES"/>
@@ -123,7 +125,7 @@
         <element name="InputTypeMedia" positionX="-369" positionY="-801" width="128" height="75"/>
         <element name="InputTypeOptions" positionX="-11" positionY="-796" width="128" height="75"/>
         <element name="InputTypeText" positionX="-189" positionY="-468" width="128" height="150"/>
-        <element name="Message" positionX="-578" positionY="-751" width="128" height="225"/>
+        <element name="Message" positionX="-578" positionY="-751" width="128" height="255"/>
         <element name="Options" positionX="-2" positionY="-954" width="128" height="135"/>
         <element name="Participant" positionX="-560" positionY="-522" width="128" height="103"/>
         <element name="Simple" positionX="-389" positionY="-522" width="128" height="120"/>

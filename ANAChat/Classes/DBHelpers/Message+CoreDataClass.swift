@@ -1,7 +1,7 @@
 //
 //  Message+CoreDataClass.swift
+//  ANAChat
 //
-
 
 import Foundation
 import CoreData
