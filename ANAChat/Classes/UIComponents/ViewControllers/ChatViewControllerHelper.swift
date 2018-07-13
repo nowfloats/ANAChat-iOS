@@ -273,26 +273,26 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
         return cell!
     }
     
-    @objc public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        NSObject.cancelPreviousPerformRequests(withTarget: self)
-        if (self.tableView.indexPathsForVisibleRows?.count)! > 0{
-            let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
-            self.visibleSectionIndex = topIndexPath.section
-            
-            if scrollView.contentOffset.y > 0{
-                print(topIndexPath.row)
-                if topIndexPath.row != 0{
-                    self.isTableViewScrolling = false
-                }else{
-                    self.isTableViewScrolling = true
-                }
-                
-                self.tableView.reloadData()
+   @objc public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    NSObject.cancelPreviousPerformRequests(withTarget: self)
+    if (self.tableView.indexPathsForVisibleRows?.count)! > 0{
+        let topIndexPath = self.tableView.indexPathsForVisibleRows![0] as NSIndexPath
+        self.visibleSectionIndex = topIndexPath.section
+        
+        if scrollView.contentOffset.y > 0{
+            print(topIndexPath.row)
+            if topIndexPath.row != 0{
+                self.isTableViewScrolling = false
             }else{
                 self.isTableViewScrolling = true
-                self.tableView.reloadData()
             }
+            
+            self.tableView.reloadData()
+        }else{
+            self.isTableViewScrolling = true
+            self.tableView.reloadData()
         }
+    }
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -308,8 +308,8 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
                 if topIndexPath.row != 0{
                     self.isTableViewScrolling = true
                 }
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData()
         }
     }
     // MARK: -
@@ -344,9 +344,9 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
                         switch input.inputType {
                         case Int16(MessageInputType.MessageInputTypeText.rawValue),Int16(MessageInputType.MessageInputTypePhone.rawValue),Int16(MessageInputType.MessageInputTypeNumeric.rawValue),Int16(MessageInputType.MessageInputTypeEmail.rawValue):
                                 if let inputInfo = input.inputInfo as? NSDictionary{
-                                    if let text = inputInfo["val"] as? String{
+                                    if let text = inputInfo["val"] as? String , text.count > 0{
                                         cellHeight =  CommonUtility.heightOfCell(with: text)
-                                    }else if let text = inputInfo[Constants.kInputKey] as? String{
+                                    }else if let text = inputInfo[Constants.kInputKey] as? String, text.count > 0{
                                         cellHeight =  CommonUtility.heightOfCell(with: text)
                                     }
                             }
@@ -478,18 +478,32 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate{
                     }
                 case Int16(MessageType.MessageTypeCarousel.rawValue):
                     if let carousel = message as? Carousel{
+                        var cellHeight = CGFloat()
                         if carousel.items != nil{
-                            var cellHeight = CGFloat()
-                            for (_, element) in (carousel.items?.enumerated())! {
+                            var loopIndex = 0
+                            for (_ , element) in (carousel.items?.enumerated())! {
+                                var rowHeight = CGFloat()
+                                loopIndex = loopIndex + 1
                                 if let carouselItem = element as? CarouselItem{
+                                    if let desc = carouselItem.desc {
+                                        rowHeight = CommonUtility.carouselDescriptionCellHeight(with: desc)
+                                    }
                                     if carouselItem.options != nil{
-                                        cellHeight = CGFloat(max((carouselItem.options?.count)!*CellHeights.carouselOptionsViewHeight, Int(cellHeight)))
+                                        rowHeight = rowHeight + CGFloat(((carouselItem.options?.count)!*CellHeights.carouselOptionsViewHeight))
+                                    }
+                                    if loopIndex == (carousel.items?.count)! {
+                                        if  carouselItem.mediaUrl != nil && carouselItem.mediaUrl != ""{
+                                            rowHeight = rowHeight + 160
+
+                                        }
+                                        cellHeight = max(cellHeight, rowHeight)
                                     }
                                 }
                             }
+                            return 120 + cellHeight
                         }
-                        return 326 + cellHeight
                     }
+                    
                     
                 default:
                     cellHeight = 0
@@ -520,6 +534,7 @@ extension ChatViewController:NSFetchedResultsControllerDelegate {
         if (isSyncInProgress) {
             UIView.setAnimationsEnabled(false)
         }
+
     }
     
     public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

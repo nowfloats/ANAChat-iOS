@@ -17,7 +17,10 @@ import UIKit
 
     @objc public class func getFrameworkBundle() -> Bundle{
         let podBundle = Bundle(for: CoreDataManager.self)
-        if  let bundleURL = podBundle.url(forResource: "ANAChat", withExtension: "bundle"){
+        if  let bundleURL = podBundle.url(forResource: "NFSDK", withExtension: "bundle"){
+            let bundle = Bundle(url : bundleURL)
+            return bundle!
+        }else if  let bundleURL = podBundle.url(forResource: "ANAChat", withExtension: "bundle"){
             let bundle = Bundle(url : bundleURL)
             return bundle!
         }else{
@@ -46,13 +49,13 @@ import UIKit
     
     public class func getDate(fromString dateString : NSString) -> NSDate{
         let date = NSDate(timeIntervalSince1970:TimeInterval(dateString.doubleValue/1000))
-        return date
+        return date;
     }
     
     public class func getTimeInterval(fromDate date : NSDate) -> Int{
         return Int(date.timeIntervalSince1970*1000)
     }
-
+    
     public class func getTimeString(_ messageTimestamp : NSDate) -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
@@ -97,6 +100,26 @@ import UIKit
             let rect: CGRect = text.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 155, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont() ], context: nil)
             return rect.size.height + 63
         #endif
+    }
+    
+    public class func carouselDescriptionCellHeight(with text: String) -> CGFloat{
+        #if swift(>=4.0)
+        
+        let rect: CGRect = text.boundingRect(with: CGSize(width: 250, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: PreferencesManager.sharedInstance.getContentFont() ], context: nil)
+        return rect.size.height
+        #else
+        let rect: CGRect = text.boundingRect(with: CGSize(width: 250, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont() ], context: nil)
+        return rect.size.height + 63
+        #endif
+    }
+    
+    public class func stripHtmlTags(with text : String) -> String {
+        var strippedText = text
+        strippedText =  strippedText.replacingOccurrences(of: "<b>", with: "")
+        strippedText = strippedText.replacingOccurrences(of: "</b>", with: "")
+        strippedText = strippedText.replacingOccurrences(of: "<br>", with: "\n")
+        strippedText = strippedText.replacingOccurrences(of: "</br>", with: "\n")
+        return strippedText
     }
     
     public class func compareTwoMessageObjects(_ firstMessageObject: Message , secondMessageObject : Message?) -> Bool{
@@ -187,5 +210,4 @@ import UIKit
         eventsArray.append(["type" : NSNumber(value: 21) , "data" : PreferencesManager.sharedInstance.getAdditionalParamsInfo()])
         return eventsArray
     }
-
 }

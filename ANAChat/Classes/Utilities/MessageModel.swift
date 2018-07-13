@@ -19,7 +19,10 @@ class MessageModel: NSObject {
     var previewUrl : String!
     var syncedWithServer : String!
     var messageDateStamp : String!
-
+    var prevFlowId : String!
+    var currentFlowId : String!
+    var flowId : String!
+    
     override init ()
     {
         super.init()
@@ -39,6 +42,19 @@ class MessageModel: NSObject {
             if let messageId = metaInfo[Constants.kIdKey] as? String{
                 self.messageId = messageId
             }
+            
+            if let flowId = metaInfo[Constants.kFlowIdKey] as? String{
+                self.flowId = flowId
+            }
+            
+            if let previousFlowId = metaInfo[Constants.kPreviousFlowId] as? String{
+                self.prevFlowId = previousFlowId
+            }
+            
+            if let currentFlowId = metaInfo[Constants.kCurrentFlowId] as? String{
+                self.currentFlowId = currentFlowId
+            }
+            
             if let messageTimeStamp = metaInfo[Constants.kTimeStampKey] as? Double{
                 let timeStampString = NSString(format : "%f",messageTimeStamp)
                 self.messageTimeStamp = CommonUtility.getDate(fromString: timeStampString)
@@ -80,7 +96,11 @@ class MessageModel: NSObject {
  
             if let contentInfo = dataInfo[Constants.kContentKey] as? NSDictionary{
                 if let text = contentInfo[Constants.kTextKey] as? String{
-                    self.messageText = text
+                    if PreferencesManager.sharedInstance.stripHtmlTags == true{
+                        self.messageText = CommonUtility.stripHtmlTags(with: text)
+                    } else {
+                        self.messageText = text
+                    }
                 }
                 if let mediaInfo = contentInfo[Constants.kMediaKey] as? NSDictionary{
                     if let mediaType = mediaInfo[Constants.kTypeKey] as? NSInteger{

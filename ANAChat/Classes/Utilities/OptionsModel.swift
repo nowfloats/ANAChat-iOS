@@ -18,11 +18,19 @@ class OptionsModel: NSObject {
         self.init()
         if let list = list{
             if  let title = dictionary[Constants.kTextKey] as? String, list == true {
-                self.title = title
+                if PreferencesManager.sharedInstance.stripHtmlTags == true {
+                    self.title = CommonUtility.stripHtmlTags(with: title)
+                }else {
+                    self.title = title
+                }
             }
         }else{
             if let title = dictionary[Constants.kTitleKey] as? String{
-                self.title = title
+                if PreferencesManager.sharedInstance.stripHtmlTags == true {
+                    self.title = CommonUtility.stripHtmlTags(with: title)
+                }else {
+                    self.title = title
+                }
             }
         }
         

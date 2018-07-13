@@ -81,7 +81,7 @@ import CoreData
         do {
             let fetchedList=try CoreDataContentManager.backgroundObjectContext().fetch(fr)
             if fetchedList.count==0 {
-//                print("no resutls. i need to add something")
+                print("no resutls. i need to add something")
             }else{
                 for i in 0 ..< fetchedList.count {
                     CoreDataContentManager.backgroundObjectContext().delete(fetchedList[i] as NSManagedObject)
@@ -93,25 +93,6 @@ import CoreData
                         })
                     }
                 }
-            }
-        }catch {
-            print(error)
-        }
-    }
-    
-    class func fetchMessages (){
-        let fr:NSFetchRequest<Message>=Message.fetchRequest()
-        do {
-            let results=try CoreDataContentManager.managedObjectContext().fetch(fr)
-            if results.count==0 {
-                print("no resutls. i need to add something")
-            }else{
-                print("already some results")
-                //                print(results)
-                print(results.count)
-                //                for result in results {
-                //                    print(result)
-                //                }
             }
         }catch {
             print(error)
@@ -201,6 +182,15 @@ import CoreData
                     messageObject.messageId = messageId
                 }
                 
+                if let flowId = messageModel.flowId {
+                    messageObject.flowId = flowId
+                }
+                if let prevFlowId = messageModel.prevFlowId {
+                    messageObject.prevFlowId = prevFlowId
+                }
+                if let currentFlowId = messageModel.currentFlowId {
+                    messageObject.currentFlowId = currentFlowId
+                }
                 if let sessionId = messageModel.sessionId{
                     messageObject.sessionId = sessionId
                 }
@@ -339,6 +329,15 @@ import CoreData
                     messageObject.messageId = messageId
                 }
                 
+                if let flowId = carouselModel.flowId {
+                    messageObject.flowId = flowId
+                }
+                if let prevFlowId = carouselModel.prevFlowId {
+                    messageObject.prevFlowId = prevFlowId
+                }
+                if let currentFlowId = carouselModel.currentFlowId {
+                    messageObject.currentFlowId = currentFlowId
+                }
                 if let sessionId = carouselModel.sessionId{
                     messageObject.sessionId = sessionId
                 }
@@ -518,6 +517,16 @@ import CoreData
                             textInputObject.messageId = messageId
                         }
                         
+                        if let flowId = inputModel.flowId {
+                            textInputObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            textInputObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            textInputObject.currentFlowId = currentFlowId
+                        }
+                        
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             textInputObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -626,6 +635,16 @@ import CoreData
                             messageObject.messageId = messageId
                         }
                         
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
+                        }
+                        
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             messageObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -713,7 +732,15 @@ import CoreData
                         if let messageId = inputModel.messageId{
                             messageObject.messageId = messageId
                         }
-                        
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
+                        }
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             messageObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -835,7 +862,15 @@ import CoreData
                         if let messageId = inputModel.messageId{
                             messageObject.messageId = messageId
                         }
-                        
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
+                        }
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             messageObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -950,6 +985,15 @@ import CoreData
                         
                         if let messageId = inputModel.messageId{
                             messageObject.messageId = messageId
+                        }
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
                         }
                         
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
@@ -1068,7 +1112,15 @@ import CoreData
                         if let messageId = inputModel.messageId{
                             messageObject.messageId = messageId
                         }
-                        
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
+                        }
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             messageObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -1165,7 +1217,15 @@ import CoreData
                         if let messageId = inputModel.messageId{
                             messageObject.messageId = messageId
                         }
-                        
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
+                        }
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             messageObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -1258,7 +1318,15 @@ import CoreData
                         if let messageId = inputModel.messageId{
                             messageObject.messageId = messageId
                         }
-                        
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
+                        }
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             messageObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -1349,7 +1417,15 @@ import CoreData
                         if let messageId = inputModel.messageId{
                             messageObject.messageId = messageId
                         }
-                        
+                        if let flowId = inputModel.flowId {
+                            messageObject.flowId = flowId
+                        }
+                        if let prevFlowId = inputModel.prevFlowId {
+                            messageObject.prevFlowId = prevFlowId
+                        }
+                        if let currentFlowId = inputModel.currentFlowId {
+                            messageObject.currentFlowId = currentFlowId
+                        }
                         if let syncedWithServer = Int(inputModel.syncedWithServer) {
                             messageObject.syncedWithServer = NSNumber(value: syncedWithServer) as! Bool
                         }
@@ -1476,6 +1552,16 @@ import CoreData
                     messageObject.messageId = messageId
                 }
                 
+                if let flowId = externalModel.flowId {
+                    messageObject.flowId = flowId
+                }
+                if let prevFlowId = externalModel.prevFlowId {
+                    messageObject.prevFlowId = prevFlowId
+                }
+                if let currentFlowId = externalModel.currentFlowId {
+                    messageObject.currentFlowId = currentFlowId
+                }
+                
                 if let sessionId = externalModel.sessionId{
                     messageObject.sessionId = sessionId
                 }
@@ -1537,6 +1623,7 @@ import CoreData
     }
     
     class func updateDataBaseWithResponseObject(_ responseObject :[String: Any], message : Message,successCompletion: @escaping (_ success: Bool) -> Void ){
+        
         let inputModel = InputModel.init(responseObject)
         if let timeStamp = message.timestamp{
             getMessageObjectWithTimeStamp(timeStamp, successCompletion: { (messageObject) in

@@ -76,7 +76,7 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
                 case Int16(MessageInputType.MessageInputTypeNumeric.rawValue),Int16(MessageInputType.MessageInputTypePhone.rawValue):
                     self.textView.autocapitalizationType = .none
 
-                    self.textView.keyboardType = .numberPad
+                    self.textView.keyboardType = .decimalPad
                 default:
                     break
                 }
@@ -87,7 +87,6 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
     }
     
     @IBAction func sendButtonTapped(_ sender: Any) {
-        
         let trimmedString = self.textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         let fieldTextLength = trimmedString.count
         if fieldTextLength == 0 {
@@ -225,9 +224,8 @@ public class InputTextFieldView: UIView , UITextViewDelegate{
         #else
             let rect: CGRect = totalText.boundingRect(with: CGSize(width: UIScreen.main.bounds.size.width - 90, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: PreferencesManager.sharedInstance.getContentFont(),NSParagraphStyleAttributeName:parastyle], context: nil)
             
-            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 30 , 125),CGFloat(CellHeights.textInputViewHeight)))
+            self.delegate?.configureTextViewHeight?(max(min(rect.size.height + 30, 125),CGFloat(CellHeights.textInputViewHeight)))
         #endif
-        
         return true
     }
     

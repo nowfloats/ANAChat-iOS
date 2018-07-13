@@ -26,7 +26,11 @@ class CarouselItemModel: NSObject {
             self.title = title
         }
         if let desc = dictionary[Constants.kDescriptionKey] as? String{
-            self.desc = desc
+            if PreferencesManager.sharedInstance.stripHtmlTags == true {
+                self.desc = CommonUtility.stripHtmlTags(with: desc)
+            }else {
+                self.desc = desc
+            }
         }
         if let url = dictionary[Constants.kUrlKey] as? String{
             self.url = url

@@ -24,7 +24,10 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
     @IBOutlet weak var cellContentView: UIView!
     @IBOutlet weak var buttonsTableViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var imageViewBottomSpaceConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageViewTopSpaceConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewHeightConstraint: NSLayoutConstraint!
+    
     var item: CarouselItem?
     var delegate: ChatCarouselCollectionCellDelegate?
     var options: [Any]?
@@ -34,8 +37,8 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         titleLabel.font = UIConfigurationUtility.Fonts.carouselTitleFont
-        descriptionLabel.font = UIConfigurationUtility.Fonts.carouselDescriptionFont
         titleLabel.textColor = UIConfigurationUtility.Colors.TextColor
+        descriptionLabel.font = UIConfigurationUtility.Fonts.carouselDescriptionFont
         self.buttonsTableView.delegate = self
         self.buttonsTableView.dataSource = self
 //        self.buttonsTableView.delegate = self
@@ -59,17 +62,39 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
         let sortDescriptor = NSSortDescriptor(key: Constants.kIndexKey, ascending: true)
         self.options = item.options?.sortedArray(using: [sortDescriptor])
         self.titleLabel.text = item.title
+        /*
+        if let desc = item.desc ,  desc.contains("</") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                let attributedString = desc.html2Attributed?.mutableCopy() as! NSMutableAttributedString
+                let myRange = NSRange(location: 0, length: (attributedString.length - 1))
+                attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIConfigurationUtility.Colors.TextColor, range: myRange)
+                attributedString.addAttribute(NSAttributedStringKey.font, value: PreferencesManager.sharedInstance.getContentFont(), range: myRange)
+                self.descriptionLabel.attributedText = attributedString
+            }
+        }else{
+            self.descriptionLabel.text = item.desc
+        }
+       */
         self.descriptionLabel.text = item.desc
+
         if item.title?.count == 0, item.desc?.count == 0{
             self.imageViewHeightConstraint.constant = 210
         }else{
             self.imageViewHeightConstraint.constant = 130
         }
         self.imageView.image = CommonUtility.getImageFromBundle(name: "placeholder")
-
+        if item.mediaUrl == nil || item.mediaUrl?.count == 0 {
+            self.imageViewHeightConstraint.constant = 0
+            self.imageViewTopSpaceConstraint.constant = 0
+        }else{
+            self.imageViewHeightConstraint.constant = 130
+            self.imageViewTopSpaceConstraint.constant = 15
+//            self.imageViewBottomSpaceConstraint.constant = 0
+        }
+        
         if item.mediaType == 0{
             self.playButton.isHidden = true
-            if let url = item.mediaUrl{
+            if let url = item.mediaUrl , url.count > 0{
                 if item.mediaData is UIImage{
                     self.imageView.image = item.mediaData as? UIImage
                 }else{
@@ -93,7 +118,7 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
             }
         }else if item.mediaType == 2{
             self.playButton.isHidden = false
-            if let url = item.previewUrl{
+            if let url = item.previewUrl , url.count > 0{
                 if item.mediaData is UIImage{
                     self.imageView.image = item.mediaData as? UIImage
                 }else{
@@ -123,7 +148,7 @@ class ChatCarouselCollectionCell: UICollectionViewCell {
     
     @IBAction func playButtonTapped(_ sender: Any) {
         if self.item?.mediaType == 2{
-            if let url = item?.mediaUrl{
+            if let url = item?.mediaUrl , url.count > 0{
                 self.delegate?.didTappedOnPlayButton?(url)
             }
         }

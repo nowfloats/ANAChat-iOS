@@ -81,7 +81,12 @@ extension Dictionary {
     func stringFromHttpParameters() -> String {
         let parameterArray = self.map { (key, value) -> String in
             let percentEscapedKey = (key as! String).addingPercentEncodingForURLQueryValue()!
-            let percentEscapedValue = (value as! String).addingPercentEncodingForURLQueryValue()!
+            var percentEscapedValue = String()
+            if let value = value as? String{
+                percentEscapedValue = value.addingPercentEncodingForURLQueryValue()!
+            }else if let  value = value as? NSNumber{
+                percentEscapedValue = String(value.intValue)
+            }
             return "\(percentEscapedKey)=\(percentEscapedValue)"
         }
         
@@ -184,11 +189,14 @@ extension UIView {
     }
     
     func addTapGesture(tapNumber : Int, target: Any , action : Selector) {
+        
         let tap = UITapGestureRecognizer(target: target, action: action)
         tap.numberOfTapsRequired = tapNumber
         addGestureRecognizer(tap)
         isUserInteractionEnabled = true
+        
     }
+
 }
 
 private extension UIView {

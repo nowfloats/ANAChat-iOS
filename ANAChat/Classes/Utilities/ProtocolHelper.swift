@@ -16,6 +16,7 @@ import UIKit
     @objc optional func didTappedOnSendLocationCell(_ messageObject: Message)
     @objc optional func didTappedOnListCell(_ messageObject: Message)
     @objc optional func didTappedOnOpenUrl(_ url:String)
+    @objc optional func didTappedOnDeepLink(_ info:[String : Any])
     @objc optional func didTappedOnPlayButton(_ url: String)
     @objc optional func configureTextViewHeight(_ height: CGFloat)
 

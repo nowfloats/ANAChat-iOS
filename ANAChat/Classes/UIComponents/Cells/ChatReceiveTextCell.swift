@@ -59,9 +59,21 @@ class ChatReceiveTextCell: UITableViewCell {
     }
     
     public func configureView(_ simple:Simple, showArrow : Bool){
-        if let text = simple.text{
-            self.textLbl.text = text
+        /*
+        if let text = simple.text ,  text.contains("</") {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                let attributedString = text.html2Attributed?.mutableCopy() as! NSMutableAttributedString
+                let myRange = NSRange(location: 0, length: (attributedString.length - 1))
+                attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIConfigurationUtility.Colors.TextColor, range: myRange)
+                attributedString.addAttribute(NSAttributedStringKey.font, value: PreferencesManager.sharedInstance.getContentFont(), range: myRange)
+                self.textLbl.attributedText = attributedString
+            }
+        }else{
+            self.textLbl.text = simple.text
         }
+         */
+        self.textLbl.text = simple.text
+
         if let messageTimeStamp = simple.timestamp{
             self.timeLbl.text = CommonUtility.getTimeString(messageTimeStamp)
         }else{

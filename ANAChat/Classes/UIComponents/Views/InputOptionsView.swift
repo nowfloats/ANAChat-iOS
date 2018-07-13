@@ -26,15 +26,16 @@ class InputOptionsView: UIView{
                     self.buttonsScroll.subviews.forEach { $0.removeFromSuperview() }
                     buttonArr = sortedOptions as NSArray
                     print(sortedOptions)
+                    OptionsViewCellHeight = CGFloat(min(options.count*CellHeights.optionsViewCellHeight, 100))
                     
-                    self.buttonsScroll.contentSize = CGSize(width: UIScreen.main.bounds.size.width, height: OptionsViewCellHeight)
-                    var XPos : CGFloat = 20.0
+                    self.buttonsScroll.contentSize = CGSize(width: UIScreen.main.bounds.size.width, height: CGFloat( options.count*CellHeights.optionsViewCellHeight))
+                    var yPos : CGFloat = 5.0
                     
                     for index in 0 ..< buttonArr.count{
                         
                         let optionsObject = buttonArr[index] as? Options
                         let nextNodeButton = UIButton()
-                        nextNodeButton.frame = CGRect(x: Int(XPos), y:Int(OptionsTopPadding), width: 100, height: (Int(OptionsViewCellHeight - 2*OptionsTopPadding)))
+                        nextNodeButton.frame = CGRect(x: Int(20), y: Int(yPos), width: Int(UIScreen.main.bounds.size.width - 40), height: CellHeights.optionsViewCellHeight - 10)
                         nextNodeButton.backgroundColor = PreferencesManager.sharedInstance.getBaseThemeColor()
                         nextNodeButton.setTitle(optionsObject?.title, for: .normal)
                         nextNodeButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Medium", size: 15)
@@ -44,19 +45,19 @@ class InputOptionsView: UIView{
                         nextNodeButton.layer.cornerRadius = 5.0
                         self.buttonsScroll.addSubview(nextNodeButton)
                         
-                        nextNodeButton.sizeToFit()
+//                        nextNodeButton.sizeToFit()
                         
-                        nextNodeButton.frame = CGRect(x: XPos, y:OptionsTopPadding, width: (nextNodeButton.frame.size.width) + 35, height: OptionsViewCellHeight - OptionsTopPadding*2)
+//                        nextNodeButton.frame = CGRect(x: yPos, y:OptionsTopPadding, width: (nextNodeButton.frame.size.width) + 35, height: OptionsViewCellHeight - OptionsTopPadding*2)
                         
-                        XPos = nextNodeButton.frame.maxX+20
-                        
-                        if(XPos > self.frame.size.width){
-                            self.buttonsScroll.contentSize = CGSize(width: XPos, height: OptionsViewCellHeight)
-                            self.scrollLeadingConstraint.constant = 0
-                        }else{
-                            self.buttonsScroll.contentSize = CGSize(width: XPos, height: OptionsViewCellHeight)
-                            self.scrollLeadingConstraint.constant = (DeviceUtils.ScreenSize.SCREEN_WIDTH - XPos)/2
-                        }
+                        yPos = yPos + CGFloat(CellHeights.optionsViewCellHeight)
+//
+//                        if(XPos > self.frame.size.width){
+//                            self.buttonsScroll.contentSize = CGSize(width: XPos, height: OptionsViewCellHeight)
+//                            self.scrollLeadingConstraint.constant = 0
+//                        }else{
+//                            self.buttonsScroll.contentSize = CGSize(width: XPos, height: OptionsViewCellHeight)
+//                            self.scrollLeadingConstraint.constant = (DeviceUtils.ScreenSize.SCREEN_WIDTH - XPos)/2
+//                        }
                     }
                 }
             }
@@ -66,26 +67,34 @@ class InputOptionsView: UIView{
     @objc func didTappedOnOption(sender: UIButton){
         
         if  let optionsObject = self.buttonArr[sender.tag - 1] as? Options{
-            if optionsObject.type == 0 {
+            if optionsObject.type == 0 || optionsObject.type == 3 {
                 if let value = optionsObject.value{
                     let data = value.data(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
                     do {
-                        let messageDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! [String: AnyObject]
+                        var messageDictionary = try JSONSerialization.jsonObject(with: data!, options: []) as! [String: AnyObject]
                         
-                        if let value = messageDictionary[Constants.kValueKey] as? String{
-                            let inputDict = [Constants.kInputKey: [Constants.kValKey: value,Constants.kTextKey : optionsObject.title]]
-                            delegate?.didTappedOnInputCell?(inputDict, messageObject: self.messageObject)
+                        if optionsObject.type == 0 {
+                            if let value = messageDictionary[Constants.kValueKey] as? String{
+                                let inputDict = [Constants.kInputKey: [Constants.kValKey: value,Constants.kTextKey : optionsObject.title]]
+                                delegate?.didTappedOnInputCell?(inputDict, messageObject: self.messageObject)
+                            }
+                            
+                            if let url = messageDictionary[Constants.kUrlKey] as? String{
+                                self.delegate?.didTappedOnOpenUrl?(url)
+                            }
+                        }else{
+                            if let title = optionsObject.title {
+                                messageDictionary["title"] = title as NSString
+                            }
+                            delegate?.didTappedOnDeepLink?(messageDictionary)
                         }
                         
-                        if let url = messageDictionary[Constants.kUrlKey] as? String{
-                            self.delegate?.didTappedOnOpenUrl?(url)
-                        }
                     } catch let error as NSError {
                         print("Failed to load: \(error.localizedDescription)")
                     }
                     
                 }
-            }else{
+            } else{
                 let inputDict = [Constants.kInputKey: [Constants.kValKey: optionsObject.value, Constants.kTextKey : optionsObject.title]]
                 delegate?.didTappedOnInputCell?(inputDict, messageObject: self.messageObject)
             }

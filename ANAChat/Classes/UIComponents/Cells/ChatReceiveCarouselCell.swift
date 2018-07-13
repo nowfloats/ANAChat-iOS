@@ -11,7 +11,6 @@ class ChatReceiveCarouselCell: UITableViewCell ,ChatCarouselCollectionCellDelega
     var sortedItems : [Any]?
     var delegate: InputCellProtocolDelegate?
     var showOptions : Bool?
-    
     var previousMessageTimeStamp = NSDate()
 
     override func awakeFromNib() {
@@ -20,7 +19,7 @@ class ChatReceiveCarouselCell: UITableViewCell ,ChatCarouselCollectionCellDelega
         collectionview.dataSource = self
         collectionview.register(UINib.init(nibName: "ChatCarouselCollectionCell", bundle: CommonUtility.getFrameworkBundle()), forCellWithReuseIdentifier: "ChatCarouselCollectionCell")
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
     }
@@ -79,14 +78,28 @@ extension ChatReceiveCarouselCell:UICollectionViewDelegate, UICollectionViewData
         if let carousel = self.messageObject{
             if carousel.items != nil{
                 var cellHeight = CGFloat()
+                var loopIndex = 0
                 for (_, element) in (carousel.items?.enumerated())! {
+                    var rowHeight = CGFloat()
+                    loopIndex = loopIndex + 1
                     if let carouselItem = element as? CarouselItem{
-                        if carouselItem.options != nil{
-                            cellHeight = CGFloat(max((carouselItem.options?.count)!*CellHeights.carouselOptionsViewHeight, Int(cellHeight)))
+                        if let desc = carouselItem.desc {
+                            rowHeight = CommonUtility.carouselDescriptionCellHeight(with: desc)
                         }
+                        if carouselItem.options != nil{
+                            rowHeight = rowHeight + CGFloat(((carouselItem.options?.count)!*CellHeights.carouselOptionsViewHeight))
+                        }
+                        if loopIndex == (carousel.items?.count)! {
+                            if  carouselItem.mediaUrl != nil && carouselItem.mediaUrl != ""{
+                                rowHeight = rowHeight + 160
+                                
+                            }
+                            cellHeight = max(cellHeight, rowHeight)
+                        }
+                        
                     }
                 }
-                return  CGSize(width: 280, height: 312 + cellHeight)
+                return  CGSize(width: 280, height: 105 + cellHeight)
             }
         }
         return CGSize(width: 0, height: 0)

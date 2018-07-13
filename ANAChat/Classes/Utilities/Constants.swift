@@ -10,6 +10,9 @@ struct Constants {
     static let kRecipientKey            = "recipient"
     static let kSenderKey               = "sender"
     static let kIdKey                   = "id"
+    static let kFlowIdKey               = "flowId"
+    static let kCurrentFlowId           = "currentFlowId"
+    static let kPreviousFlowId          = "previousFlowId"
     static let kSenderTypeKey           = "senderType"
     static let kSessionIdKey            = "sessionId"
     static let kDataKey                 = "data"
@@ -58,10 +61,12 @@ struct Constants {
     static let kDateKey                 = "date"
     static let kTimeKey                 = "time"
     static let kMultipleKey             = "multiple"
-    static let kStaticBusinessId        = "ChatBot"
+    static let kStaticBusinessId        = "NowFloats"
+    static let kStaticFlowId            = "LandingPage"
     static let kUserIdKey               = "userId"
     static let kBusinessIdKey           = "businessId"
     static let kSizeKey                 = "size"
+    static let kCurrentSessionKey       = "ofCurrentSession"
     static let kPageKey                 = "page"
     static let kNumberKey               = "number"
     static let kIsLastKey               = "isLast"
@@ -87,15 +92,20 @@ struct AlertTexts {
 }
 
 struct CellHeights {
-    static let optionsViewCellHeight = 65
+    static let optionsViewCellHeight = 50
     static let carouselOptionsViewHeight = 45
     static let textInputViewHeight = 50
     static let typingIndicatorViewHeight = 45
 }
 
+struct ConfigurationConstants {
+    static let pageLimit = 20
+}
+
 struct NotificationConstants {
     static let kMessageReceivedNotification = "kMessageReceivedNotification"
     static let kLocationReceivedNotification = "kLocationReceivedNotification"
+    static let kDeepLinkReceivedNotification = "kDeepLinkReceivedNotification"
 }
 
 struct CellIdentifiers {
@@ -105,10 +115,6 @@ struct CellIdentifiers {
 struct DataBaseConstans {
     static let kUserIdKey            = "userIdInfo"
 
-}
-
-struct ConfigurationConstants {
-    static let pageLimit = 20
 }
 
 enum GCMPushType:Int{
@@ -151,6 +157,7 @@ enum MessageButtonType:Int {
     case MessageButtonTypeURL = 0
     case MessageButtonTypeQuick_Reply = 1
     case MessageButtonTypeAction = 2
+    case MessageButtonTypeDeepLink = 3
 }
 
 enum MessageSenderType:Int {

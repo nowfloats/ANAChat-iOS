@@ -15,7 +15,10 @@ class ExternalMessageModel: NSObject {
     var externalPayload : AnyObject!
     var syncedWithServer : String!
     var messageDateStamp : String!
-
+    var prevFlowId : String!
+    var currentFlowId : String!
+    var flowId : String!
+    
     override init ()
     {
         super.init()
@@ -33,6 +36,17 @@ class ExternalMessageModel: NSObject {
             }
             if let messageId = metaInfo[Constants.kIdKey] as? String{
                 self.messageId = messageId
+            }
+            if let flowId = metaInfo[Constants.kFlowIdKey] as? String{
+                self.flowId = flowId
+            }
+            
+            if let previousFlowId = metaInfo[Constants.kPreviousFlowId] as? String{
+                self.prevFlowId = previousFlowId
+            }
+            
+            if let currentFlowId = metaInfo[Constants.kCurrentFlowId] as? String{
+                self.currentFlowId = currentFlowId
             }
             if let messageTimeStamp = metaInfo[Constants.kTimeStampKey] as? Double{
                 let timeStampString = NSString(format : "%f",messageTimeStamp)

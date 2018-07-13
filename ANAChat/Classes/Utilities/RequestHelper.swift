@@ -22,16 +22,25 @@ class RequestHelper: NSObject {
             metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
         }
 
-        var recipientInfo = [String: Any]()
-        recipientInfo[Constants.kIdKey] = PreferencesManager.sharedInstance.getBusinessId()
-        metaInfo[Constants.kRecipientKey] = recipientInfo
-      
+        if let _ =  messageObject.sender {
+            var recipientInfo = [String: Any]()
+            recipientInfo[Constants.kIdKey] = PreferencesManager.sharedInstance.getBusinessId()
+            metaInfo[Constants.kRecipientKey] = recipientInfo
+        }
+        
         metaInfo[Constants.kSenderTypeKey] = NSNumber(value:0)
 
         if let sessionId = messageObject.sessionId{
             metaInfo[Constants.kSessionIdKey] = sessionId
         }
-        
+        metaInfo[Constants.kFlowIdKey] = PreferencesManager.sharedInstance.getFlowId()
+
+        if let currentFlowId = messageObject.currentFlowId {
+            metaInfo[Constants.kCurrentFlowId] = currentFlowId
+        }
+        if let previousFlowId = messageObject.prevFlowId {
+            metaInfo[Constants.kPreviousFlowId] = previousFlowId
+        }
         requestDictionary[Constants.kMetaKey] = metaInfo
         
         var dataInfo = [String: Any]()
@@ -98,18 +107,24 @@ class RequestHelper: NSObject {
                             var optionsInfo = [String: Any]()
                             optionsInfo[Constants.kTitleKey] = options.title
                             optionsInfo[Constants.kValueKey] = options.value
+                            optionsInfo[Constants.kTypeKey] = options.type
                             optionsMutableArray.add(optionsInfo)
                         }
                         contentInfo[Constants.kOptionsKey] = optionsMutableArray
                         
                         if let inputInfo = inputDict{
                             contentInfo[Constants.kInputKey] = inputInfo[Constants.kInputKey]
+                            if let additionalParams = inputInfo["additionalParams"] as? [String : Any] {
+                                var eventsArray = Array<Any>()
+                                eventsArray.append(["type" : NSNumber(value: 21) , "data" : PreferencesManager.sharedInstance.appendAdditionalParamsInfo(additionalParams)])
+                                requestDictionary["events"] = eventsArray
+                            }
                         }else{
                             if let inputMessageInfo = inputObject.inputInfo as? NSDictionary{
                                 contentInfo[Constants.kInputKey] = inputMessageInfo
                             }
                         }
-                    }
+                    }                   
                 case Int16(MessageInputType.MessageInputTypeList.rawValue):
                     if let inputTypeOptions = inputObject as? InputTypeOptions{
                         contentInfo[Constants.kInputTypeKey] = NSNumber(value:inputObject.inputType)

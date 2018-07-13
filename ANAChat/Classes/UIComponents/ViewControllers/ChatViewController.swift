@@ -1,13 +1,13 @@
-//
+ //
 //  ChatViewController.swift
 //
-
+ 
 import UIKit
 import CoreData
 import MediaPlayer
 import Photos
 import AVKit
-
+//import GooglePlacePicker
 import MobileCoreServices
 
 @objc public protocol ChatViewControllerDelegate {
@@ -16,6 +16,7 @@ import MobileCoreServices
     @objc optional func getExternalTableCell(heightAt indexPath:IndexPath , messageObject: External) -> CGFloat
     @objc optional func registerCells(_ tableView: UITableView)
     @objc optional func presentLocationPopupOnViewController(_ vc: UIViewController)
+    @objc optional func didTappedOnDeepLink(_ info:[String : Any])
 }
 
 @objc public class ChatViewController: BaseViewController ,MPMediaPickerControllerDelegate , UIImagePickerControllerDelegate , UINavigationControllerDelegate  , UIGestureRecognizerDelegate  , InputCellProtocolDelegate , ChatMediaCellDelegate ,UIDocumentMenuDelegate , UIDocumentPickerDelegate{
@@ -26,7 +27,8 @@ import MobileCoreServices
     var inputTypeButton : InputTypeButton?
     var inputDatePickerView : DatePickerView?
     
-    @objc public var businessId : String = ""
+    @objc public  var businessId : String = ""
+    @objc public var flowId : String = ""
     @objc public var headerTitle : String = "Chatty"
     @objc public var headerLogoImageName : String = "chatty"
     @objc public var baseThemeColor : UIColor = PreferencesManager.sharedInstance.getBaseThemeColor()
@@ -35,6 +37,7 @@ import MobileCoreServices
     @objc public var baseAPIUrl : String!
     @objc public var additionalParams : Dictionary<String, Any>!
     @objc public var openUrlInWebView : Bool = Bool()
+    @objc public var stripHtmlTags : Bool = Bool()
 
     var contentFont : UIFont?
     
@@ -60,13 +63,11 @@ import MobileCoreServices
     @IBOutlet weak var textContainerViewHeightConstraint: NSLayoutConstraint!
 
     @objc public weak var delegate:ChatViewControllerDelegate?
-    
     lazy var dataHelper = DataHelper()
     
     lazy var messagesFetchController:NSFetchedResultsController<Message>? = {
         let messagesFetchRequest = NSFetchRequest<Message>(entityName: "Message")
         let sortDescriptor = NSSortDescriptor(key: Constants.kTimeStampKey, ascending: true)
-        
         messagesFetchRequest.sortDescriptors = [sortDescriptor]
         if CoreDataContentManager.fetchMessagesCount() > ConfigurationConstants.pageLimit{
             messagesFetchRequest.fetchOffset = CoreDataContentManager.fetchMessagesCount() - ConfigurationConstants.pageLimit
@@ -74,7 +75,6 @@ import MobileCoreServices
             messagesFetchRequest.fetchOffset = 0
         }
         messagesFetchRequest.fetchBatchSize = ConfigurationConstants.pageLimit*2
-
         let frc = NSFetchedResultsController(fetchRequest: messagesFetchRequest, managedObjectContext: CoreDataContentManager.managedObjectContext(), sectionNameKeyPath: "dateStamp", cacheName: nil)
         frc.delegate = self
         frc.fetchRequest.shouldRefreshRefetchedObjects = true
@@ -87,29 +87,25 @@ import MobileCoreServices
         return frc
     }()
     
-    // MARK: -
-    // MARK: overridden Methods
-    
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillShow(withNotification:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillHide(withNotification:)), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.locationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kLocationReceivedNotification), object: nil)
-
-        self.navigationController?.navigationBar.isHidden = true
-        self.headerView.backgroundColor = PreferencesManager.sharedInstance.getBaseThemeColor()
         if let baseUrl = self.baseAPIUrl , self.baseAPIUrl.count > 0{
             APIManager.sharedInstance.configureAPIBaseUrl(withString: baseUrl)
             self.loadHistory(isOnLoad: true)
         }else{
             self.didTappedBackButton()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillShow(withNotification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyBoardWillHide(withNotification:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.locationReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kLocationReceivedNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.deepLinkReceived(_:)), name: NSNotification.Name(rawValue: NotificationConstants.kDeepLinkReceivedNotification), object: nil)
+        self.navigationController?.navigationBar.isHidden = true
+        self.headerView.backgroundColor = PreferencesManager.sharedInstance.getBaseThemeColor()
 //        self.scrollToTableBottom()
     }
-    
     
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -118,17 +114,57 @@ import MobileCoreServices
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationConstants.kMessageReceivedNotification), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationConstants.kLocationReceivedNotification), object: nil)
+
     }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
-        // Do any additional setup after loading the view, typically from a nib.
     }
- 
-    override public func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        /*
+    
+    func configureUI() {
+        if let contentFont = self.contentFont{
+            PreferencesManager.sharedInstance.configureContentText(withFont: contentFont)
+        }
+        self.headerTitleLabel.textColor = self.botTitleColor
+        self.headerDescriptionLabel.textColor = self.botTitleColor
+        PreferencesManager.sharedInstance.configureSenderTheme(withColor: senderThemeColor)
+        PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
+        PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
+        PreferencesManager.sharedInstance.configureFlowId(withText: flowId)
+        PreferencesManager.sharedInstance.configureAdditionalParameters(withDict: self.additionalParams)
+        PreferencesManager.sharedInstance.configureStripHtmlTags(withStrip: stripHtmlTags)
+        headerTitleLabel.text = headerTitle
+        
+        if self.headerLogoImageName == "chatty"{
+            headerLogo.image =  CommonUtility.getImageFromBundle(name: "chatty")
+        }else{
+            headerLogo.image = UIImage.init(named: self.headerLogoImageName)
+        }
+        self.isTableViewScrolling = true
+        self.visibleSectionIndex = NSIntegerMax
+        self.view.backgroundColor = UIConfigurationUtility.Colors.BackgroundColor
+//        self.tableView.backgroundColor = UIConfigurationUtility.Colors.BackgroundColor
+        self.tableView.contentInset  = UIEdgeInsetsMake(0, 0, 20, 0)
+        self.title = "Chats"
+        self.registerNibs()
+        self.tapGestureRecognizers()
+        self.scrollToTableBottom()
+        ImageCache.sharedInstance.initilizeImageDirectory()
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refreshControl.tintColor = PreferencesManager.sharedInstance.getBaseThemeColor()
+        if #available(iOS 10.0, *) {
+            self.tableView.refreshControl = refreshControl
+        } else {
+            self.tableView.addSubview(refreshControl)
+        }
+        self.automaticallyAdjustsScrollViewInsets = false
+    }
+    
+    public override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         if motion == .motionShake{
+            
             let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to start the chat again.?", preferredStyle: .alert)
             let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
                 //Just dismiss the action sheet
@@ -144,30 +180,40 @@ import MobileCoreServices
                     self.view.endEditing(true)
                     self.isTableViewScrolling = true
                     self.visibleSectionIndex = NSIntegerMax
-                    self.loadHistory()
+                    
+                    let responseDict = CommonUtility.loadJson(forFilename: "allChatsMock")
+                    FCMMessagesManager.syncHistory(withResponseObject: responseDict!) { (success) in
+                        DispatchQueue.main.async {
+                            if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
+                                self.tableView.reloadData()
+                                if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                                    self.didTappedOnGetStartedCell(lastObject)
+//                                    self.loadInputView(lastObject)
+                                }
+                            }
+                        }
+                    }
+//                    self.loadHistory(true)
                 })
                 //Just dismiss the action sheet
             }
             actionSheetController.addAction(clearAction)
             self.present(actionSheetController, animated: true, completion: nil)
+  
         }
-         */
     }
     
-    // MARK: -
-    // MARK:  History Helper Methods
-    
     func loadHistory(isOnLoad onLoad : Bool) {
-        
+    
         if self.isSyncInProgress || self.isLastPage{
             return
         }
-        
+
         self.isSyncInProgress = true
-        
+    
         if reachability.isReachable{
             var interval = Int()
-            
+
             CoreDataContentManager.deleteAllWaitingPlaceholderImages { (success) in
                 
             }
@@ -181,7 +227,10 @@ import MobileCoreServices
             var requestDictionary = [String: Any]()
             requestDictionary[Constants.kUserIdKey] = PreferencesManager.getUserId()
             requestDictionary[Constants.kBusinessIdKey] = PreferencesManager.sharedInstance.getBusinessId()
+            requestDictionary[Constants.kFlowIdKey] = PreferencesManager.sharedInstance.getFlowId()
             requestDictionary[Constants.kSizeKey] = String(ConfigurationConstants.pageLimit)
+            requestDictionary[Constants.kCurrentSessionKey] = NSNumber.init(value: true)
+
             if onLoad{
                 requestDictionary[Constants.kPageKey] = String(0)
             }else{
@@ -189,7 +238,7 @@ import MobileCoreServices
                     requestDictionary[Constants.kLastMessageTimeStampKey] = String(interval)
                 }
             }
-            
+    
             dataHelper.syncHistoryFromServer(params: requestDictionary, apiPath: nil) { (response) in
                 if let chatsArray = response["content"] as? NSArray{
                     if chatsArray.count == 0 && (self.messagesFetchController?.fetchedObjects?.count)! == 0{
@@ -201,7 +250,8 @@ import MobileCoreServices
                                     self.tableView.reloadData()
                                     if onLoad{
                                         if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-                                            self.loadInputView(lastObject)
+                                            self.didTappedOnGetStartedCell(lastObject)
+//                                            self.loadInputView(lastObject)
                                         }
                                     }
                                 }
@@ -281,13 +331,35 @@ import MobileCoreServices
                     catch {
                         print("Unable to fetch cart Objects")
                     }
-                    
+
                     self.updateTableViewContentAfterLoadmoreMessages()
                 }
             }
         }
     }
+    
+    func registerNibs(){
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(UINib(nibName: "ChatReceiveTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "receivetextcell")
+        tableView.register(UINib(nibName: "ChatSenderTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "sendtextcell")
+        tableView.register(UINib(nibName: "ChatSenderMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatSenderMediaCell")
+        tableView.register(UINib(nibName: "ChatReceiverMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiverMediaCell")
+        tableView.register(UINib(nibName: "ChatReceiveCarouselCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiveCarouselCell")
+        tableView.register(UINib(nibName: "TypingIndicatorCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "TypingIndicatorCell")
+        tableView.register(UINib(nibName: "CardsTableViewCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "CardsTableViewCell")
 
+        tableView.register(UINib(nibName: "CustomHeaderView", bundle: CommonUtility.getFrameworkBundle()), forHeaderFooterViewReuseIdentifier: "CustomHeaderView")
+        
+        self.delegate?.registerCells?(self.tableView)
+    }
+    
+    func tapGestureRecognizers(){
+        //Added tap gesture on tableview to recognize touch on tableview
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tableViewTapped(_:)))
+        tapGesture.delegate = self
+        self.tableView.addGestureRecognizer(tapGesture)
+    }
+    
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -353,6 +425,7 @@ import MobileCoreServices
                         }else{
                             CoreDataContentManager.backgroundObjectContext().delete(messageObject)
                             CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                                
                             }, failBlock: { (error) in
                                 
                             })
@@ -364,78 +437,12 @@ import MobileCoreServices
             self.headerDescriptionLabel.text = Constants.kConnectingKey
         }
     }
-    
-    // MARK: -
-    // MARK:  UIHelper Methods
-    
-    func configureUI() {
-        if let contentFont = self.contentFont{
-            PreferencesManager.sharedInstance.configureContentText(withFont: contentFont)
-        }
-        self.headerTitleLabel.textColor = self.botTitleColor
-        self.headerDescriptionLabel.textColor = self.botTitleColor
-        PreferencesManager.sharedInstance.configureSenderTheme(withColor: senderThemeColor)
-        PreferencesManager.sharedInstance.configureBaseTheme(withColor: baseThemeColor)
-        PreferencesManager.sharedInstance.configureBusinessId(withText: businessId)
-        PreferencesManager.sharedInstance.configureAdditionalParameters(withDict: self.additionalParams)
-
-        headerTitleLabel.text = headerTitle
-        if self.headerLogoImageName == "chatty"{
-            headerLogo.image =  CommonUtility.getImageFromBundle(name: "chatty")
-        }else{
-            headerLogo.image = UIImage.init(named: self.headerLogoImageName)
-        }
-        self.isTableViewScrolling = true
-        self.visibleSectionIndex = NSIntegerMax
-        self.view.backgroundColor = UIConfigurationUtility.Colors.BackgroundColor
-//        self.tableView.backgroundColor = UIConfigurationUtility.Colors.BackgroundColor
-        self.tableView.contentInset  = UIEdgeInsetsMake(0, 0, 20, 0)
-        self.title = "Chats"
-        self.registerNibs()
-        self.tapGestureRecognizers()
-        self.scrollToTableBottom()
-        ImageCache.sharedInstance.initilizeImageDirectory()
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refreshControl.tintColor = PreferencesManager.sharedInstance.getBaseThemeColor()
-        if #available(iOS 10.0, *) {
-            self.tableView.refreshControl = refreshControl
-        } else {
-            self.tableView.addSubview(refreshControl)
-        }
-        self.automaticallyAdjustsScrollViewInsets = false
-    }
-    
-    func registerNibs(){
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.register(UINib(nibName: "ChatReceiveTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "receivetextcell")
-        tableView.register(UINib(nibName: "ChatSenderTextCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "sendtextcell")
-        tableView.register(UINib(nibName: "ChatSenderMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatSenderMediaCell")
-        tableView.register(UINib(nibName: "ChatReceiverMediaCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiverMediaCell")
-        tableView.register(UINib(nibName: "ChatReceiveCarouselCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "ChatReceiveCarouselCell")
-        tableView.register(UINib(nibName: "TypingIndicatorCell", bundle: CommonUtility.getFrameworkBundle()), forCellReuseIdentifier: "TypingIndicatorCell")
-        
-        tableView.register(UINib(nibName: "CustomHeaderView", bundle: CommonUtility.getFrameworkBundle()), forHeaderFooterViewReuseIdentifier: "CustomHeaderView")
-        
-        self.delegate?.registerCells?(self.tableView)
-    }
-    
-    func tapGestureRecognizers(){
-        //Added tap gesture on tableview to recognize touch on tableview
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tableViewTapped(_:)))
-        tapGesture.delegate = self
-        self.tableView.addGestureRecognizer(tapGesture)
-    }
-    
+   
     @objc func refresh(_ sender: Any) {
         refreshControl.endRefreshing()
         self.loadHistory(isOnLoad: false)
     }
 
-    
-    // MARK: -
-    // MARK:  Delegate Methods
-    
     func didTappedOnPlayButton(_ medialUrl: String){
         self.playVideo(view: self, mediaUrl: medialUrl)
     }
@@ -466,12 +473,41 @@ import MobileCoreServices
         self.didTappedBackButton()
     }
     
-    func didTappedBackButton(){
-        if self.navigationController != nil{
-            self.navigationController?.popViewController(animated: true)
-        }else{
-            self.dismiss(animated: true, completion: {})
+    @IBAction func reloadChatTapped(_ sender: Any) {
+        let actionSheetController: UIAlertController = UIAlertController(title: "Alert", message: "Do you want to start the chat again.?", preferredStyle: .alert)
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in
+            //Just dismiss the action sheet
         }
+        actionSheetController.addAction(cancelAction)
+        
+        let clearAction: UIAlertAction = UIAlertAction(title: "Ok", style: .default) { action -> Void in
+            CoreDataContentManager.deleteAllMessages(successBlock: { (success) in
+                self.tableView.reloadData()
+                self.clearInputSubViews()
+                self.inputContainerViewHeightConstraint.constant = 0
+                self.textContainerViewHeightConstraint.constant = 0
+                self.view.endEditing(true)
+                self.isTableViewScrolling = true
+                self.visibleSectionIndex = NSIntegerMax
+                
+                let responseDict = CommonUtility.loadJson(forFilename: "allChatsMock")
+                FCMMessagesManager.syncHistory(withResponseObject: responseDict!) { (success) in
+                    DispatchQueue.main.async {
+                        if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
+                            self.tableView.reloadData()
+                            if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                                self.didTappedOnGetStartedCell(lastObject)
+                                //                                    self.loadInputView(lastObject)
+                            }
+                        }
+                    }
+                }
+                //                    self.loadHistory(true)
+            })
+            //Just dismiss the action sheet
+        }
+        actionSheetController.addAction(clearAction)
+        self.present(actionSheetController, animated: true, completion: nil)
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool{
@@ -561,12 +597,12 @@ import MobileCoreServices
         ConstraintsHelper.addConstraints(0, trailing: 0, top: 0, height: CGFloat(CellHeights.textInputViewHeight), superView: self.textContainerView, subView: self.inputTextView)
         
         self.textContainerViewHeightConstraint.constant = CGFloat(CellHeights.textInputViewHeight)
-        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.0){
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
             };
         }
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
             UIView.animate(withDuration: 0.3) {
                 if self.inputTextView != nil,self.textContainerViewHeightConstraint.constant == CGFloat(CellHeights.textInputViewHeight){
@@ -585,6 +621,14 @@ import MobileCoreServices
         }
     }
 
+    func didTappedBackButton(){
+        if self.navigationController != nil{
+            self.navigationController?.popViewController(animated: true)
+        }else{
+            self.dismiss(animated: true, completion: {})
+        }
+    }
+    
     func removeInputTextView() {
         if self.inputTextView != nil {
             DispatchQueue.main.async {
@@ -601,7 +645,7 @@ import MobileCoreServices
     
     func loadInputTypeOptions(_ messageObject : InputTypeOptions){
         self.inputTextView?.removeFromSuperview()
-        if messageObject.mandatory == 1{
+        if messageObject.mandatory == 1 {
             self.textContainerViewHeightConstraint.constant = 0
         }else{
             self.inputTextView = CommonUtility.getFrameworkBundle().loadNibNamed("InputTextFieldView", owner: self, options: nil)?[0] as? InputTextFieldView
@@ -614,22 +658,24 @@ import MobileCoreServices
             
             self.textContainerViewHeightConstraint.constant = CGFloat(CellHeights.textInputViewHeight)
         }
-        
-        self.inputOptionsView = CommonUtility.getFrameworkBundle().loadNibNamed("InputOptionsView", owner: self, options: nil)?[0] as? InputOptionsView
-        self.inputOptionsView?.frame = CGRect(x: 0, y: 0, width: Int(UIScreen.main.bounds.size.width), height: CellHeights.optionsViewCellHeight)
-        self.inputOptionsView?.frame = self.inputContainerView.bounds
-        self.inputOptionsView?.configure(messageObject: messageObject)
-        self.inputOptionsView?.backgroundColor = UIColor.clear
-        self.inputOptionsView?.delegate = self
-        self.inputContainerView.backgroundColor = UIColor.clear
-        self.inputContainerView.addSubview(self.inputOptionsView!)
-        self.inputContainerViewHeightConstraint.constant = CGFloat(CellHeights.optionsViewCellHeight)
-
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.0){
-            UIView.animate(withDuration: 0.3) {
-                self.view.layoutIfNeeded()
-            };
+        if let options = messageObject.options {
+            self.inputOptionsView = CommonUtility.getFrameworkBundle().loadNibNamed("InputOptionsView", owner: self, options: nil)?[0] as? InputOptionsView
+            self.inputOptionsView?.frame = CGRect(x: 0, y: 0, width: Int(UIScreen.main.bounds.size.width), height: CellHeights.optionsViewCellHeight)
+            self.inputOptionsView?.frame = self.inputContainerView.bounds
+            self.inputOptionsView?.configure(messageObject: messageObject)
+            self.inputOptionsView?.backgroundColor = UIColor.clear
+            self.inputOptionsView?.delegate = self
+            self.inputContainerView.backgroundColor = UIColor.clear
+            self.inputContainerView.addSubview(self.inputOptionsView!)
+            self.inputContainerViewHeightConstraint.constant = CGFloat(min(options.count*CellHeights.optionsViewCellHeight, 170))
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.0){
+                UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                };
+            }
         }
+        
     }
     
     func removeInputTypeOptions() {
@@ -732,7 +778,6 @@ import MobileCoreServices
             }
         }
     }
-    
     // MARK: -
     // MARK: InputTextFieldViewDelegate Methods
     
@@ -793,6 +838,7 @@ import MobileCoreServices
             }
 
         }
+
         if messageObject is Carousel{
             dataHelper.updateCarouselDBMessage(params: requestDict, successBlock: { (messageObject) in
                 self.reloadLastPreviousCell()
@@ -937,6 +983,7 @@ import MobileCoreServices
     
     func didTappedOnListCell(_ messageObject: Message){
         self.view.endEditing(true)
+
         let listView =  CommonUtility.getFrameworkBundle().loadNibNamed("InputListView", owner: self, options: nil)?[0] as! InputListView
         listView.delegate = self
         listView.configure(messageObject: messageObject as! InputTypeOptions)
@@ -946,6 +993,7 @@ import MobileCoreServices
     
     func didTappedOnSendDateCell(_ messageObject: Message){
         self.view.endEditing(true)
+
         self.inputDatePickerView = CommonUtility.getFrameworkBundle().loadNibNamed("DatePickerView", owner: self, options: nil)?[0] as? DatePickerView
         self.inputDatePickerView?.frame = (self.navigationController?.view.bounds)!
         self.inputDatePickerView?.configure(messageObject: messageObject)
@@ -956,13 +1004,12 @@ import MobileCoreServices
     func didTappedOnGetStartedCell(_ messageObject: Message){
         self.view.endEditing(true)
         self.clearInputSubViews()
-        let inputDict = [Constants.kInputKey: [Constants.kInputKey: "Get Started"]]
+        let inputDict = [Constants.kInputKey: [Constants.kInputKey: ""]]
         self.syncInputMessageToServer(inputDict, messageObject: messageObject)
     }
     
     func didTappedOnSendLocationCell(_ messageObject: Message) {
         self.view.endEditing(true)
-
         if let _ = messageObject as? InputLocation{
             self.delegate?.presentLocationPopupOnViewController?(self)
             /*
@@ -1006,6 +1053,10 @@ import MobileCoreServices
         }else{
             UIApplication.shared.openURL(URL(string: url)!)
         }
+    }
+    
+    @objc func didTappedOnDeepLink(_ info:[String : Any]) {
+        delegate?.didTappedOnDeepLink?(info)
     }
 
     func showAlert(_ alertText:String){
@@ -1054,6 +1105,7 @@ import MobileCoreServices
     
     @objc func notificationReceived(_ notification : NSNotification) {
         if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
+            print(self.messagesFetchController?.fetchedObjects?.last ?? Message())
             DispatchQueue.main.async {
                 self.reloadLastPreviousCell()
                 self.scrollToTableBottom()
@@ -1080,22 +1132,62 @@ import MobileCoreServices
         }
     }
     
-    func scrollToTableBottom() -> Void{
-        DispatchQueue.main.async {
-            if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
-                let indexPath = IndexPath(row: (self.messagesFetchController?.sections?.last?.numberOfObjects)! - 1, section: (self.messagesFetchController?.sections?.count)! - 1)
-                UIView.animate(withDuration: 0.25, delay:0.0, options: UIViewAnimationOptions.allowAnimatedContent, animations: {
-                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-                }) { (_ finished: Bool) in
-                    if(finished){
+    @objc func deepLinkReceived(_ notification : NSNotification) {
+        if let value = notification.userInfo?["value"] as? String , let title = notification.userInfo?["title"]{
+            if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                if lastObject is InputTypeOptions{
+                    var inputDict = [Constants.kInputKey: [Constants.kValKey: value,Constants.kTextKey : title]]
+                    if let additionalParams = notification.userInfo?["additionalParams"] as? [String : Any]{
+                        inputDict["additionalParams"] = additionalParams
                     }
-                    
+                    self.didTappedOnInputCell(inputDict, messageObject: lastObject)
                 }
             }
         }
     }
     
+    func scrollToTableBottom() -> Void{
+        DispatchQueue.main.async {
+            if (self.messagesFetchController?.fetchedObjects?.count)! > 0{
+                let indexPath = IndexPath(row: (self.messagesFetchController?.sections?.last?.numberOfObjects)! - 1, section: (self.messagesFetchController?.sections?.count)! - 1)
+                UIView.animate(withDuration: 0.25, delay:0.0, options: UIViewAnimationOptions.allowAnimatedContent, animations: {
+                    self.tableView.reloadData()
+                    self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                }) { (_ finished: Bool) in
+                    if(finished){
+                    }
+                }
+            }
+        }
+        //
+        //        let scrollPoint = CGPoint(x: 0, y: self.tableView.contentSize.height - self.tableView.frame.size.height)
+        //        self.tableView.setContentOffset(scrollPoint, animated: true)
+        //        return
+        
+        
+        //        let contentOffset = rect.size.height + rect.origin.y + 180
+        //        let offset = CGPoint.init(x: 0, y: contentOffset)
+        ////        self.tableView.beginUpdates()
+        //        self.tableView.setContentOffset(offset, animated: false)
+        ////        self.tableView.endUpdates()
+        
+        //        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        
+    }
+    
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+        
+        /*
+        if let videoURL = info[UIImagePickerControllerMediaURL] as? NSURL {
+            
+            //Create AVAsset from url
+            let ass = AVAsset(url:videoURL as URL)
+            
+            if let videoThumbnail = ass.videoThumbnail{
+                print("Success")
+            }
+        }
+        */
         
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
         if mediaType.hasSuffix(".movie"){
@@ -1125,7 +1217,9 @@ import MobileCoreServices
                             if inputObject.inputInfo == nil{
                                 switch inputObject.inputType{
                                 case Int16(MessageInputType.MessageInputTypeMedia.rawValue):
-                                    self.syncMediaInputImage(pickedImage, messageObject: lastObject)
+                                    DispatchQueue.main.async {
+                                        self.syncMediaInputImage(pickedImage, messageObject: lastObject)
+                                    }
                                 default:
                                     break
                                 }
@@ -1133,7 +1227,7 @@ import MobileCoreServices
                         }
                     }
                 }
-                
+              
             }
         }
     }
@@ -1149,14 +1243,14 @@ import MobileCoreServices
         let inputDict = [Constants.kInputKey: [Constants.kMediaKey: [mediaInfo]]]
         
         var requestDict = [String: Any]()
-        requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
-        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
-            if var metaInfo = requestDict["meta"] as? [String: Any]{
-                metaInfo[Constants.kResponseToKey] = lastObject.messageId
-                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
-                requestDict["meta"] = metaInfo
+            requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+            if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+                if var metaInfo = requestDict["meta"] as? [String: Any]{
+                    metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                    metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                    requestDict["meta"] = metaInfo
+                }
             }
-        }
         
         dataHelper.updateInputDBMessage(params: requestDict, successBlock: { (messageObject) in
             
@@ -1165,9 +1259,10 @@ import MobileCoreServices
             }
             
             CoreDataContentManager.saveBackgroundContextWith(successBlock: { (success) in
+                
+                self.reloadLastPreviousCell()
+                self.scrollToTableBottom()
                 DispatchQueue.main.async {
-                    self.reloadLastPreviousCell()
-                    self.scrollToTableBottom()
                     self.dismiss(animated: true, completion: nil)
                     self.view.endEditing(true)
                     self.inputContainerViewHeightConstraint.constant = 0
@@ -1291,6 +1386,315 @@ import MobileCoreServices
         }
     }
 
+    
+    func updateTableViewContentAfterLoadmoreMessages(){
+        let oldContentOffsetY = self.tableView.contentSize.height - self.tableView.contentOffset.y
+        self.tableView.reloadData()
+        let newOffset = CGPoint(x : self.tableView.contentOffset.x, y : self.tableView.contentSize.height - oldContentOffsetY)
+        self.tableView.contentOffset = newOffset
+    }
+    
+    /*     
+    func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController)
+    {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+        //run any code you want once the user has picked their chosen audio
+    }
+
+    @IBAction func imageTapped(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = self
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+        
+        print("image tapped")
+    }
+   
+    @IBAction func photoTapped(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = self
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+        
+        print("photo tapped")
+    }
+    
+    @IBAction func audioTapped(_ sender: Any) {
+        let picker = MPMediaPickerController(mediaTypes: .anyAudio)
+        picker.delegate = self
+        picker.allowsPickingMultipleItems = false
+        picker.prompt = NSLocalizedString("Chose audio file", comment: "Please chose an audio file")
+        self.present(picker, animated: true, completion: nil)
+        
+        print("audio tapped")
+    }
+    
+    @IBAction func videoTapped(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = ["public.movie"]
+        picker.delegate = self
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+        
+        
+        print("video tapped")
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+        
+        if let videoURL = info[UIImagePickerControllerMediaURL] as? NSURL {
+            
+            //Create AVAsset from url
+            let ass = AVAsset(url:videoURL as URL)
+            
+            if let videoThumbnail = ass.videoThumbnail{
+                print("Success")
+            }
+        }
+        
+        let mediaType = info[UIImagePickerControllerMediaType] as! NSString
+        if mediaType.hasSuffix(".movie"){
+            let videoPathUrl = info[UIImagePickerControllerMediaURL] as? NSURL
+            APIManager.sharedInstance.uploadMedia(withMedia: videoPathUrl! as URL, completionHandler: { (response) in
+                print(response)
+            })
+            print(videoPathUrl ?? NSURL())
+        }else if  mediaType.hasSuffix(".image"){
+            print(info[UIImagePickerControllerMediaURL] ?? NSURL())
+            if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                APIManager.sharedInstance.uploadImage(withMedia: pickedImage, completionHandler: { (response) in
+                    print(response)
+                })
+            }
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func saveVideoWithURLPath(_ videoPathUrl:NSURL){
+        var localId:String?
+
+        PHPhotoLibrary.shared().performChanges({
+            let request =  PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoPathUrl as URL)
+            localId = request?.placeholderForCreatedAsset?.localIdentifier
+
+        }) { saved, error in
+            if saved {
+                DispatchQueue.main.async(execute: { () -> Void in
+                    
+                    if let localId = localId {
+                        
+                        let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
+                        let assets = result.objects(at: NSIndexSet(indexesIn: NSRange(location: 0, length: result.count)) as IndexSet)
+                        
+                        if let asset = assets.first {
+                            print(asset as PHAsset)
+                            self.playVideo(view: self, videoAsset: asset)
+                            // Do something with result
+                        }
+                    }
+                })
+            }
+        }
+    }
+    
+    func saveVideoFromURL(urlString:NSString){
+        var localId:String?
+
+//        urlString = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        DispatchQueue.global(qos: .background).async {
+            if let url = URL(string: "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4" as String),
+                let urlData = NSData(contentsOf: url)
+            {
+                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0];
+                let filePath="\(documentsPath)/tempFile.mp4";
+                DispatchQueue.main.async {
+                    urlData.write(toFile: filePath, atomically: true)
+                    PHPhotoLibrary.shared().performChanges({
+                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL(fileURLWithPath: filePath))
+                        localId = request?.placeholderForCreatedAsset?.localIdentifier
+
+                    }) { completed, error in
+                        if completed {
+                            
+                            let fetchOptions = PHFetchOptions()
+                            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+                            
+                            // After uploading we fetch the PHAsset for most recent video and then get its current location url
+                            
+                            let fetchResult = PHAsset.fetchAssets(with: .video, options: fetchOptions).lastObject
+                            PHImageManager().requestAVAsset(forVideo: fetchResult!, options: nil, resultHandler: { (avurlAsset, audioMix, dict) in
+                                let newObj = avurlAsset as! AVURLAsset
+                                print(newObj.url)
+                                DispatchQueue.main.async {
+                                    let player = AVPlayer(url: newObj.url)
+                                    let playerViewController = AVPlayerViewController()
+                                    playerViewController.player = player
+                                    self.present(playerViewController, animated: true) {
+                                        playerViewController.player!.play()
+                                    }
+                                }
+                                // This is the URL we need now to access the video from gallery directly.
+                            })
+//
+//                            DispatchQueue.main.async(execute: { () -> Void in
+//                                
+//                                if let localId = localId {
+//                                    
+//                                    let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
+//                                    let assets = result.objects(at: NSIndexSet(indexesIn: NSRange(location: 0, length: result.count)) as IndexSet)
+//                                    
+//                                    if let asset = assets.first {
+//                                        print(asset as PHAsset)
+//                                        self.playVideo(view: self, videoAsset: asset)
+//                                        // Do something with result
+//                                    }
+//                                }
+//                            })
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func saveImageFromURL(urlString:NSString){
+        var localId:String?
+        
+        //        urlString = "http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4"
+        DispatchQueue.global(qos: .background).async {
+            if let url = URL(string: "http://i2.cdn.cnn.com/cnnnext/dam/assets/161217142430-2017-cars-ferrari-1-overlay-tease.jpg" as String),
+                let urlData = NSData(contentsOf: url)
+            {
+                let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0];
+                let filePath="\(documentsPath)/tempFile.jpg";
+                DispatchQueue.main.async {
+                    urlData.write(toFile: filePath, atomically: true)
+                    PHPhotoLibrary.shared().performChanges({
+                        let request = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: URL(fileURLWithPath: filePath))
+                        localId = request?.placeholderForCreatedAsset?.localIdentifier
+                        
+                    }) { completed, error in
+                        if completed {
+                            DispatchQueue.main.async(execute: { () -> Void in
+                                
+                                if let localId = localId {
+                                    
+                                    let result = PHAsset.fetchAssets(withLocalIdentifiers: [localId], options: nil)
+                                    let assets = result.objects(at: NSIndexSet(indexesIn: NSRange(location: 0, length: result.count)) as IndexSet)
+                                    
+                                    if let asset = assets.first {
+                                        print(asset as PHAsset)
+                                        self.playVideo(view: self, videoAsset: asset)
+                                    }
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func playVideo (view: UIViewController, videoAsset: PHAsset) {
+     
+        guard (videoAsset.mediaType == .video) else {
+            print("Not a valid video media type")
+            return
+        }
+     
+        PHCachingImageManager().requestAVAsset(forVideo: videoAsset, options: nil) { (asset, audioMix, args) in
+            let asset = asset as! AVURLAsset
+     
+            DispatchQueue.main.async {
+                let player = AVPlayer(url: asset.url)
+                let playerViewController = AVPlayerViewController()
+                playerViewController.player = player
+                view.present(playerViewController, animated: true) {
+                    playerViewController.player!.play()
+                }
+            }
+        }
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+        self.dismiss(animated: true, completion: nil)
+    }
+
+       func didTappedOnTextCell(_ inputDict:[String: Any], messageObject: Message){
+        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+            if var metaInfo = requestDict["meta"] as? [String: Any]{
+                metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                requestDict["meta"] = metaInfo
+            }
+        }
+        print(requestDict)
+        print(inputDict)
+        
+        dataHelper.updateDBMessage(params: requestDict, successBlock: { (messageObject) in
+            self.reloadLastPreviousCell()
+            self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                self.reloadLastPreviousCell()
+                self.scrollToTableBottom()
+            })
+        })
+        //        self.removeInputTextView()
+    }
+    
+    // MARK: -
+    //MARK: ButtonsViewDelegate Methods
+    func didTappedOnOptionsCell(_ inputDict:[String: Any], messageObject: Message){
+        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+            if var metaInfo = requestDict["meta"] as? [String: Any]{
+                metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                requestDict["meta"] = metaInfo
+            }
+        }
+        print(requestDict)
+        print(inputDict)
+        
+        dataHelper.updateDBMessage(params: requestDict, successBlock: { (messageObject) in
+            self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                self.reloadLastPreviousCell()
+                self.scrollToTableBottom()
+            })
+        })
+        //        self.removeInputTypeOptions()
+    }
+    func didTappedOnListCell(_ inputDict:[String: Any], messageObject: Message){
+        var requestDict = RequestHelper.getRequestDictionary(messageObject, inputDict: inputDict)
+        if let lastObject = self.messagesFetchController?.fetchedObjects?.last{
+            if var metaInfo = requestDict["meta"] as? [String: Any]{
+                metaInfo[Constants.kResponseToKey] = lastObject.messageId
+                metaInfo[Constants.kTimeStampKey] = NSNumber(value : Date().millisecondsSince1970)
+                requestDict["meta"] = metaInfo
+            }
+        }
+        print(requestDict)
+        print(inputDict)
+        
+        dataHelper.updateDBMessage(params: requestDict, successBlock: { (messageObject) in
+            self.dataHelper.sendMessageToServer(params: requestDict, apiPath: nil, messageObject: messageObject, completionHandler: { (response) in
+                self.reloadLastPreviousCell()
+                self.scrollToTableBottom()
+            })
+        })
+        print(requestDict)
+    }
+     */
     ///  IMAGE ZOOM
     
     func imageTap(imageView: UIImageView)
@@ -1365,7 +1769,7 @@ import MobileCoreServices
         else {
             contentsFrame?.origin.x = 0.0
         }
-        if (imgVi?.frame.size.height)! < boundsSize.height {
+        if (contentsFrame?.size.height)! < boundsSize.height {
             contentsFrame?.origin.y = (boundsSize.height - (imgVi?.frame.size.height)!) / 2.0
         }
         else {
@@ -1373,16 +1777,4 @@ import MobileCoreServices
         }
         imgVi?.frame = contentsFrame!
     }
-    
-    // MARK: -
-    // MARK: DBHelper Methods
-    
-    func updateTableViewContentAfterLoadmoreMessages(){
-        let oldContentOffsetY = self.tableView.contentSize.height - self.tableView.contentOffset.y
-        self.tableView.reloadData()
-        let newOffset = CGPoint(x : self.tableView.contentOffset.x, y : self.tableView.contentSize.height - oldContentOffsetY)
-        self.tableView.contentOffset = newOffset
-    }
-    
-
 }

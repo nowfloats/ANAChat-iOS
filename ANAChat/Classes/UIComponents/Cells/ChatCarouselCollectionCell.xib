@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,11 +37,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ii7-zM-FUq">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ii7-zM-FUq">
                                 <rect key="frame" x="15" y="170" width="209" height="0.0"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="37" id="M9R-8V-Lzv"/>
-                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -108,7 +105,9 @@
                 <outlet property="cellContentView" destination="aGS-r4-T10" id="hyg-dy-ucU"/>
                 <outlet property="descriptionLabel" destination="Ii7-zM-FUq" id="TFb-Pn-e81"/>
                 <outlet property="imageView" destination="xVk-nM-k90" id="xqP-mH-3dq"/>
+                <outlet property="imageViewBottomSpaceConstraint" destination="Jqe-x7-bCM" id="vP1-On-qSa"/>
                 <outlet property="imageViewHeightConstraint" destination="Nco-zZ-bJK" id="0s6-D5-mGR"/>
+                <outlet property="imageViewTopSpaceConstraint" destination="MFY-pp-K3o" id="5f2-By-EXd"/>
                 <outlet property="playButton" destination="Bmy-ix-yMZ" id="g0i-0D-Ffs"/>
                 <outlet property="titleLabel" destination="uD3-Bk-TfM" id="TeL-vx-kZ9"/>
             </connections>
